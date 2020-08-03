@@ -1,18 +1,18 @@
 # RMIT SEPT 2020 Major Project
 
-# Group 00
+# Group 02
 
 ## Members
-* SURNAME, GivenName (sXXXX)
-* SURNAME, GivenName (sXXXX)
-* SURNAME, GivenName (sXXXX)
-* SURNAME, GivenName (sXXXX)
-* SURNAME, GivenName (sXXXX)
+* LAY, Austin            (s3779726)
+* MONAGHAN-LANDY, Joshua (s3687337)
+* ONG, Daniel            (s3676400)
+* KHUU, Danny            (s3601030)
+* TARIQ, Muhammad        (s3782874)
 
 ## Records
 
-* Github repository : https://github.com/RMIT-SEPT/MajorProject/Groupx
-* ClickUp Workspace : https://app.clickup.com/xxxx/yyyy
+* Github repository : https://github.com/RMIT-SEPT/majorproject-8-mon-17-30-2
+* Notion Workspace : https://www.notion.so/Product-Backlog-56817d9184cd409bbdc0ccc3aefa25e1
 
 
 ## Code documentation

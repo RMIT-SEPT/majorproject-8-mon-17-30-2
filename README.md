@@ -3,11 +3,11 @@
 # Group 02
 
 ## Members
-* LAY, Austin            (s3779726)
-* MONAGHAN-LANDY, Joshua (s3687337)
-* ONG, Daniel            (s3676400)
-* KHUU, Danny            (s3601030)
-* TARIQ, Muhammad        (s3782874)
+* LAY, Austin            (s3779726)
+* MONAGHAN-LANDY, Joshua (s3687337)
+* ONG, Daniel            (s3676400)
+* KHUU, Danny            (s3601030)
+* TARIQ, Muhammad        (s3782874)
 
 ## Records
 

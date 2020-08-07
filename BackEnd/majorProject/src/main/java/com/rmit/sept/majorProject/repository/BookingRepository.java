@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Customer;
+import com.rmit.sept.majorProject.model.Worker;
+
 @Repository("bookingRepo")
 public class BookingRepository {
 	
@@ -25,7 +30,7 @@ public class BookingRepository {
 		List<Booking> businessBookingList = new LinkedList<Booking>();
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getBusiness == business)
+			if(booking.getBusiness() == business)
 			{
 				businessBookingList.add(booking);
 			}
@@ -33,12 +38,12 @@ public class BookingRepository {
 		return businessBookingList;
 	}
 	
-	public List<Worker> getAllBookings(Worker worker)
+	public List<Booking> getAllBookings(Worker worker)
 	{
-		List<Worker> workerBookingList = new LinkedList<Worker>();
+		List<Booking> workerBookingList = new LinkedList<Booking>();
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getWorker == worker)
+			if(booking.getWorker() == worker)
 			{
 				workerBookingList.add(booking);
 			}
@@ -46,12 +51,12 @@ public class BookingRepository {
 		return workerBookingList;
 	}
 	
-	public List<Customer> getAllBookings(Customer customer)
+	public List<Booking> getAllBookings(Customer customer)
 	{
-		List<Customer> customerBookingList = new LinkedList<Customer>();
+		List<Booking> customerBookingList = new LinkedList<Booking>();
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getCustomer == customer)
+			if(booking.getCustomer() == customer)
 			{
 				customerBookingList.add(booking);
 			}
@@ -63,7 +68,7 @@ public class BookingRepository {
 	{
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getBookingID== ID)
+			if(booking.getBookingID() == ID)
 			{
 				return booking;
 			}
@@ -73,9 +78,9 @@ public class BookingRepository {
 	
 	Boolean addBooking(Booking booking)
 	{
-		for(Booking booking:this.bookingList)
+		for(Booking bookings:this.bookingList)
 		{
-			if(booking.getCustomer == booking)
+			if(bookings == booking)
 			{
 				return false;
 			}
@@ -88,7 +93,7 @@ public class BookingRepository {
 	{
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getBookingID == ID)
+			if(booking.getBookingID() == ID)
 			{
 				this.bookingList.remove(booking);
 				return true;
@@ -99,6 +104,16 @@ public class BookingRepository {
 	
 	Boolean updateBooking(Long ID, Booking booking)
 	{
+		int i = 0;
+		for(Booking bookings:this.bookingList)
+		{
+			if(bookings.getBookingID() == ID)
+			{
+				this.bookingList.set(i, booking);
+				return true;
+			}
+			i++;
+		}
 		return false;
 	}
 }

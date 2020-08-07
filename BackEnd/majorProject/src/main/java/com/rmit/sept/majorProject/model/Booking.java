@@ -22,6 +22,10 @@ public class Booking {
         this.service = service;
         this.timeSlot = timeSlot;                   
     }
+    
+    public Long getBookingID() {
+    	return this.id;
+    }
 
     public Customer getCustomer(){
         return this.customer;
@@ -38,5 +42,5 @@ public class Booking {
     public BookingSlot getTimeSlot(){
         return this.timeSlot;
     }
-
+   
 }

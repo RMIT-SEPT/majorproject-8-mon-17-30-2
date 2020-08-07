@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 

@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person;
+import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.PersonRepository;
 
@@ -24,7 +28,7 @@ public class BookingService {
 		return null;
 	}
 	
-	public List<Booking> getAllBookings(business business)
+	public List<Booking> getAllBookings(Business business)
 	{
 		return null;
 	}

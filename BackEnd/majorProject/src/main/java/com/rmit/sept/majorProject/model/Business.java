@@ -17,7 +17,7 @@ public class Business {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long businessId;
+    private Long id;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private Admin businessOwner;
     @NotNull
@@ -41,7 +41,7 @@ public class Business {
     // --------------GETTERS AND SETTERS---------------
 
     public long getId(){
-        return this.businessId;
+        return this.id;
     }
     public String getBusinessName(){
         return this.businessName;

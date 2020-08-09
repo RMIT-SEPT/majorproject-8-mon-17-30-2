@@ -17,39 +17,39 @@ public class WorkerRepository implements PersonRepository{
 		this.workerList = new LinkedList<Person>();
 	}
 	
-	@Override
-	public List<Person> getAllPeople() {
-		return this.workerList;
-	}
+	// @Override
+	// public List<Person> getAllPeople() {
+	// 	return this.workerList;
+	// }
 
-	@Override
-	public Person getPerson(Long id) {
-		for(Person person:this.workerList)
-		{
-			if(person.getId() == id)
-			{
-				return person;
-			}
-		}
-		return null;
-	}
+	// @Override
+	// public Person getPerson(Long id) {
+	// 	for(Person person:this.workerList)
+	// 	{
+	// 		if(person.getId() == id)
+	// 		{
+	// 			return person;
+	// 		}
+	// 	}
+	// 	return null;
+	// }
 
-	@Override
-	public Boolean addPerson(Person person) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// public Boolean addPerson(Person person) {
+	// 	// TODO Auto-generated method stub
+	// 	return null;
+	// }
 
-	@Override
-	public Boolean deletePerson(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// public Boolean deletePerson(Long id) {
+	// 	// TODO Auto-generated method stub
+	// 	return null;
+	// }
 
-	@Override
-	public Boolean updatePerson(Long id, Person person) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// public Boolean updatePerson(Long id, Person person) {
+	// 	// TODO Auto-generated method stub
+	// 	return null;
+	// }
 
 }

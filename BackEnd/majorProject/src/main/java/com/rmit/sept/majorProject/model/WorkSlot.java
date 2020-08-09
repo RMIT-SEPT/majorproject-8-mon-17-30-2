@@ -3,11 +3,18 @@ package com.rmit.sept.majorProject.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class WorkSlot extends Slot {
-    
+
+    @ManyToOne
+    private Worker worker;    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workSlot", orphanRemoval = false)
     private List<BookingSlot> bookingSlots;
     
     public WorkSlot(LocalDate date, LocalTime startTime, LocalTime endTime){
@@ -16,6 +23,8 @@ public class WorkSlot extends Slot {
         this.endTime = endTime;
     }
 
+    public WorkSlot(){}
+    
     // --------------GETTERS AND SETTERS---------------
 
     public LocalDate getDate(){

@@ -5,9 +5,12 @@ import java.time.temporal.ChronoUnit;
 
 import javax.persistence.*;
 
-@Entity
+@MappedSuperclass
 public abstract class Slot {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     protected LocalDate date;
     protected LocalTime startTime;
     protected LocalTime endTime;

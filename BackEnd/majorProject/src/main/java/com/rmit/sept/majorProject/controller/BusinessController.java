@@ -11,7 +11,7 @@ import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.service.BusinessService;
 
 @RestController
-@RequestMapping("api/busi")
+@RequestMapping("api/business")
 public class BusinessController {
 	private final BusinessService businessService;
 	

@@ -64,11 +64,11 @@ public class BookingRepository {
 		return customerBookingList;
 	}
 	
-	Booking getBooking(Long ID)
+	public Booking getBooking(Long id)
 	{
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getBookingID() == ID)
+			if(booking.getBookingId() == id)
 			{
 				return booking;
 			}
@@ -76,7 +76,7 @@ public class BookingRepository {
 		return null;
 	}
 	
-	Boolean addBooking(Booking booking)
+	public Boolean addBooking(Booking booking)
 	{
 		for(Booking bookings:this.bookingList)
 		{
@@ -89,11 +89,11 @@ public class BookingRepository {
 		return true;
 	}
 	
-	Boolean deleteBooking(Long ID)
+	public Boolean deleteBooking(Long id)
 	{
 		for(Booking booking:this.bookingList)
 		{
-			if(booking.getBookingID() == ID)
+			if(booking.getBookingId() == id)
 			{
 				this.bookingList.remove(booking);
 				return true;
@@ -102,12 +102,12 @@ public class BookingRepository {
 		return false;
 	}
 	
-	Boolean updateBooking(Long ID, Booking booking)
+	public Boolean updateBooking(Long id, Booking booking)
 	{
 		int i = 0;
 		for(Booking bookings:this.bookingList)
 		{
-			if(bookings.getBookingID() == ID)
+			if(bookings.getBookingId() == id)
 			{
 				this.bookingList.set(i, booking);
 				return true;

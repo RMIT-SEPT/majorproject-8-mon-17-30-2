@@ -23,10 +23,10 @@ public class WorkerRepository implements PersonRepository{
 	}
 
 	@Override
-	public Person getPerson(Long ID) {
+	public Person getPerson(Long id) {
 		for(Person person:this.workerList)
 		{
-			if(person.getID() == ID)
+			if(person.getId() == id)
 			{
 				return person;
 			}
@@ -41,13 +41,13 @@ public class WorkerRepository implements PersonRepository{
 	}
 
 	@Override
-	public Boolean deletePerson(Long ID) {
+	public Boolean deletePerson(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean updatePerson(Long ID, Person person) {
+	public Boolean updatePerson(Long id, Person person) {
 		// TODO Auto-generated method stub
 		return null;
 	}

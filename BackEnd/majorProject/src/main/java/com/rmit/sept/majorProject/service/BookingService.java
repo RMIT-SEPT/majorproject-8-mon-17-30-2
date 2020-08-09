@@ -2,26 +2,21 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
-import com.rmit.sept.majorProject.repository.PersonRepository;
+
 
 @Service
-public class BookingService {
+public class BookingService{
 
-	private final BookingRepository bookingRepository;
-	
-	BookingService(@Qualifier("bookingRepo") BookingRepository bookingRepository)
-	{
-		this.bookingRepository = bookingRepository;
-	}
+	@Autowired
+	private BookingRepository repository;
 	
 	public List<Booking> getAllBookings()
 	{
@@ -53,8 +48,8 @@ public class BookingService {
 	{
 		return false;
 	}
-	public Boolean updateBooking(Long ID, Booking booking)
+	public Boolean updateBooking(Long id, Booking booking)
 	{
-		return false;
+		return repository.updateBooking(id, booking);
 	}
 }

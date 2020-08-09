@@ -8,25 +8,33 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long        id;
+    @ManyToOne
     private Customer    customer;
+    @ManyToOne
     private Worker      worker;
+    @ManyToOne
     private Business    business;
+    @ManyToOne
     private Service     service;
-    private BookingSlot timeSlot;
+    @ManyToOne
+    private BookingSlot bookingSlot;
 
     public Booking(Customer customer, Worker worker, Business business,
-                   Service service, BookingSlot timeSlot){
+                   Service service, BookingSlot bookingSlot){
         this.customer = customer;
         this.worker = worker;
         this.business = business;
         this.service = service;
-        this.timeSlot = timeSlot;                   
-    }
-    
-    public Long getBookingID() {
-    	return this.id;
+        this.bookingSlot = bookingSlot;                   
     }
 
+    public Booking(){}
+
+    // --------------GETTERS AND SETTERS---------------
+    
+    public Long getBookingId() {
+    	return this.id;
+    }
     public Customer getCustomer(){
         return this.customer;
     }
@@ -39,8 +47,8 @@ public class Booking {
     public Service getService(){
         return this.service;
     }
-    public BookingSlot getTimeSlot(){
-        return this.timeSlot;
+    public BookingSlot getBookingSlot(){
+        return this.bookingSlot;
     }
    
 }

@@ -2,30 +2,24 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 
 
 @Service
-public class BusinessService {
-	
-	private final BusinessRepository businessRepository;
-	
-	BusinessService(@Qualifier("businessRepo") BusinessRepository businessRepository)
-	{
-		this.businessRepository = businessRepository;
-	}
-	
+public class BusinessService{
+
+	@Autowired
+	private BusinessRepository repository;	
 	
 	public List<Business> getAllBusinesses()
 	{
 		return null;
 	}
-	public Business getBusiness(Long ID)
+	public Business getBusiness(Long id)
 	{
 		return null;
 	}
@@ -37,12 +31,12 @@ public class BusinessService {
 	{
 		return false;
 	}
-	public Boolean deleteBusiness(Long ID)
+	public Boolean deleteBusiness(Long id)
 	{
 		return false;
 	}
-	public Boolean updateBusiness(Long ID, Person person)
+	public Boolean updateBusiness(Long id, Person person)
 	{
-		return false;
+		return repository.updateBusiness(id, person);
 	}
 }

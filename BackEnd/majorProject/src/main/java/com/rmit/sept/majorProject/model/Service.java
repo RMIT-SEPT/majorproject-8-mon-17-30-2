@@ -5,15 +5,22 @@ import javax.persistence.*;
 @Entity
 public class Service {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;    
     private String title;
     private String description;
     private int    capacity;
+    @ManyToOne
+    private Business business;
 
     public Service(String title, String description, int capacity){
         this.title = title;
         this.description = description;
         this.capacity = capacity;
     }
+
+    public Service(){}
 
     // --------------GETTERS AND SETTERS---------------
 

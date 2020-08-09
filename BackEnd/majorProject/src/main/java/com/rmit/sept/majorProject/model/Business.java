@@ -1,44 +1,47 @@
 package com.rmit.sept.majorProject.model;
 
 import java.util.LinkedList;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Business {
 
-    private long   businessID;
-    private Person businessOwner;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long businessId;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private Admin businessOwner;
+    @NotNull
     private String businessName;
-    private LinkedList<Service> services;
-    private LinkedList<Worker>  workers;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Service> services;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Worker>  workers;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Booking> bookings;
 
-    public Business(Person businessOwner, String businessName){
-        //create ID 
-        this.businessOwner = businessOwner; 
+    public Business(Admin businessOwner, String businessName){
+        this.services = new LinkedList<Service>();
+        this.workers = new LinkedList<Worker>();
+        this.bookings = new LinkedList<Booking>();
         this.businessName = businessName;       
     }
 
-    public boolean addWorker(Worker worker){
-        //TODO
-        return false;
-    }
-    public boolean removeWorker(Worker worker){
-        //TODO
-        return false;
-    }    
-    public boolean addService(Service service){
-        //TODO  
-        return false;      
-    }
-    public boolean removeService(Service service){
-        //TODO
-        return false;
-    }
+    public Business(){}
 
     // --------------GETTERS AND SETTERS---------------
 
-    public long getID(){
-        return this.businessID;
+    public long getId(){
+        return this.businessId;
     }
     public String getBusinessName(){
         return this.businessName;
@@ -51,22 +54,18 @@ public class Business {
     public Person getBusinessOwner(){
         return this.businessOwner;
     }
-    public boolean setBusinessOwner(Person newBusinessOwner){
-        long current = this.businessOwner.getID();
+    public boolean setBusinessOwner(Admin newBusinessOwner){
+        long current = this.businessOwner.getId();
         this.businessOwner = newBusinessOwner;
-        return (current != newBusinessOwner.getID());
+        return (current != newBusinessOwner.getId());
     }
-    public LinkedList<Service> getServices(){
+    public List<Service> getServices(){
         return this.services;
     }
-    public LinkedList<Worker> getWorkers(){
+    public List<Worker> getWorkers(){
         return this.workers;
     }
-    public LinkedList<Booking> getBookings(){
-        LinkedList<Booking> allBookings = new LinkedList<Booking>();
-        for(Worker worker : this.workers){
-            allBookings.addAll(worker.getBookings());
-        }
-        return allBookings;
+    public List<Booking> getBookings(){
+        return bookings;
     }
 } 

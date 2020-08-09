@@ -1,15 +1,19 @@
 package com.rmit.sept.majorProject.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+@MappedSuperclass
 public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long     id;
-
+    @NotNull
     protected String   name;
+    @NotNull
     protected String   username;
+    @NotNull
     protected String   password;
 
     public enum Role{
@@ -18,12 +22,11 @@ public abstract class Person {
         CUSTOMER
     }
 
-    protected Role     roleType;
-    protected Business business;    
+    protected Role     roleType;   
     
     // --------------GETTERS AND SETTERS---------------
    
-    public Long getID(){
+    public Long getId(){
         return this.id;
     }
     public String getName(){
@@ -44,14 +47,6 @@ public abstract class Person {
         String current = this.password;
         this.password = newPassword;
         return (current != newPassword);
-    }
-    public Business getBusiness(){
-        return this.business;
-    }
-    public boolean setBusiness(Business newBusiness){
-        long current = this.business.getID();
-        this.business = newBusiness;
-        return (current != newBusiness.getID());
     }
     public Role getRole(){
         return this.roleType;

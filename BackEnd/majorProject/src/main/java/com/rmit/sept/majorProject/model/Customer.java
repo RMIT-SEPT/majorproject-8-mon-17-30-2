@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -13,21 +14,21 @@ public class Customer extends Person {
     private String email;
     @NonNull
     private String address;
-    @Size(min = 5, max = 10)
-    private int    phoneNumber;
+    @Size(min=5, max=10)
+    private String phoneNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     protected List<Booking> bookings;
     @ManyToOne
     private Business business;
 
     public Customer(String name, String username, String password, 
-                    String address, int phoneNumber, Business business){
+                    String address, String email, String phoneNumber){
         this.name = name;
         this.username = username;
         this.password = password;
         this.address = address;
+        this.email = email;
         this.phoneNumber = phoneNumber;
-        this.business = business;
         this.roleType = Role.CUSTOMER;
         this.bookings = new LinkedList<Booking>();
     }
@@ -52,11 +53,11 @@ public class Customer extends Person {
         this.address = newAddress;
         return (current != newAddress);
     }
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return this.phoneNumber;
     }
-    public boolean setPhoneNumber(int newPhoneNumber){
-        int current = this.phoneNumber;
+    public boolean setPhoneNumber(String newPhoneNumber){
+        String current = this.phoneNumber;
         this.phoneNumber = newPhoneNumber;
         return (current != newPhoneNumber);
     }

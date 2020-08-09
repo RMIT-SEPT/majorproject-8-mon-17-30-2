@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
 
 @Entity
 public class Worker extends Person {
@@ -13,8 +14,9 @@ public class Worker extends Person {
     private String email;
     @NotNull
     private String address;
-    @Size(min = 5, max = 10)
-    private int    phoneNumber;
+    @Min(5)
+    @Max(10)
+    private String phoneNumber;
 
     @ManyToOne
     private Business business;
@@ -26,7 +28,7 @@ public class Worker extends Person {
     private List<Booking> bookings;
 
     public Worker(String name, String username, String password,
-                  String address, int phoneNumber, Business business){
+                  String address, String phoneNumber, Business business){
         this.name = name;
         this.username = username;
         this.password = password;
@@ -59,11 +61,11 @@ public class Worker extends Person {
         this.address = newAddress;
         return (current != newAddress);
     }
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return this.phoneNumber;
     }
-    public boolean setPhoneNumber(int newPhoneNumber){
-        int current = this.phoneNumber;
+    public boolean setPhoneNumber(String newPhoneNumber){
+        String current = this.phoneNumber;
         this.phoneNumber = newPhoneNumber;
         return (current != newPhoneNumber);
     }

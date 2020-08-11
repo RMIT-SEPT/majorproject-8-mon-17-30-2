@@ -1,6 +1,8 @@
 package com.rmit.sept.majorProject.repository;
 
+import org.springframework.data.repository.NoRepositoryBean;
 
+@NoRepositoryBean
 public interface PersonRepository {
 	
 	// public List<Person> getAllPeople();

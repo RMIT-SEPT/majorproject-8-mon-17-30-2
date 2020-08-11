@@ -1,21 +1,20 @@
 package com.rmit.sept.majorProject.repository;
 
-import java.util.LinkedList;
-import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.rmit.sept.majorProject.model.Person;
+import com.rmit.sept.majorProject.model.Worker;
 
 @Repository("workerRepo")
-public class WorkerRepository implements PersonRepository{
+public interface WorkerRepository extends CrudRepository<Worker, Long>, PersonRepository{
 
-	private List<Person> workerList;
+	@Override
+	Iterable<Worker> findAllById(Iterable<Long> id);
 	
-	WorkerRepository()
-	{
-		this.workerList = new LinkedList<Person>();
-	}
+	@Override
+	Iterable<Worker> findAll();
 	
 	// @Override
 	// public List<Person> getAllPeople() {

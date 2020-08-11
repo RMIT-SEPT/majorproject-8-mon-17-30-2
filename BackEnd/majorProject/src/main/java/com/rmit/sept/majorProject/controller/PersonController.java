@@ -6,7 +6,7 @@ import com.rmit.sept.majorProject.model.Person;
 
 public interface PersonController {
 
-	public abstract List<Person> getAllPeople();
+//	public abstract List<Person> getAllPeople();
 	
 	public abstract Boolean addPerson(Person person);
 	

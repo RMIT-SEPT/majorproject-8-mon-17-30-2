@@ -1,8 +1,5 @@
 package com.rmit.sept.majorProject.repository;
 
-import java.util.List;
-
-import com.rmit.sept.majorProject.model.Person;
 
 public interface PersonRepository {
 	

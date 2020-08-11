@@ -2,11 +2,14 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person;
 
 public interface PersonService {
 
-	public abstract List<Person> getAllPeople();
+//	public abstract List<Person> getAllPeople();
 	
 	public abstract Boolean addPerson(Person person);
 	
@@ -15,4 +18,5 @@ public interface PersonService {
 	public abstract Boolean deletePerson(Long ID);
 	
 	public abstract Boolean updatePerson(Long ID, Person person);
+
 }

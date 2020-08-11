@@ -20,6 +20,7 @@ public class Customer extends Person {
     protected List<Booking> bookings;
     @ManyToOne
     private Business business;
+    private final Role ROLE_TYPE = Role.CUSTOMER;
 
     public Customer(String name, String username, String password, 
                     String address, String email, String phoneNumber){
@@ -29,11 +30,12 @@ public class Customer extends Person {
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.roleType = Role.CUSTOMER;
+//        
         this.bookings = new LinkedList<Booking>();
     }
 
-    public Customer(){}
+    public Customer(){
+    }
 
     // --------------GETTERS AND SETTERS---------------
 
@@ -70,6 +72,10 @@ public class Customer extends Person {
         long current = this.business.getId();
         this.business = newBusiness;
         return (current != newBusiness.getId());
+    }
+    
+    public Role getRole() {
+    	return this.ROLE_TYPE;
     }
 
 }

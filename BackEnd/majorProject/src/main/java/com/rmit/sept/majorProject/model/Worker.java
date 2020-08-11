@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.rmit.sept.majorProject.model.Person.Role;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 
@@ -26,6 +29,8 @@ public class Worker extends Person {
     private List<WorkSlot> shifts;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
     private List<Booking> bookings;
+    
+    private final Role ROLE_TYPE = Role.WORKER;
 
     public Worker(String name, String username, String password,
                   String address, String phoneNumber, Business business){
@@ -35,7 +40,6 @@ public class Worker extends Person {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.business = business;
-        this.roleType = Role.WORKER;
         this.services = new LinkedList<Service>();
         this.shifts = new LinkedList<WorkSlot>();
         this.bookings = new LinkedList<Booking>();
@@ -100,5 +104,9 @@ public class Worker extends Person {
     public boolean addShift(Slot shift){
         //TODO
         return false;
+    }
+    
+    public Role getRole() {
+    	return this.ROLE_TYPE;
     }
 }

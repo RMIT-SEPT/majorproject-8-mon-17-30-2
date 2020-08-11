@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +32,9 @@ public class CustomerController implements PersonController{
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 	
-	@Override
-	public List<Person> getAllPeople() {
-		// TODO Auto-generated method stub
-		return null;
+    @GetMapping("")
+	public List<Customer> getAllPeople() {
+		return customerService.getAllPeople();
 	}
 
 	@Override

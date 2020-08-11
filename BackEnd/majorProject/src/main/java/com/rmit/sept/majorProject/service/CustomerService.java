@@ -14,14 +14,12 @@ public class CustomerService implements PersonService{
 	@Autowired
 	private CustomerRepository repository;
 
-	public Customer saveOrUpdate(Customer customer) {
-		return repository.save(customer);
+	public void saveOrUpdate(Customer customer) {
+		repository.save(customer);
 	}
 	
-	@Override
-	public List<Person> getAllPeople() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Customer> getAllPeople() {
+		return (List<Customer>) repository.findAll();
 	}
 
 	@Override

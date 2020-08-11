@@ -22,7 +22,7 @@ public abstract class Person {
         CUSTOMER
     }
 
-    protected Role     roleType;   
+    protected Role     ROLE_TYPE;   
     
     // --------------GETTERS AND SETTERS---------------
    
@@ -49,7 +49,7 @@ public abstract class Person {
         return (current != newPassword);
     }
     public Role getRole(){
-        return this.roleType;
+        return this.ROLE_TYPE;
     }
 
 }

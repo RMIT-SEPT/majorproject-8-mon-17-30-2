@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.security;
 
 import com.rmit.sept.majorProject.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,21 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Qualifier("myUserDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
     //Configure authentication for application, who is authenticated
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        super.configure(auth);
-        // authenticates users with user name blah and password blah
-//        auth.inMemoryAuthentication()
-//                .withUser("blah")
-//                .password("blah")
-//                .roles(Person.Role.CUSTOMER.toString())
-//                .and()
-//                .withUser("foo")
-//                .password("foo")
-//                .roles(Person.Role.ADMIN.toString());
+
         auth.userDetailsService(userDetailsService);
 
     }
@@ -43,9 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         String admin = Person.Role.ADMIN.toString();
         http.authorizeRequests()
                 .antMatchers("/admin").hasRole(admin)
-                .antMatchers("/customer").hasAnyRole(customer, admin)
+                .antMatchers("/customer").hasAnyRole(admin, customer)
                 .antMatchers("/").permitAll()
                 .and().formLogin();
+
     }
     @Bean
     public PasswordEncoder getPasswordEncoder(){

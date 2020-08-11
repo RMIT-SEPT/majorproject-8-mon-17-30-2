@@ -18,7 +18,7 @@ public class MyUserDetails implements UserDetails {
     public MyUserDetails(Person user){
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.role = new SimpleGrantedAuthority(user.getRole().toString());
+        this.role = new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole().toString()));
 
     }
     public MyUserDetails(){

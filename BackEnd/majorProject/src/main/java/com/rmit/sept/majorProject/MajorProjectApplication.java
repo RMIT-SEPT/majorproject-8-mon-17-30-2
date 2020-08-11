@@ -16,6 +16,9 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class MajorProjectApplication {
 
+	/*
+		Testing login api with database initialisation
+	 */
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
@@ -27,7 +30,7 @@ public class MajorProjectApplication {
 		SpringApplication.run(MajorProjectApplication.class, args);
 	}
 
-
+	
 	@Bean
 	InitializingBean sendDatabase() {
 		return () -> {

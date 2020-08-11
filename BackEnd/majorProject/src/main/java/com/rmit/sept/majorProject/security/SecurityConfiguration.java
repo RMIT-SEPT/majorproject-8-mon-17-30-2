@@ -11,28 +11,32 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+/*
+    Configure spring security authentication method and url authorisation
+ */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Qualifier("myUserDetailsService")
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
     //Configure authentication for application, who is authenticated
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
 
+        // authorisation using userDetailsService while loads in a user
+        // from the database with the given username
         auth.userDetailsService(userDetailsService);
 
     }
 
+    // configure authorisation, what are they allowed to do
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // configure which routes are accessible to which user depending on role
-        // have to connect to front end somehow
+        // have to connect to front end
         // antmatchers are route patterns
         // matching goes from most restrictive to least restrictive
-//        super.configure(http);
+
         String customer = Person.Role.CUSTOMER.toString();
         String admin = Person.Role.ADMIN.toString();
         http.authorizeRequests()

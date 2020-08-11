@@ -13,11 +13,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+/*
+    UserDetailsServiceImpl is used by SecurityConfiguration to configure
+    how spring security authorises users,
+    in this case we find the user with their username
+ */
 @Service
-public class MyUserDetailsService implements UserDetailsService {
-    //place repo here prefer person
+public class UserDetailsServiceImpl implements UserDetailsService {
+
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -25,6 +28,11 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private WorkerRepository workerRepository;
 
+    /*
+        search the database to see if the user exists,
+        if the user exists we create UserDetails for spring to authorise them
+        otherwise we can throw an exception
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = null;
@@ -42,6 +50,6 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Username does not exist in the database");
         }
 
-        return new MyUserDetails(person);
+        return new UserDetailsImpl(person);
     }
 }

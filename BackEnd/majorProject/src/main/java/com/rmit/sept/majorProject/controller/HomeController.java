@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
+    //Added some temp api's to test login functionality
+
     @GetMapping("/")
     public String home(){
         return ("<h1> welcome </h1>");

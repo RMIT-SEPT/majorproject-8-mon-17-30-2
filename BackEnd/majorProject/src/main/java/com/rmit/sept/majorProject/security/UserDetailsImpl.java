@@ -8,20 +8,23 @@ import com.rmit.sept.majorProject.model.Person;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-public class MyUserDetails implements UserDetails {
+/*
+    UserDetailsImpl uses the user repositories to store user details
+    assign properties to them so that spring security can use them
+    Is used by UserDetailsServiceImpl to load the appropriate user
+ */
+public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
-    //private Person.Role role;
     private SimpleGrantedAuthority role;
 
-    public MyUserDetails(Person user){
+    public UserDetailsImpl(Person user){
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.role = new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole().toString()));
 
     }
-    public MyUserDetails(){
+    public UserDetailsImpl(){
     }
 
     @Override
@@ -41,7 +44,7 @@ public class MyUserDetails implements UserDetails {
         return username;
     }
 
-    //Hard coded values
+    //Hard coded values for now
     @Override
     public boolean isAccountNonExpired() {
         return true;

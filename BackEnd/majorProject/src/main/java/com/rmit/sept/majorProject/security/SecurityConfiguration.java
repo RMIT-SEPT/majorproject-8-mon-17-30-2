@@ -20,14 +20,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        super.configure(auth);
         // authenticates users with user name blah and password blah
-        auth.inMemoryAuthentication()
-                .withUser("blah")
-                .password("blah")
-                .roles(Person.Role.CUSTOMER.toString())
-                .and()
-                .withUser("foo")
-                .password("foo")
-                .roles(Person.Role.ADMIN.toString());
+//        auth.inMemoryAuthentication()
+//                .withUser("blah")
+//                .password("blah")
+//                .roles(Person.Role.CUSTOMER.toString())
+//                .and()
+//                .withUser("foo")
+//                .password("foo")
+//                .roles(Person.Role.ADMIN.toString());
         auth.userDetailsService(userDetailsService);
 
     }

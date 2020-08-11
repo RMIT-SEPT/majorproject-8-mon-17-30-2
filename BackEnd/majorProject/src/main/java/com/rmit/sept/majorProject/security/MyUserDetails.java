@@ -11,24 +11,29 @@ import java.util.List;
 
 public class MyUserDetails implements UserDetails {
     private String username;
+    private String password;
+    //private Person.Role role;
+    private SimpleGrantedAuthority role;
 
-    public MyUserDetails(String username){
-        this.username = username;
+    public MyUserDetails(Person user){
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.role = new SimpleGrantedAuthority(user.getRole().toString());
+
     }
     public MyUserDetails(){
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority adminRole = new SimpleGrantedAuthority(Person.Role.ADMIN.toString());
         List<SimpleGrantedAuthority> grantedAuthorityList = new ArrayList<>();
-        grantedAuthorityList.add(adminRole);
+        grantedAuthorityList.add(role);
         return grantedAuthorityList;
     }
 
     @Override
     public String getPassword() {
-        return "password";
+        return password;
     }
 
     @Override
@@ -36,6 +41,7 @@ public class MyUserDetails implements UserDetails {
         return username;
     }
 
+    //Hard coded values
     @Override
     public boolean isAccountNonExpired() {
         return true;

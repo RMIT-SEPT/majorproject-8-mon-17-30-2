@@ -4,6 +4,8 @@ import com.rmit.sept.majorProject.model.Person;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository("custRepo")
 public interface CustomerRepository extends CrudRepository<Customer, Long>, PersonRepository{
 	
@@ -12,5 +14,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long>, Pers
 	
 	@Override
 	Iterable<Customer> findAll();
+	
+	Customer findCustomerByUsername(String username);
 
 }

@@ -1,11 +1,14 @@
 package com.rmit.sept.majorProject.repository;
 
 
+import com.rmit.sept.majorProject.model.Admin;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.model.Worker;
+
+import java.util.Optional;
 
 @Repository("workerRepo")
 public interface WorkerRepository extends CrudRepository<Worker, Long>, PersonRepository{
@@ -15,6 +18,8 @@ public interface WorkerRepository extends CrudRepository<Worker, Long>, PersonRe
 	
 	@Override
 	Iterable<Worker> findAll();
+
+	Worker findWorkerByUsername(String username);
 	
 	// @Override
 	// public List<Person> getAllPeople() {

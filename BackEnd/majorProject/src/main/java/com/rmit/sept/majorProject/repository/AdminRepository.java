@@ -1,10 +1,13 @@
 package com.rmit.sept.majorProject.repository;
 
+import com.rmit.sept.majorProject.model.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.model.Person;
+
+import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends CrudRepository<Admin, Long>, PersonRepository {
@@ -14,6 +17,8 @@ public interface AdminRepository extends CrudRepository<Admin, Long>, PersonRepo
 	
 	@Override
 	Iterable<Admin> findAll();
+
+	Admin findAdminByUsername(String username);
 	
 	// @Override
 	// public List<Person> getAllPeople() {

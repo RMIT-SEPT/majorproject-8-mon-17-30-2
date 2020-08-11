@@ -1,17 +1,20 @@
-package com.rmit.sept.majorProject.config;
+package com.rmit.sept.majorProject.security;
 
 import com.rmit.sept.majorProject.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+    @Autowired
+    private UserDetailsService userDetailsService;
     //Configure authentication for application, who is authenticated
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -25,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("foo")
                 .password("foo")
                 .roles(Person.Role.ADMIN.toString());
+        auth.userDetailsService(userDetailsService);
 
     }
 

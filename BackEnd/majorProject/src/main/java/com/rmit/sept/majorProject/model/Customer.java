@@ -26,6 +26,17 @@ public class Customer extends Person {
         this.role = Role.CUSTOMER;
     }
 
+    public Customer(String name, String username, String password, 
+                    String address, String email, String phoneNumber){
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = Role.CUSTOMER;
+    }
+
     //copy constructor
     public Customer(Customer other){
         this.name = other.getName();

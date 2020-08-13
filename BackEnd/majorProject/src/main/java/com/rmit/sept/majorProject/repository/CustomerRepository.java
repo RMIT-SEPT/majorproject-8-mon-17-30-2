@@ -1,7 +1,5 @@
 package com.rmit.sept.majorProject.repository;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 import com.rmit.sept.majorProject.model.Customer;
 

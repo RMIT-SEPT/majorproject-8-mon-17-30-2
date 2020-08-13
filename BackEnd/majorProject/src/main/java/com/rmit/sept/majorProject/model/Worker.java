@@ -31,6 +31,17 @@ public class Worker extends Person {
         this.role = Role.WORKER;
     }
 
+    public Worker(String name, String username, String password,
+                  String email, String address, String phoneNumber){
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.role = Role.WORKER;
+    }
+
     // --------------GETTERS AND SETTERS---------------
 
     public String getEmail(){

@@ -8,13 +8,14 @@ public class Admin extends Person{
     @ManyToOne
     private Business business;
     
+    public Admin(){
+        this.role = Role.ADMIN;
+    }
+
     public Admin(String name, String username, String password){
         this.name = name;
         this.username = username;
         this.password = password;
-    }
-
-    public Admin(){
         this.role = Role.ADMIN;
     }
 

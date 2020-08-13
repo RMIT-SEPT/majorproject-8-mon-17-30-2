@@ -1,12 +1,17 @@
 package com.rmit.sept.majorProject.repository;
-import com.rmit.sept.majorProject.model.Person;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface CustomerRepository extends CrudRepository<Person, Long>, PersonRepository{
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+import com.rmit.sept.majorProject.model.Customer;
+
+@Transactional
+public interface CustomerRepository extends PersonRepository<Customer>{
 	
-	@Override
-	Iterable<Person> findAllById(Iterable<Long> id);
+	public Customer findByEmail(String email);
+
+	public Iterable<Customer> findByAddress(String address);
+
+	public Iterable<Customer> findByPhoneNumber(String phoneNumber);
 
 }

@@ -1,18 +1,17 @@
 package com.rmit.sept.majorProject.repository;
 
-import java.util.List;
-
 import com.rmit.sept.majorProject.model.Person;
+import com.rmit.sept.majorProject.model.Person.Role;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
-public interface PersonRepository {
+@NoRepositoryBean
+public interface PersonRepository<T extends Person> extends CrudRepository<T, Long>{
 	
-	// public List<Person> getAllPeople();
-	
-	// public Person getPerson(Long id);
-	
-	// public Boolean addPerson(Person person);
-	
-	// public Boolean deletePerson(Long id);
-	
-	// public Boolean updatePerson(Long id, Person person);
+	public Iterable<T> findByName(String name);
+
+	public T findByUsername(String username);
+
+	public Iterable<T> findByRole(Role role);
+
 }

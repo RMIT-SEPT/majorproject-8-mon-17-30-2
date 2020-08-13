@@ -1,55 +1,15 @@
 package com.rmit.sept.majorProject.repository;
 
-import java.util.LinkedList;
-import java.util.List;
+import javax.transaction.Transactional;
+import com.rmit.sept.majorProject.model.Worker;
 
-import org.springframework.stereotype.Repository;
+@Transactional
+public interface WorkerRepository extends PersonRepository<Worker>{
 
-import com.rmit.sept.majorProject.model.Person;
+	public Worker findByEmail(String email);
 
-@Repository("workerRepo")
-public class WorkerRepository implements PersonRepository{
+	public Worker findByAddress(String address);
 
-	private List<Person> workerList;
-	
-	WorkerRepository()
-	{
-		this.workerList = new LinkedList<Person>();
-	}
-	
-	// @Override
-	// public List<Person> getAllPeople() {
-	// 	return this.workerList;
-	// }
-
-	// @Override
-	// public Person getPerson(Long id) {
-	// 	for(Person person:this.workerList)
-	// 	{
-	// 		if(person.getId() == id)
-	// 		{
-	// 			return person;
-	// 		}
-	// 	}
-	// 	return null;
-	// }
-
-	// @Override
-	// public Boolean addPerson(Person person) {
-	// 	// TODO Auto-generated method stub
-	// 	return null;
-	// }
-
-	// @Override
-	// public Boolean deletePerson(Long id) {
-	// 	// TODO Auto-generated method stub
-	// 	return null;
-	// }
-
-	// @Override
-	// public Boolean updatePerson(Long id, Person person) {
-	// 	// TODO Auto-generated method stub
-	// 	return null;
-	// }
+	public Worker findByPhoneNumber(String phoneNumber);
 
 }

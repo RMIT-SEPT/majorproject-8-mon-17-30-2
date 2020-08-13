@@ -1,28 +1,25 @@
 package com.rmit.sept.majorProject.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.model.Person;
-import com.rmit.sept.majorProject.service.PersonService;
+import com.rmit.sept.majorProject.service.AdminService;
 
 @RestController
 @RequestMapping("api/admin")
 public class AdminController implements PersonController{
-	private final PersonService adminService;
 	
 	@Autowired
-	public AdminController(PersonService adminService)
-	{
-		this.adminService = adminService;
-	}
+	private AdminService adminService;
 	
-	public List<Person> getAllPeople()
+    @GetMapping("")
+	public Iterable<Admin> getAllPeople()
 	{
-		return null;
+		return adminService.findAll();
 	}
 	
 	public Boolean addPerson(Person person)

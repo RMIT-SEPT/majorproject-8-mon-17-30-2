@@ -45,12 +45,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         String admin = Person.Role.ADMIN.toString();
         String worker = Person.Role.WORKER.toString();
         http.authorizeRequests()
+                //browsing
                 .antMatchers("/admin").hasRole(admin)
                 .antMatchers("/customer").hasAnyRole(admin, customer)
                 .antMatchers("/worker").hasRole(worker)
                 .antMatchers("/").permitAll()
+                //api (temporarily open)
                 .antMatchers("/api/customer/register").permitAll()
-                .antMatchers("/apu/customer").permitAll()
+                .antMatchers("/api/customer").permitAll()
+                .antMatchers("/api/worker").permitAll()
+                .antMatchers("/api/admin").permitAll()
                 .antMatchers("/h2-console").permitAll()
                 .and().formLogin();
 

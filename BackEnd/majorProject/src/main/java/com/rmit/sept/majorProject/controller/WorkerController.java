@@ -9,13 +9,12 @@ import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
 
 @RestController
-@RequestMapping("api/worker")
 public class WorkerController implements PersonController{
 	
 	@Autowired
 	private WorkerService workerService;
 
-    @GetMapping("")
+    @GetMapping("/api/worker")
 	public Iterable<Worker> getAllPeople() {
 		return workerService.findAll();
 	}

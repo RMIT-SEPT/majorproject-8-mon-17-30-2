@@ -2,7 +2,6 @@ package com.rmit.sept.majorProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rmit.sept.majorProject.model.Customer;
@@ -10,13 +9,12 @@ import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.service.CustomerService;
 
 @RestController
-@RequestMapping("api/customer")
 public class CustomerController implements PersonController{
 
     @Autowired
     private CustomerService customerService;
 	
-    @GetMapping("api/customer")
+    @GetMapping("/api/customer")
 	public Iterable<Customer> getAllPeople() {
 		return customerService.findAll();
 	}

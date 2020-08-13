@@ -53,8 +53,7 @@ public class AdminService implements PersonService<Admin> {
 
 	@Override
 	public Iterable<Admin> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
 
 	@Override

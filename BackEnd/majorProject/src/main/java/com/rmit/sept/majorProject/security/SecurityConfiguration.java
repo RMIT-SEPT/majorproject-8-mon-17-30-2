@@ -43,9 +43,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         String customer = Person.Role.CUSTOMER.toString();
         String admin = Person.Role.ADMIN.toString();
+        String worker = Person.Role.WORKER.toString();
         http.authorizeRequests()
                 .antMatchers("/admin").hasRole(admin)
                 .antMatchers("/customer").hasAnyRole(admin, customer)
+                .antMatchers("/worker").hasRole(worker)
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/customer/register").permitAll()
                 .antMatchers("/apu/customer").permitAll()

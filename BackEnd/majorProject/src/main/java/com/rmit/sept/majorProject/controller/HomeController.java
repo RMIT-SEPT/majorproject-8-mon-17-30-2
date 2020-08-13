@@ -22,5 +22,9 @@ public class HomeController {
     public String admin(){
         return ("<h1> hello admin </h1>");
     }
+    @GetMapping("/worker")
+    public String worker(){
+        return ("<h1> hello worker! get back to work");
+    }
 
 }

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Register.js"
 import "./Login.css";
 
 
@@ -61,13 +60,7 @@ class Login extends Component {
                Login 
             </button>
           </div>
-
-          <div className="footer">
-            <button className="button buttonshadow" type="submit">
-              Register
-            </button>
-          </div>
-
+          
         </form>
       </div>
     );

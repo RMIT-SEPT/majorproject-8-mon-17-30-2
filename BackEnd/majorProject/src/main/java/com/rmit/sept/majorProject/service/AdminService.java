@@ -14,13 +14,15 @@ public class AdminService implements PersonService<Admin> {
 
 	@Autowired
 	private AdminRepository repository;
+	@Autowired
+	private DuplicateCheckService duplicateCheck;
 
 	//--------ADMIN-SPECIFIC FUNCTIONS----------
 
 	public Admin registerNewAdmin(final Admin admin) throws DuplicateKeyException {
-		Admin test = repository.findByUsername(admin.getUsername());
-		if(test != null) {
-			throw new DuplicateKeyException(("An account already exists with username: " + admin.getUsername()));
+		String username = admin.getUsername();
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Admin newAdmin = new Admin(admin);
 		return repository.save(newAdmin);

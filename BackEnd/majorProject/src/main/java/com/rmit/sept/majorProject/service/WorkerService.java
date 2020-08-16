@@ -13,16 +13,19 @@ public class WorkerService implements PersonService<Worker>{
 
 	@Autowired
 	private WorkerRepository repository;
+	@Autowired
+	private DuplicateCheckService duplicateCheck;
 
 	//---------WORKER-SPECIFIC FUNCTIONS-----------
 
 	public Worker registerNewWorker(final Worker worker) throws DuplicateKeyException {
-		Worker test = repository.findByEmail(worker.getEmail());
-		if(test != null) {
-			throw new DuplicateKeyException("An account already exists with email address: " + worker.getEmail());
+		String email = worker.getEmail();
+		String username = worker.getUsername();
+        if(duplicateCheck.emailExists(email)) {
+            throw new DuplicateKeyException("An account already exists with email address: " + email);
 		}
-		else if(repository.findByUsername(worker.getUsername()) != null) {
-			throw new DuplicateKeyException(("An account already exists with username: " + worker.getUsername()));
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Worker newWorker = new Worker(worker);
 		return repository.save(newWorker);

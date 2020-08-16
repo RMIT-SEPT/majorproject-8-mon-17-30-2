@@ -13,16 +13,19 @@ public class CustomerService implements PersonService<Customer>{
 
 	@Autowired
 	private CustomerRepository repository;
+	@Autowired
+	private DuplicateCheckService duplicateCheck;
 
 	//--------CUSTOMER-SPECIFIC FUNCTIONS----------
 
 	public Customer registerNewCustomer(final Customer customer) throws DuplicateKeyException {
-		Customer test = repository.findByEmail(customer.getEmail());
-        if(test != null) {
-            throw new DuplicateKeyException("An account already exists with email address: " + customer.getEmail());
+		String email = customer.getEmail();
+		String username = customer.getUsername();
+        if(duplicateCheck.emailExists(email)) {
+            throw new DuplicateKeyException("An account already exists with email address: " + email);
 		}
-		else if(repository.findByUsername(customer.getUsername()) != null) {
-			throw new DuplicateKeyException(("An account already exists with username: " + customer.getUsername()));
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
         Customer newCustomer = new Customer(customer);
         return repository.save(newCustomer);

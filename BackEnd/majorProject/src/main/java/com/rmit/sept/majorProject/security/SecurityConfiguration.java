@@ -16,9 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
+    
     //Configure authentication for application, who is authenticated
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,7 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/customer/register").permitAll()
                 .antMatchers("/api/customer").permitAll()
                 .antMatchers("/api/worker").permitAll()
+                .antMatchers("/api/worker/register").permitAll()
                 .antMatchers("/api/admin").permitAll()
+                .antMatchers("/api/admin/register").permitAll()
                 .antMatchers("/h2-console").permitAll()
                 .and().formLogin();
 

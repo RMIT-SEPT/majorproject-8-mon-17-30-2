@@ -1,7 +1,12 @@
 package com.rmit.sept.majorProject.model;
 
 import java.util.List;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
@@ -39,6 +44,18 @@ public class Worker extends Person {
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.role = Role.WORKER;
+    }
+
+    //copy constructor
+    public Worker(Worker other){
+        this.name = other.getName();
+        this.username = other.getUsername();
+        this.password = other.getPassword();
+        this.email = other.getEmail();
+        this.address = other.getAddress();
+        this.phoneNumber = other.getPhoneNumber();
+        this.business = other.getBusiness();
         this.role = Role.WORKER;
     }
 

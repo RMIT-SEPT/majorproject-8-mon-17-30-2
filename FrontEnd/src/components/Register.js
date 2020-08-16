@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import "./Login.css";
+import "./Register.css";
 
-
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fullname: "",
+      address: "",
+      mobile: "",
       username: "",
       password: "",
     };
@@ -23,12 +25,46 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="Login">
+      <div className="Register">
         <form onSubmit={this.handleSubmit}>
-          <header className="Login-header">AGME LOGIN</header>
+          <header className="Register-header">Create an Account</header>
 
           <div className="form">
-            
+            <div className="form-input">
+              <label>Full Name:</label>
+              <input
+                type="fullname"
+                name="fullname"
+                placeholder="John Doe"
+                value={this.state.fullname}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-input">
+              <label>Address:</label>
+              <input
+                type="text"
+                name="address"
+                placeholder="123 Apple Street"
+                value={this.state.address}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-input">
+              <label>Phone Number:</label>
+              <input
+                type="text"
+                name="mobile"
+                placeholder="12345678"
+                value={this.state.mobile}
+                onChange={this.handleChange}
+                required
+              />
+            </div>
 
             <div className="form-input">
               <label>Username:</label>
@@ -57,13 +93,12 @@ class Login extends Component {
 
           <div className="footer">
             <button className="button buttonshadow" type="submit">
-               Login 
+              Register
             </button>
           </div>
-          
         </form>
       </div>
     );
   }
 }
-export default Login;
+export default Register;

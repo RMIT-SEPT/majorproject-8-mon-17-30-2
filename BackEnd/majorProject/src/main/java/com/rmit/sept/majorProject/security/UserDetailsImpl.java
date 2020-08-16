@@ -21,7 +21,6 @@ public class UserDetailsImpl implements UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.role = new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole().toString()));
-
     }
     
     public UserDetailsImpl(){

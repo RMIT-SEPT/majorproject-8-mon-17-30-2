@@ -2,10 +2,10 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.rmit.sept.majorProject.model.Admin;
-import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 
@@ -14,6 +14,19 @@ public class AdminService implements PersonService<Admin> {
 
 	@Autowired
 	private AdminRepository repository;
+	@Autowired
+	private DuplicateCheckService duplicateCheck;
+
+	//--------ADMIN-SPECIFIC FUNCTIONS----------
+
+	public Admin registerNewAdmin(final Admin admin) throws DuplicateKeyException {
+		String username = admin.getUsername();
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
+		}
+		Admin newAdmin = new Admin(admin);
+		return repository.save(newAdmin);
+	}
 
 	@Override
 	public long count() {

@@ -19,6 +19,15 @@ public class Admin extends Person{
         this.role = Role.ADMIN;
     }
 
+    //copy constructor
+    public Admin(Admin other){
+        this.name = other.getName();
+        this.username = other.getUsername();
+        this.password = other.getPassword();
+        this.business = other.getBusiness();
+        this.role = Role.ADMIN;
+    }
+
     // --------------GETTERS AND SETTERS---------------
 
     /* business getter/setter re-used in Customer and Worker since Hibernate 

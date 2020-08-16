@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.model.Person.Role;
@@ -14,6 +15,18 @@ public class WorkerService implements PersonService<Worker>{
 	private WorkerRepository repository;
 
 	//---------WORKER-SPECIFIC FUNCTIONS-----------
+
+	public Worker registerNewWorker(final Worker worker) throws DuplicateKeyException {
+		Worker test = repository.findByEmail(worker.getEmail());
+		if(test != null) {
+			throw new DuplicateKeyException("An account already exists with email address: " + worker.getEmail());
+		}
+		else if(repository.findByUsername(worker.getUsername()) != null) {
+			throw new DuplicateKeyException(("An account already exists with username: " + worker.getUsername()));
+		}
+		Worker newWorker = new Worker(worker);
+		return repository.save(newWorker);
+	}
 	
 	//---------GENERIC PERSON FUNCTIONS------------
 	

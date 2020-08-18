@@ -1,8 +1,7 @@
 package com.rmit.sept.majorProject.model;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Booking {
@@ -13,7 +12,7 @@ public class Booking {
     @ManyToOne
     private Customer    customer;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties("bookings")
     private Worker      worker;
     @ManyToOne
     private Business    business;

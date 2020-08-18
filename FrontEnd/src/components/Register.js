@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Register.css";
 
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -21,11 +22,12 @@ class Register extends Component {
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+    event.preventDefault();
   }
 
   render() {
     return (
-      <div className="Register">
+      <div className="Register" method="POST">
         <form onSubmit={this.handleSubmit}>
           <header className="Register-header">Create an Account</header>
 

@@ -19,12 +19,13 @@ class Login extends Component {
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+    event.preventDefault();
   }
 
   render() {
     return (
       <div className="Login">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} method="POST">
           <header className="Login-header">AGME LOGIN</header>
 
           <div className="form">

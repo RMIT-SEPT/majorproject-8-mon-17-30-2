@@ -22,7 +22,7 @@ function Navbar(props){
                 </Link>
             </ul>
           
-            <ul class="navbar-nav ml-auto">
+            <ul className="navbar-nav ml-auto">
                 <Link to = "/login" className = "nav-link">
                     <li className = "nav-item">Login</li>
                 </Link>

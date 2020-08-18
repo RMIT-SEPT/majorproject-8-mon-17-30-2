@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ public class WorkSlot extends Slot {
     @ManyToOne
     private Worker worker;    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workSlot", orphanRemoval = false)
-    private List<BookingSlot> bookingSlots;
+    private List<BookingSlot> bookingSlots = new LinkedList<BookingSlot>();
     
     public WorkSlot(LocalDate date, LocalTime startTime, LocalTime endTime){
         this.date = date;
@@ -23,10 +24,15 @@ public class WorkSlot extends Slot {
         this.endTime = endTime;
     }
 
-    public WorkSlot(){}
+    public WorkSlot(){
+    }
     
     // --------------GETTERS AND SETTERS---------------
 
+
+    public void addBookingSlot(BookingSlot bookingSlot){
+        this.bookingSlots.add(bookingSlot);
+    }
     public LocalDate getDate(){
         return this.date;
     }

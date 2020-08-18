@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Email;
 
@@ -30,6 +33,7 @@ public class Worker extends Person {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
     private List<WorkSlot> shifts;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
+    @JsonManagedReference
     private List<Booking> bookings;
 
     public Worker(){

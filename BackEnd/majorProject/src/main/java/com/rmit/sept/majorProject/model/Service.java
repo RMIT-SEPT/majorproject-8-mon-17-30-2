@@ -1,9 +1,11 @@
 package com.rmit.sept.majorProject.model;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -11,12 +13,17 @@ public class Service {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long   id;    
+    private Long   id;  
+
     private String title;
     private String description;
     private int    capacity;
+    
     @ManyToOne
     private Business business;
+
+    @ManyToMany
+    private List<Worker> workers;
 
     public Service(String title, String description, int capacity){
         this.title = title;
@@ -28,6 +35,10 @@ public class Service {
 
     // --------------GETTERS AND SETTERS---------------
 
+
+    public Long getId(){
+        return this.id;
+    }
     public String getTitle(){
         return this.title;
     }

@@ -9,11 +9,16 @@ import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 import com.rmit.sept.majorProject.repository.BookingRepository;
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
+import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +41,10 @@ public class MajorProjectApplication {
 	private BookingRepository bookingRepository;
 	@Autowired
 	private ServiceRepository serviceRepository;
+	@Autowired
+	private BookingSlotRepository bookingSlotRepository;
+	@Autowired
+	private WorkSlotRepository workSlotRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MajorProjectApplication.class, args);
@@ -45,7 +54,7 @@ public class MajorProjectApplication {
 	@Bean
 	InitializingBean sendDatabase() {
 		return () -> {
-			
+
 			//create people
 			Customer austin = new Customer("Austin", "aus", "pass", "address", "customer@bookworm.com", "12345");
 			customerRepository.save(austin);
@@ -61,17 +70,19 @@ public class MajorProjectApplication {
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
 			LocalTime bookingEndTime   = LocalTime.of(13, 00);
 
-			//create workslot/bookingslot
-			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime);
-			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime);
-			johnShift.addBookingSlot(johnSlot);
-
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
 			serviceRepository.save(haircut);
 
+			//create workslot/bookingslot
+			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
+			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, serviceRepository.findByTitle("Haircut"));
+			johnShift.addBookingSlot(johnSlot);
+			workSlotRepository.save(johnShift);
+			bookingSlotRepository.save(johnSlot);
+
 			//bookings
-			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"));
+			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), bookingSlotRepository.getNewest());
 			bookingRepository.save(austinBooking);
 
 		};

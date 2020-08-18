@@ -13,12 +13,15 @@ public abstract class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long     id;
+
     @NotNull
     @NotEmpty
     protected String   name;
+
     @NotNull
     @NotEmpty
     protected String   username;
+
     @NotNull
     @NotEmpty
     protected String   password;

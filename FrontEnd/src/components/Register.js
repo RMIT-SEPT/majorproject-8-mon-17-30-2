@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Register.css";
+import axios from "axios";
 
 
 class Register extends Component {
@@ -7,27 +8,46 @@ class Register extends Component {
     super(props);
     this.state = {
       fullname: "",
-      address: "",
-      mobile: "",
       username: "",
       password: "",
+      address: "",
+      mobile: "",
+      email: ""
+     
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     console.log(this.state);
-    alert("Submitted");
+    const customer = {
+      name: this.state.fullname,
+      username: this.state.username,
+      password: this.state.password,
+      address: this.state.address,
+      email:this.state.email,
+      phoneNumber: this.state.mobile
+    };
+   
+    axios.post("http://localhost:8080/api/customer/register", customer)
+          .then(response => {
+            if(response.data != null){
+              this.setState(this.intialState);
+              alert("Customer saved successfully");
+            }
+          });
+         
+          
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-    event.preventDefault();
   }
 
   render() {
     return (
-      <div className="Register" method="POST">
+      <div className="Register" method="POST">  
         <form onSubmit={this.handleSubmit}>
           <header className="Register-header">Create an Account</header>
 
@@ -67,6 +87,17 @@ class Register extends Component {
                 required
               />
             </div>
+            <div className="form-input">
+            <label>email:</label>
+            <input
+              type="text"
+              name="email"
+              placeholder="john.doe@email.com"
+              value={this.state.email}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
 
             <div className="form-input">
               <label>Username:</label>

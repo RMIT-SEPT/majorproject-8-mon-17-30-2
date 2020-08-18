@@ -9,6 +9,7 @@ import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
 
 @RestController
+
 public class WorkerController implements PersonController{
 	
 	@Autowired

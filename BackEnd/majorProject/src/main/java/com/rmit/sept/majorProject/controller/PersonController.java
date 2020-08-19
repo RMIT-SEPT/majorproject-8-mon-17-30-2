@@ -1,7 +1,5 @@
 package com.rmit.sept.majorProject.controller;
 
-import java.util.List;
-
 import com.rmit.sept.majorProject.model.Person;
 
 public interface PersonController {

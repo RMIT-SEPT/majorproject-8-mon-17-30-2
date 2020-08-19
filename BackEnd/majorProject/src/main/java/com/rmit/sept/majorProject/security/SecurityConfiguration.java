@@ -60,6 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/admin").permitAll()
                 .antMatchers("/api/admin/register").permitAll()
                 .antMatchers("/h2-console").permitAll()
+                .antMatchers("/api/booking").permitAll()
+                .antMatchers("/api/booking/customer").permitAll()
                 .and().formLogin();
 
     }

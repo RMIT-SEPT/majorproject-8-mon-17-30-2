@@ -1,13 +1,10 @@
 package com.rmit.sept.majorProject.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
-
 
 @Service
 public class BusinessService{
@@ -15,9 +12,9 @@ public class BusinessService{
 	@Autowired
 	private BusinessRepository repository;	
 	
-	public List<Business> getAllBusinesses()
+	public Iterable<Business> getAllBusinesses()
 	{
-		return null;
+		return repository.findAll();
 	}
 	public Business getBusiness(Long id)
 	{
@@ -34,9 +31,5 @@ public class BusinessService{
 	public Boolean deleteBusiness(Long id)
 	{
 		return false;
-	}
-	public Boolean updateBusiness(Long id, Person person)
-	{
-		return repository.updateBusiness(id, person);
 	}
 }

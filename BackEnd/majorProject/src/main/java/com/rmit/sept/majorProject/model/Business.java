@@ -18,7 +18,7 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = true)
     private Admin businessOwner;
     @NotNull
     private String businessName;

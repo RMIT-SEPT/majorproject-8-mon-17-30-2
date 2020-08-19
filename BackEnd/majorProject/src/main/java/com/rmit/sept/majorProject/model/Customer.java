@@ -23,7 +23,7 @@ public class Customer extends Person {
     private String phoneNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     private List<Booking> bookings;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Business business;
 
     public Customer(){

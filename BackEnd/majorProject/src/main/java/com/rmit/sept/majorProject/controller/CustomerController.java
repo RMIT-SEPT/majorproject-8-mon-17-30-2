@@ -3,7 +3,8 @@ package com.rmit.sept.majorProject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.ArrayList;
+import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.service.CustomerService;
@@ -15,8 +16,13 @@ public class CustomerController implements PersonController{
     private CustomerService customerService;
 	
     @GetMapping("/api/customer")
-	public Iterable<Customer> getAllPeople() {
-		return customerService.findAll();
+	public Iterable<CustomerSummary> getAllCustomers() {
+		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
+		Iterable<Customer> customers = customerService.findAll();
+		for(Customer customer : customers){
+			customerDtos.add(new CustomerSummary(customer));
+		}
+		return customerDtos;
 	}
 
 	@Override

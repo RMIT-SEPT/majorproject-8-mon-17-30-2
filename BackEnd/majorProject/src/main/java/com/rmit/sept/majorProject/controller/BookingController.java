@@ -1,63 +1,37 @@
 package com.rmit.sept.majorProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
-import com.rmit.sept.majorProject.model.Business;
-import com.rmit.sept.majorProject.model.Customer;
-import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.BookingService;
 
 @RestController
 public class BookingController {
 
-	private final BookingService bookingService;
-	
 	@Autowired
-	public BookingController(BookingService bookingService)
-	{
-		this.bookingService = bookingService;
-	}
+	private BookingService bookingService;
 	
-	@GetMapping("/api/booking")
-	public Iterable<Booking> getAllBookings()
-	{
-		return null;
+    @GetMapping("/api/booking")
+	public Iterable<BookingSummary> getAllBookings() {
+		ArrayList<BookingSummary> bookingDtos = new ArrayList<BookingSummary>();
+		Iterable<Booking> bookings = bookingService.getAllBookings();
+		for(Booking booking : bookings){
+			bookingDtos.add(new BookingSummary(booking));
+		}
+		return bookingDtos;
 	}
-	
-	public Iterable<Booking> getAllBookings(Business business)
-	{
-		return null;
-	}
-	
-	public Iterable<Booking> getAllBookings(Worker worker)
-	{
-		return null;
-	}
-	
-	public Iterable<Booking> getAllBookings(Customer customer)
-	{
-		return null;
-	}
-	
-	public Booking getBooking(Long ID)
-	{
-		return null;
-	}
-	
-	public Boolean addBooking(Booking booking)
-	{
-		return false;
-	}
-	
-	public Boolean deleteBooking(Long ID)
-	{
-		return false;
-	}
-	
-	public Boolean updateBooking(Long ID, Booking booking)
-	{
-		return false;
-	}
+
+	@PostMapping("/api/booking/customer")
+	public ResponseEntity<?> getBookingsByCustomer(@RequestBody String customerUsername){	    
+		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		return new ResponseEntity<Iterable<Booking>>(matchingBookings, matchingBookings.iterator().hasNext()? HttpStatus.OK : HttpStatus.NO_CONTENT);
+    }
 }

@@ -1,6 +1,7 @@
 package com.rmit.sept.majorProject.model;
 
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Booking {
@@ -8,15 +9,25 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long        id;
+
     @ManyToOne
+    @JsonBackReference
     private Customer    customer;
+
     @ManyToOne
+    @JsonBackReference
     private Worker      worker;
+
     @ManyToOne
+    @JsonBackReference
     private Business    business;
+
     @ManyToOne
+    @JsonBackReference
     private Service     service;
+    
     @ManyToOne
+    @JsonBackReference
     private BookingSlot bookingSlot;
 
     public Booking(Customer customer, Worker worker, Business business,
@@ -24,8 +35,8 @@ public class Booking {
         this.customer = customer;
         this.worker = worker;
         this.business = business;
-        this.service = service;
-        this.bookingSlot = bookingSlot;                   
+        this.service = service;    
+        this.bookingSlot = bookingSlot;               
     }
 
     public Booking(){}

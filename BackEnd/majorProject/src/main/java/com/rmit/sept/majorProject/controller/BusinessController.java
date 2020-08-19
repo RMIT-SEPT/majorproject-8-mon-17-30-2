@@ -1,6 +1,5 @@
 package com.rmit.sept.majorProject.controller;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +10,8 @@ import com.rmit.sept.majorProject.service.BusinessService;
 @RestController
 public class BusinessController {
 	
-	private final BusinessService businessService;
+	@Autowired
+	private BusinessService businessService;
 	
 	@Autowired
 	public  BusinessController(BusinessService businessService)
@@ -20,11 +20,11 @@ public class BusinessController {
 	}
 	
 	@GetMapping("api/business")
-	public List<Business> getAllBusinesses()
+	public Iterable<Business> getAllBusinesses()
 	{
-		return null;
+		return businessService.getAllBusinesses();
 	}
-	
+
 	public Business getBusiness(Long ID)
 	{
 		return null;

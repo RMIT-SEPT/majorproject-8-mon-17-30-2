@@ -1,8 +1,7 @@
 package com.rmit.sept.majorProject.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,21 +17,23 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private Admin businessOwner;
+
     @NotNull
     private String businessName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
-    private List<Service> services;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
-    private List<Worker>  workers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
-    private List<Booking> bookings;
 
-    public Business(Admin businessOwner, String businessName){
-        this.services = new LinkedList<Service>();
-        this.workers = new LinkedList<Worker>();
-        this.bookings = new LinkedList<Booking>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Service> services = new ArrayList<Service>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Worker>  workers = new ArrayList<Worker>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private List<Booking> bookings = new ArrayList<Booking>();
+
+    public Business(String businessName){
         this.businessName = businessName;       
     }
 

@@ -16,7 +16,7 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    if(this.state.username = "test" && this.state.password == "test"){
+    if(this.state.username === "test" && this.state.password === "test"){
       this.props.history.push(`/`);
       this.setState({showSuccessMessage:true});
       this.setState({hasLoginFailed:false});

@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import Login from "./components/Login"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/Nav/Navbar";
+import ListCustomerBookings from "./components/ListCustomerBookings";
 
 
 
@@ -14,6 +15,7 @@ function App() {
     <div>
       <Route path="/" component={Navbar}/>
       <Switch>
+        <Route path="/" exact component={ListCustomerBookings}/>
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         

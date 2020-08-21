@@ -21,10 +21,9 @@ public class BookingService{
 	private ServiceRepository servRepository;
 	@Autowired
 	private BusinessRepository busiRepository;
+	
 	public Booking createNewBooking(Booking booking)
 	{
-		System.out.println("Hi" + booking.getWorker().getUsername());
-		System.out.println("Hi" + this.workerService.findByUsername(booking.getWorker().getUsername()));
 		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
 				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null)
 		{
@@ -33,7 +32,7 @@ public class BookingService{
 		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
-//		booking.setBusiness(this.busiRepository.fin)
+		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
 		if(duplicateBooking(booking))
 		{
 			return booking;
@@ -54,7 +53,6 @@ public class BookingService{
 				return true;
 			}
 		}
-		System.out.println("False?");
 		return false;
 	}
 	

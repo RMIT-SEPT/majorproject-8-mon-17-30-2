@@ -11,23 +11,18 @@ public class Booking {
     private Long        id;
 
     @ManyToOne
-    @JsonBackReference
     private Customer    customer;
 
     @ManyToOne
-    @JsonBackReference
     private Worker      worker;
     
-    @ManyToOne
-    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Business    business;
 
     @ManyToOne
-    @JsonBackReference
     private Service     service;
     
     @ManyToOne
-    @JsonBackReference
     private BookingSlot bookingSlot;
 
     public Booking(Customer customer, Worker worker, Business business,
@@ -63,8 +58,9 @@ public class Booking {
     public Business getBusiness(){
         return this.business;
     }
-    public boolean setBusiness() {
-    	return false;
+    public boolean setBusiness(Business business) {
+    	this.business = business;
+    	return true;
     }
     public Service getService(){
         return this.service;

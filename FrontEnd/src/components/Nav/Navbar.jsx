@@ -5,12 +5,12 @@ import AuthenticationService from "../Service/AuthenticationService";
 
 //basic navbar with bootstrap
 function Navbar(props){
-    const [isLoggedIn, setIsLoggedIn] = useState(AuthenticationService.isUserLoggedIn());
+    
 
    function handleClick(){
       
         AuthenticationService.logout();
-        setIsLoggedIn(false);
+        props.setIsLoggedIn(false);
     }
 
 
@@ -34,7 +34,7 @@ function Navbar(props){
           
            
 
-            {isLoggedIn ? 
+            {props.isLoggedIn ? 
                 <ul className="navbar-nav ml-auto">
                     <span className = "navbar-text">Hello {AuthenticationService.getLoggedInUserName()}!  </span>
                     <Link to = "/login" className = "nav-link">

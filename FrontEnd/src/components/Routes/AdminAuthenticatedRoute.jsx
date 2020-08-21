@@ -7,7 +7,7 @@ class AdminAuthenticatedRoute extends Component {
         if (AuthenticationService.isUserLoggedIn() && AuthenticationService.getRole() === "ADMIN") {
             return <Route {...this.props} />
         } else {
-            return <Redirect to="/login" />
+            return <Redirect to="/login/unauthorised" />
         }
 
     }

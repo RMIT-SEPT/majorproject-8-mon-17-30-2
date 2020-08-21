@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Register from "./Register";
 import Login from "./Login"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -8,18 +8,21 @@ import WorkerAuthenticatedRoute from "./Routes/WorkerAuthenticatedRoute";
 import CustomerAuthenticatedRoute from "./Routes/CustomerAuthenticatedRoute";
 import AdminAuthenticatedRoute from "./Routes/AdminAuthenticatedRoute";
 import Dashboard from "./Dashboard";
+import AuthenticationService from "./Service/AuthenticationService"
+
 
 
 
 function AppRouting() {
-
+    const [isLoggedIn, setIsLoggedIn] = useState(AuthenticationService.isUserLoggedIn());
   return (
     <Router> 
     <div>
-      <Route path="/" component={Navbar}/>
+      <Route path="/" render={(props) => <Navbar {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
       <Switch>
         
-        <Route path="/login" exact component={Login} />
+        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} authorised={true}/>} />
+        <Route path="/login/unauthorised" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} authorised={false}/>} />
         <Route path="/register" exact component={Register} />
         <CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} />
 

@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import AuthenticationService from '../Service/AuthenticationService';
 
-class CustomerAuthenticatedRoute extends Component {
+class WorkerAuthenticatedRoute extends Component {
     render() {
         if (AuthenticationService.isUserLoggedIn() && (AuthenticationService.getRole() === "WORKER" || AuthenticationService.getRole() === "ADMIN")) {
             return <Route {...this.props} />
         } else {
-            return <Redirect to="/login" />
+            return <Redirect to="/login/unauthorised" />
         }
 
     }
 }
 
-export default CustomerAuthenticatedRoute;
+export default WorkerAuthenticatedRoute;

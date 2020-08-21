@@ -26,10 +26,13 @@ class Login extends Component {
         AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
         if(AuthenticationService.getRole() === "CUSTOMER"){
           this.props.history.push(`/customer`);
+          this.props.setIsLoggedIn(true);
         } else if (AuthenticationService.getRole() === "ADMIN"){
           this.props.history.push(`/admin`);
+          this.props.setIsLoggedIn(true);
         } else if (AuthenticationService.getRole() === "WORKER"){
           this.props.history.push(`/worker`);
+          this.props.setIsLoggedIn(true);
         } else{
           AuthenticationService.logout();
           this.props.history.push(`/`);
@@ -60,6 +63,7 @@ class Login extends Component {
 
           <div className="form">
           {this.state.hasLoginFailed && <div className="alert alert-warning"> Invalid Credentials </div>}
+          {!this.props.authorised && <div className="alert alert-danger"> Unauthorised Request</div>}
          
             
 

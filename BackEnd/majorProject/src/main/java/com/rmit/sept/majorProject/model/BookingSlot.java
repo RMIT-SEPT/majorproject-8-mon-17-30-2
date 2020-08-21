@@ -1,11 +1,13 @@
 package com.rmit.sept.majorProject.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,17 +15,20 @@ import java.time.LocalTime;
 public class BookingSlot extends Slot {
     
     @ManyToOne
+    @JsonBackReference
     private Service service;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingSlot", orphanRemoval = true)
-    private List<Booking> bookings;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "bookingSlot", orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<Booking>();
+
     @ManyToOne
     private WorkSlot workSlot;
     
-    public BookingSlot(LocalDate date, LocalTime startTime, LocalTime endTime){
-        this.bookings = new LinkedList<Booking>();
+    public BookingSlot(LocalDate date, LocalTime startTime, LocalTime endTime, Service service){
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.service = service;
     }
 
     public BookingSlot(){}
@@ -44,5 +49,24 @@ public class BookingSlot extends Slot {
     public boolean fullyBooked(){
         return(this.bookings.size() >= service.getCapacity());
     }
+
+    public void setWorkSlot(WorkSlot newSlot) {
+        //prevent endless loop
+        if (sameAsFormer(newSlot))
+            return ;
+        //set new owner
+        WorkSlot oldSlot = this.workSlot;
+        this.workSlot = newSlot;
+        //remove from the old workslot
+        if (oldSlot!=null)
+            oldSlot.removeBookingSlot(this);
+        //set myself into new owner
+        if (workSlot!=null)
+            workSlot.addBookingSlot(this);
+        }
+    
+        private boolean sameAsFormer(WorkSlot newSlot) {
+            return workSlot==null? newSlot == null : workSlot.equals(newSlot);
+        }
     
 }

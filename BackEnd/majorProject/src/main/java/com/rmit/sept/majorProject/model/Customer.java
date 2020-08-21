@@ -1,7 +1,7 @@
 package com.rmit.sept.majorProject.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,14 +16,18 @@ public class Customer extends Person {
 
     @Email
     private String email;
+
     @NotNull
     @NotEmpty
     private String address;
+
     @Size(min=5, max=10)
     private String phoneNumber;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
-    private List<Booking> bookings;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    private List<Booking> bookings = new ArrayList<Booking>();
+
+    @ManyToOne
     private Business business;
 
     public Customer(){
@@ -80,6 +84,9 @@ public class Customer extends Person {
     }
     public void setBusiness(Business newBusiness){
         this.business = newBusiness;
+    }
+    public Iterable<Booking> getBookings(){
+        return this.bookings;
     }
 
 }

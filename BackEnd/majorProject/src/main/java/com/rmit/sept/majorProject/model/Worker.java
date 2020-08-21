@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,9 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Email;
 
@@ -20,21 +18,25 @@ public class Worker extends Person {
     
     @Email
     private String email;
+
     @NotNull
     @NotEmpty
     private String address;
+
     @Size(min=5, max=10)
     private String phoneNumber;
 
     @ManyToOne
     private Business business;
+
     @ManyToMany
     private List<Service>  services;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
-    private List<WorkSlot> shifts;
+    private List<WorkSlot> workSlots = new ArrayList<WorkSlot>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
-    @JsonManagedReference
-    private List<Booking> bookings;
+    private List<Booking> bookings = new ArrayList<Booking>();
 
     public Worker(){
         this.role = Role.WORKER;
@@ -86,8 +88,8 @@ public class Worker extends Person {
     public List<Service> getServices(){
         return this.services;
     }
-    public List<WorkSlot> getWorkingHours(){
-        return this.shifts;
+    public List<WorkSlot> getWorkSlots(){
+        return this.workSlots;
     }
     public List<Booking> getBookings(){
         return this.bookings;

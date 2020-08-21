@@ -1,5 +1,7 @@
 # RMIT SEPT 2020 Major Project
 
+# Release 1.0.0
+
 # Group 02
 
 ## Members

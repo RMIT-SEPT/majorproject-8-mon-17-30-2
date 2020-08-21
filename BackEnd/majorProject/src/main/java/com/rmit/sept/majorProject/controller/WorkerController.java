@@ -3,19 +3,27 @@ package com.rmit.sept.majorProject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Person;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
 
 @RestController
+
 public class WorkerController implements PersonController{
 	
 	@Autowired
 	private WorkerService workerService;
 
     @GetMapping("/api/worker")
-	public Iterable<Worker> getAllPeople() {
-		return workerService.findAll();
+	public Iterable<WorkerSummary> getAllWorkers() {
+		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
+		Iterable<Worker> workers = workerService.findAll();
+		for(Worker worker : workers){
+			workerDtos.add(new WorkerSummary(worker));
+		}
+		return workerDtos;
 	}
 
 	@Override

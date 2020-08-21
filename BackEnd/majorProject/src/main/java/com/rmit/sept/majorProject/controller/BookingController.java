@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.service.BookingService;
 
@@ -20,8 +22,13 @@ public class BookingController {
 	private BookingService bookingService;
 	
     @GetMapping("/api/booking")
-	public Iterable<Booking> getAllBookings() {
-		return bookingService.getAllBookings();
+	public Iterable<BookingSummary> getAllBookings() {
+		ArrayList<BookingSummary> bookingDtos = new ArrayList<BookingSummary>();
+		Iterable<Booking> bookings = bookingService.getAllBookings();
+		for(Booking booking : bookings){
+			bookingDtos.add(new BookingSummary(booking));
+		}
+		return bookingDtos;
 	}
     
     @PostMapping("/api/booking/")

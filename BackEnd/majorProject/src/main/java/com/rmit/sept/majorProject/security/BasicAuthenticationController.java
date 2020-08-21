@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins={ "http://localhost:3000"})
 @RestController
 public class BasicAuthenticationController {
     @Autowired
@@ -25,10 +25,9 @@ public class BasicAuthenticationController {
     @Autowired
     private WorkerRepository workerRepository;
 
-    @CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200" })
+    @CrossOrigin(origins={ "http://localhost:3000" })
     @GetMapping(path = "/auth/{username}/{password}")
     public AuthenticationBean authenticate(@PathVariable String username, @PathVariable String password ) {
-        //throw new RuntimeException("Some Error has Happened! Contact Support at ***-***");
         Person person = null;
         Customer customer = customerRepository.findByUsernameAndPassword(username, password);
         Worker worker = workerRepository.findByUsernameAndPassword(username, password);

@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         
         //prevent 403 and x-frame errors
         http.csrf().disable();
+        http.cors();
         http.headers().frameOptions().disable();
 
         String customer = Person.Role.CUSTOMER.toString();
@@ -63,6 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/api/booking").permitAll()
                 .antMatchers("/api/booking/customer").permitAll()
+                .antMatchers("/api/booking/customer/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();

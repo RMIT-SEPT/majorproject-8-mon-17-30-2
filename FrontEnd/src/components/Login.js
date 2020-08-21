@@ -10,21 +10,13 @@ class Login extends Component {
       username: "",
       password: "",
       hasLoginFailed: false,
-      showSuccessMessage: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(event) {
-    // if(this.state.username === "test" && this.state.password === "test"){
-    //   this.props.history.push(`/bookings`)
-    //   // this.setState({showSuccessMessage:true});
-    //   // this.setState({hasLoginFailed:false});
-    // } else{
-    //   this.setState({showSuccessMessage:false});
-    //   this.setState({hasLoginFailed:true});
-    // }
+
     event.preventDefault();
     AuthenticationService
     .executeBasicAuthenticationService(this.state.username, this.state.password)
@@ -46,11 +38,11 @@ class Login extends Component {
 
         console.log(AuthenticationService.getLoggedInUserName());
         console.log(AuthenticationService.getRole());
-        this.setState({ showSuccessMessage: true });
+        
         this.setState({ hasLoginFailed: false });
         
     }).catch(() => {
-        this.setState({ showSuccessMessage: false });
+       
         this.setState({ hasLoginFailed: true });
     })
 
@@ -68,7 +60,7 @@ class Login extends Component {
 
           <div className="form">
           {this.state.hasLoginFailed && <div className="alert alert-warning"> Invalid Credentials </div>}
-          {this.state.showSuccessMessage && <div> Login Succesful </div>}
+         
             
 
             <div className="form-input">

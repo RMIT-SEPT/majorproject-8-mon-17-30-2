@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.service.BookingService;
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class BookingController {
 
@@ -32,8 +32,6 @@ public class BookingController {
 //		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 //		return new ResponseEntity<Iterable<Booking>>(matchingBookings, matchingBookings.iterator().hasNext()? HttpStatus.OK : HttpStatus.NO_CONTENT);
 //    }
-
-
 	@GetMapping("/api/booking/customer/{customerUsername}")
 	public ResponseEntity<?> getBookingsByCustomer(@PathVariable String customerUsername){
 		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);

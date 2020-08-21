@@ -15,7 +15,7 @@ public class Booking {
     @ManyToOne
     @JsonBackReference
     private Worker      worker;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Business    business;
     @ManyToOne
     private Service     service;

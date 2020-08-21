@@ -26,7 +26,7 @@ public class Business {
     private List<Service> services;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private List<Worker>  workers;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = true)
     private List<Booking> bookings;
 
     public Business(Admin businessOwner, String businessName){

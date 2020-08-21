@@ -71,8 +71,8 @@ public class MajorProjectApplication {
 			serviceRepository.save(haircut);
 
 			//bookings
-			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"));
-			bookingRepository.save(austinBooking);
+//			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"));
+//			bookingRepository.save(austinBooking);
 
 		};
 	}

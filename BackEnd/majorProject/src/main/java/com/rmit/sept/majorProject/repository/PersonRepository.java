@@ -12,6 +12,8 @@ public interface PersonRepository<T extends Person> extends CrudRepository<T, Lo
 
 	public T findByUsername(String username);
 
+	public T findByUsernameAndPassword(String username, String password);
+
 	public Iterable<T> findByRole(Role role);
 
 }

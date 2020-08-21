@@ -39,7 +39,7 @@ public class CustomerController implements PersonController{
 
 	@Override
 	public Person getPerson(Long ID) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

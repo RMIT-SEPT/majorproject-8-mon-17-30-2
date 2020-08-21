@@ -26,13 +26,13 @@ public class BasicAuthenticationController {
     private WorkerRepository workerRepository;
 
     @CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200" })
-    @GetMapping(path = "/auth/{username}")
-    public AuthenticationBean authenticate(@PathVariable String username) {
+    @GetMapping(path = "/auth/{username}/{password}")
+    public AuthenticationBean authenticate(@PathVariable String username, @PathVariable String password ) {
         //throw new RuntimeException("Some Error has Happened! Contact Support at ***-***");
         Person person = null;
-        Customer customer = customerRepository.findByUsername(username);
-        Worker worker = workerRepository.findByUsername(username);
-        Admin admin = adminRepository.findByUsername(username);
+        Customer customer = customerRepository.findByUsernameAndPassword(username, password);
+        Worker worker = workerRepository.findByUsernameAndPassword(username, password);
+        Admin admin = adminRepository.findByUsernameAndPassword(username, password);
 
         if(customer != null){
             person = customer;

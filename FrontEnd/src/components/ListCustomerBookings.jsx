@@ -9,7 +9,7 @@ function ListCustomerBookings(props){
     }, [])
 
     async function getBookings(){
-        CustomerBookingDataService.retrieveCustomerBookings('Hardcoded')
+        CustomerBookingDataService.retrieveCustomerBookings('Hardcoded') 
         .then(response => {
             console.log(response);
             setCustomerBookings(response.data);

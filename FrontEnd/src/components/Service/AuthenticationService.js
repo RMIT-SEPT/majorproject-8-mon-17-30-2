@@ -4,7 +4,7 @@ export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 export const ROLE_SESSION_ATTRIBUTE = "Role"
 class AuthenticationService {
     executeBasicAuthenticationService(username, password) {
-        return axios.get(`${API_URL}/auth/${username}`,
+        return axios.get(`${API_URL}/auth/${username}/${password}`,
             { headers: { authorization: this.createBasicAuthToken(username, password) } }
             );
     }

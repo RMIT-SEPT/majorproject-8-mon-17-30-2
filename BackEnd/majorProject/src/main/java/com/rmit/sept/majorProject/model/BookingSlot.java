@@ -15,7 +15,6 @@ import java.time.LocalTime;
 public class BookingSlot extends Slot {
     
     @ManyToOne
-    @JsonBackReference
     private Service service;
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "bookingSlot", orphanRemoval = true)

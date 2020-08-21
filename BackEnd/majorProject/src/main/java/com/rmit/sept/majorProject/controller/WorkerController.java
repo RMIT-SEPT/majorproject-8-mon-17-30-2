@@ -17,7 +17,11 @@ public class WorkerController implements PersonController{
 	private WorkerService workerService;
 
     @GetMapping("/api/worker")
-	public Iterable<WorkerSummary> getAllWorkers() {
+	public Iterable<Worker> getAllWorkers() {
+		return workerService.findAll();
+	}
+
+	public Iterable<WorkerSummary> getAllWorkerDtos() {
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		Iterable<Worker> workers = workerService.findAll();
 		for(Worker worker : workers){

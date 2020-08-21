@@ -38,7 +38,7 @@ public abstract class Slot {
         return (current != newStart);
     }
     public LocalTime getEndTime(){
-        return this.startTime;
+        return this.endTime;
     }
     public boolean setEndTime(LocalTime newEnd){
         LocalTime current = this.endTime;

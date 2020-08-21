@@ -10,7 +10,7 @@ class CustomerBookingDataService {
     retrieveCustomerBookings(name) {
         //console.log('executed service')
         return axios.get(`${FULL_BOOKING_API_URL}`,
-            { headers: { authorization: 'Basic ' + window.btoa(USERNAME + ":" + PASSWORD) } }
+            // { headers: { authorization: 'Basic ' + window.btoa(USERNAME + ":" + PASSWORD) } }
         );
     }
 }

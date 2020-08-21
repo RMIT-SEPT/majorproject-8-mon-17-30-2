@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
+import AuthenticationService from "./Service/AuthenticationService";
 
 
 class Login extends Component {
@@ -16,16 +17,43 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    if(this.state.username === "test" && this.state.password === "test"){
-      this.props.history.push(`/`);
-      this.setState({showSuccessMessage:true});
-      this.setState({hasLoginFailed:false});
-    } else{
-      this.setState({showSuccessMessage:false});
-      this.setState({hasLoginFailed:true});
-    }
-    console.log(this.state);
-    alert("Submitted");
+    // if(this.state.username === "test" && this.state.password === "test"){
+    //   this.props.history.push(`/bookings`)
+    //   // this.setState({showSuccessMessage:true});
+    //   // this.setState({hasLoginFailed:false});
+    // } else{
+    //   this.setState({showSuccessMessage:false});
+    //   this.setState({hasLoginFailed:true});
+    // }
+    event.preventDefault();
+    AuthenticationService
+    .executeBasicAuthenticationService(this.state.username, this.state.password)
+    .then((response) => {
+        
+        sessionStorage.setItem("Role", response.data.role);
+        AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
+        if(AuthenticationService.getRole() === "CUSTOMER"){
+          this.props.history.push(`/customer`);
+        } else if (AuthenticationService.getRole() === "ADMIN"){
+          this.props.history.push(`/admin`);
+        } else if (AuthenticationService.getRole() === "WORKER"){
+          this.props.history.push(`/worker`);
+        } else{
+          AuthenticationService.logout();
+          this.props.history.push(`/`);
+        }
+
+
+        console.log(AuthenticationService.getLoggedInUserName());
+        console.log(AuthenticationService.getRole());
+        this.setState({ showSuccessMessage: true });
+        this.setState({ hasLoginFailed: false });
+        
+    }).catch(() => {
+        this.setState({ showSuccessMessage: false });
+        this.setState({ hasLoginFailed: true });
+    })
+
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -35,7 +63,7 @@ class Login extends Component {
   render() {
     return (
       <div className="Login">
-        <form onSubmit={this.handleSubmit} method="POST">
+   
           <header className="Login-header">AGME LOGIN</header>
 
           <div className="form">
@@ -69,12 +97,12 @@ class Login extends Component {
           </div>
 
           <div className="footer">
-            <button className="button buttonshadow" type="submit">
+            <button className="button buttonshadow" type="submit" onClick = {this.handleSubmit}>
                Login 
             </button>
           </div>
           
-        </form>
+  
       </div>
     );
   }

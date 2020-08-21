@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Login.css";
+import "../css/Login.css";
 import AuthenticationService from "./Service/AuthenticationService";
 
 
@@ -13,8 +13,15 @@ class Login extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this._isMounted = false;
   }
-
+  componentDidMount() {
+    this.setState({ hasLoginFailed: false });
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+ }
   handleSubmit(event) {
 
     event.preventDefault();
@@ -39,10 +46,8 @@ class Login extends Component {
         }
 
 
-        console.log(AuthenticationService.getLoggedInUserName());
-        console.log(AuthenticationService.getRole());
-        
-        this.setState({ hasLoginFailed: false });
+    
+
         
     }).catch(() => {
        

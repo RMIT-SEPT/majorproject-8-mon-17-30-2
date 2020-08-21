@@ -1,6 +1,5 @@
 import React from "react";
-// import logo from "./logo.svg";
-import AppRouting from "./components/AppRouting";
+import AppRouting from "./components/Routes/AppRouting";
 
 
 

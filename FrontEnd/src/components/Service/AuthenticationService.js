@@ -2,8 +2,10 @@ import axios from "axios";
 const API_URL = 'http://localhost:8080';
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 export const ROLE_SESSION_ATTRIBUTE = "Role"
+// Service class that stores the authenticated user variables
 class AuthenticationService {
     executeBasicAuthenticationService(username, password) {
+        // Authenicates User and passes username and password to backend
         return axios.get(`${API_URL}/auth/${username}/${password}`,
             { headers: { authorization: this.createBasicAuthToken(username, password) } }
             );
@@ -14,10 +16,11 @@ class AuthenticationService {
 
     registerSuccessfulLogin(username, password) {
 
-        //axios request to get user and role if the user is not available do not set user?
-
-        
+        // We only register successful login if the returned axios request is not an exception
+        // i.e the user was found with the right creditentials in the database
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+        // From now on every request will have an authorisation token created
+        // so that we don't have to create it each time we make a request to our server
         this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
     }
     setupAxiosInterceptors(token) {

@@ -28,6 +28,11 @@ public class BusinessService{
 	{
 		return false;
 	}
+	
+	public Business findByBusinessName(String businessName)
+	{
+		return this.repository.findByBusinessName(businessName);
+	}
 	public Boolean deleteBusiness(Long id)
 	{
 		return false;

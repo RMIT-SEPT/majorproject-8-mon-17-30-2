@@ -27,7 +27,7 @@ public class Customer extends Person {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Business business;
 
     public Customer(){

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Admin extends Person{
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Business business;
     
     public Admin(){
@@ -36,9 +36,17 @@ public class Admin extends Person{
         return this.business;
     }
     public boolean setBusiness(Business newBusiness){
-        long current = this.business.getId();
+//        long current = this.business.getId();
         this.business = newBusiness;
-        return (current != newBusiness.getId());
+//        return (current != newBusiness.getId());
+        return true;
+    }
+    
+    public boolean setNewBusiness(Business newBusiness)
+    {
+      long current = this.business.getId();
+      this.business = newBusiness;
+      return (current != newBusiness.getId());
     }
     
     public String getUsername() {

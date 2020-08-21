@@ -68,7 +68,7 @@ public class MajorProjectApplication {
 			LocalTime shiftStartTime   = LocalTime.of(10, 00);
 			LocalTime shiftEndTime     = LocalTime.of(17, 00);
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
-			LocalTime bookingEndTime   = LocalTime.of(13, 00);
+			LocalTime bookingEndTime   = LocalTime.of(15, 00);
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
@@ -82,8 +82,8 @@ public class MajorProjectApplication {
 			bookingSlotRepository.save(johnSlot);
 
 			//bookings
-			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), bookingSlotRepository.getNewest());
-			bookingRepository.save(austinBooking);
+//			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), bookingSlotRepository.getNewest());
+//			bookingRepository.save(austinBooking);
 
 		};
 	}

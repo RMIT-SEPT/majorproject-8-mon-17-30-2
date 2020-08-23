@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.controller;
 
 import javax.validation.Valid;
 
+import com.rmit.sept.majorProject.model.BookingSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
@@ -36,6 +38,19 @@ public class BookingController {
 		return bookingDtos;
 	}
 
+	@GetMapping("/api/past_bookings/{customerUsername}")
+	public Iterable<BookingSummary> getPastBookings(@PathVariable String customerUsername) {
+		ArrayList<BookingSummary> pastBookings = new ArrayList<>();
+		Iterable<Booking> bookings = bookingService.getBookingsByCustomer(customerUsername);
+
+		for(Booking booking : bookings){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) > 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
+	}
+
 
 
 	@GetMapping("/api/booking/customer/{customerUsername}")
@@ -43,7 +58,6 @@ public class BookingController {
 		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);
 //		if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-
 
 	}
 

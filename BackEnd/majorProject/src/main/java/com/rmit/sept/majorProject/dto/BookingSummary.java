@@ -19,7 +19,7 @@ public class BookingSummary {
         this.worker = booking.getWorker().getId();
         this.startTime = booking.getBookingSlot().getStartTime();
         this.endTime = booking.getBookingSlot().getEndTime();
-        this.bookingSlot = booking.getBookingSlot().getId();
+        this.bookingSlot = booking.getBookingSlot().getSlotID();
         this.service = booking.getService().getId();
     }
 

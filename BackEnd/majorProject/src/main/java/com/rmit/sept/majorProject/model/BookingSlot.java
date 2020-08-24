@@ -24,19 +24,17 @@ public class BookingSlot extends Slot {
     @ManyToOne
     private WorkSlot workSlot;
     
-    public BookingSlot(LocalDate date, LocalTime startTime, LocalTime endTime, Service service, Long slotID){
+    public BookingSlot(LocalDate date, LocalTime startTime, LocalTime endTime, Service service){
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.service = service;
-        this.slotID = slotID;
     }
 
     public BookingSlot(){}
     
     // --------------GETTERS AND SETTERS---------------
 
-    public Long getSlotID() { return this.slotID; }
     public Service getService(){
         return this.service;
     }

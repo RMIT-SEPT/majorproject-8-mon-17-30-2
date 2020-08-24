@@ -1,12 +1,14 @@
 package com.rmit.sept.majorProject.service;
 
 
+import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class BookingService{
@@ -66,6 +68,9 @@ public class BookingService{
 
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
 		return repository.findByWorkerUsername(workerUsername);
+	}
+	public Iterable<Booking> getPastBookings(String customerUsername){
+		return repository.findByCustomerUsername(customerUsername);
 	}
 
 }

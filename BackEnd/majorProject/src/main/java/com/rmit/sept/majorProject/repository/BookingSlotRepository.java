@@ -13,6 +13,4 @@ public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long>
     @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id DESC", nativeQuery = true)
     public BookingSlot getNewest();
 
-    public BookingSlot findBySlotID(Long slotID);
-
 }

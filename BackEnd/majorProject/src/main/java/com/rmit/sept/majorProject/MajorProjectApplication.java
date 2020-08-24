@@ -81,6 +81,8 @@ public class MajorProjectApplication {
 			List<Service> johnServices = new ArrayList<Service>();
 			johnServices.add(haircut);
 			johnServices.add(beardtrim);
+			john.setServices(johnServices);
+			workerRepository.save(john);
 
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
 			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);

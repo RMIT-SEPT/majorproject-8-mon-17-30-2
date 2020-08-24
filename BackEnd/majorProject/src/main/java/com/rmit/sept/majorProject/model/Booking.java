@@ -1,7 +1,6 @@
 package com.rmit.sept.majorProject.model;
 
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Booking {
@@ -38,43 +37,42 @@ public class Booking {
 
     // --------------GETTERS AND SETTERS---------------
     
-    public Long getBookingId() {
+    public Long getBookingId(){
     	return this.id;
     }
     public Customer getCustomer(){
         return this.customer;
     }
-    public boolean setCustomer(Customer customer) {
+    public boolean setCustomer(Customer customer){
     	this.customer = customer;
     	return true;
     }
     public Worker getWorker(){
         return this.worker;
     }
-    public boolean setWorker(Worker worker) {
+    public boolean setWorker(Worker worker){
     	this.worker = worker;
     	return true;
     }
     public Business getBusiness(){
         return this.business;
     }
-    public boolean setBusiness(Business business) {
+    public boolean setBusiness(Business business){
     	this.business = business;
     	return true;
     }
     public Service getService(){
         return this.service;
     }
-    public boolean setService(Service service)
-    {
+    public boolean setService(Service service){
     	this.service = service;
     	return true;
     }
     public BookingSlot getBookingSlot(){
         return this.bookingSlot;
     }
-    public boolean setBookingSlot(Booking Slot)
-    {
+    public boolean setBookingSlot(BookingSlot bookingSlot){
+        this.bookingSlot = bookingSlot;
     	return false;
     }
    

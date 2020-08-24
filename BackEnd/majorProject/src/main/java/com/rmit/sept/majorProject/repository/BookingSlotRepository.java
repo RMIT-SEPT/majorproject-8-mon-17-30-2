@@ -12,4 +12,7 @@ public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long>
     @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id DESC", nativeQuery = true)
     public BookingSlot getNewest();
 
+    // @Query(value = "SELECT * FROM booking_slot WHERE ")
+    // public Iterable<BookingSlot> getAllAvailable();
+
 }

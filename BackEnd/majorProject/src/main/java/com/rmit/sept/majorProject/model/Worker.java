@@ -87,6 +87,9 @@ public class Worker extends Person {
     public List<Service> getServices(){
         return this.services;
     }
+    public void setServices(List<Service> services){
+        this.services = services;
+    }
     public List<WorkSlot> getWorkSlots(){
         return this.workSlots;
     }

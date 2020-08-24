@@ -43,6 +43,14 @@ public class BookingSlotSummary {
         this.workerId = workerId;
     }
 
+    public String getWorkerName(){
+        return this.workerName;
+    }
+
+    public void setWorkerName(String workerName){
+        this.workerName = workerName;
+    }
+
     public LocalTime getStartTime() {
         return startTime;
     }

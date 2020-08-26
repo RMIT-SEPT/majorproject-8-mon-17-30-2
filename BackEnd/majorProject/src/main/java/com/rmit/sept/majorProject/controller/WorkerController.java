@@ -16,11 +16,12 @@ public class WorkerController implements PersonController{
 	@Autowired
 	private WorkerService workerService;
 
-    @GetMapping("/api/worker")
+
 	public Iterable<Worker> getAllWorkers() {
 		return workerService.findAll();
 	}
-
+	
+    @GetMapping("/api/worker")
 	public Iterable<WorkerSummary> getAllWorkerDtos() {
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		Iterable<Worker> workers = workerService.findAll();

@@ -19,6 +19,8 @@ public class CustomerSummary {
         for(Booking booking : customer.getBookings()){
             this.bookings.add(booking.getBookingId());
         }
+        this.email = customer.getEmail();
+        this.username = customer.getUsername();
     }
 
     public Long getId() {

@@ -1,6 +1,5 @@
 package com.rmit.sept.majorProject.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.model.Booking;

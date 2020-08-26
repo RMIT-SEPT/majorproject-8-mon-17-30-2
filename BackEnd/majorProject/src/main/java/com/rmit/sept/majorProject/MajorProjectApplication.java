@@ -16,9 +16,8 @@ import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import javax.persistence.EntityManager;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -64,7 +63,7 @@ public class MajorProjectApplication {
 			adminRepository.save(caramel);
 
 			//create date/times
-			LocalDate day              = LocalDate.of(2021, 8, 30);
+			LocalDate day              = LocalDate.of(2021, 12, 31);
 			LocalTime shiftStartTime   = LocalTime.of(10, 00);
 			LocalTime shiftEndTime     = LocalTime.of(17, 00);
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
@@ -72,11 +71,21 @@ public class MajorProjectApplication {
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
+			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);
 			serviceRepository.save(haircut);
+			serviceRepository.save(beardtrim);
 
-			//create workslot/bookingslot
+			//----create workslot/bookingslot----
+
+			// john offers haircuts or beard trims during his working slots
+			List<Service> johnServices = new ArrayList<Service>();
+			johnServices.add(haircut);
+			johnServices.add(beardtrim);
+			john.setServices(johnServices);
+			workerRepository.save(john);
+
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
-			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, serviceRepository.findByTitle("Haircut"));
+			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
 			johnShift.addBookingSlot(johnSlot);
 			workSlotRepository.save(johnShift);
 			bookingSlotRepository.save(johnSlot);

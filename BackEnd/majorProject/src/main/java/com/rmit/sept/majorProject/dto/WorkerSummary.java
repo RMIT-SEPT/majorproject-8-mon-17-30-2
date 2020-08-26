@@ -12,7 +12,7 @@ public class WorkerSummary {
     private String name;
     private String email;
     private String username;
-    private List<Long> services = new ArrayList<Long>();
+    private List<ServiceSummary> services = new ArrayList<ServiceSummary>();
     private List<Long> bookings = new ArrayList<Long>();
 
     public WorkerSummary(Worker worker){
@@ -22,8 +22,10 @@ public class WorkerSummary {
             this.bookings.add(booking.getBookingId());
         }
         for(Service service : worker.getServices()){
-            this.services.add(service.getId());
+            this.services.add(new ServiceSummary(service));
         }
+        this.email = worker.getEmail();
+        this.username = worker.getUsername();
     }
 
     public Long getId() {
@@ -46,7 +48,7 @@ public class WorkerSummary {
         return this.bookings;        
     }
 
-    public Iterable<Long> getServices() {
+    public Iterable<ServiceSummary> getServices() {
         return this.services;        
     }
 

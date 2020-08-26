@@ -36,22 +36,16 @@ public class BookingController {
 		return bookingDtos;
 	}
 
-
-
 	@GetMapping("/api/booking/customer/{customerUsername}")
 	public ResponseEntity<?> getBookingsByCustomer(@PathVariable String customerUsername) {
 		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);
-//		if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-
-
 	}
 
     @PostMapping("/api/booking/")
-    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result)
-    {
-    	if(result.hasErrors())
-    	{
+    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result){
+    	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
     	}
 		Booking booking1 = this.bookingService.createNewBooking(booking);

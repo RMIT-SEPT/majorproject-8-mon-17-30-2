@@ -64,5 +64,9 @@ public class WorkSlot extends Slot {
     public void setWorker(Worker worker){
         this.worker = worker;
     }
+
+    public Worker getWorker(){
+        return this.worker;
+    }
     
 }

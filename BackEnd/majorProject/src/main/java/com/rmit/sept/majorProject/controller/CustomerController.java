@@ -24,12 +24,7 @@ public class CustomerController implements PersonController{
 
 	@GetMapping("/api/customer")
 	public Iterable<CustomerSummary> getAllCustomerDtos() {
-		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
-		Iterable<Customer> customers = customerService.findAll();
-		for(Customer customer : customers){
-			customerDtos.add(new CustomerSummary(customer));
-		}
-		return customerDtos;
+		return customerService.getAllCustomersDTO();
 	}
 
 	@Override

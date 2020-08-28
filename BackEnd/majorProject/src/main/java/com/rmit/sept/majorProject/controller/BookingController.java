@@ -1,20 +1,15 @@
 package com.rmit.sept.majorProject.controller;
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.service.BookingService;
@@ -28,12 +23,7 @@ public class BookingController {
 	
     @GetMapping("/api/booking")
 	public Iterable<BookingSummary> getAllBookings() {
-		ArrayList<BookingSummary> bookingDtos = new ArrayList<>();
-		Iterable<Booking> bookings = bookingService.getAllBookings();
-		for(Booking booking : bookings){
-			bookingDtos.add(new BookingSummary(booking));
-		}
-		return bookingDtos;
+		return bookingService.getAllBookingsDTO();
 	}
 
 	@GetMapping("/api/booking/customer/{customerUsername}")

@@ -6,4 +6,3 @@ terraform.tfstate.backup
 tmp/
 .DS_Store
 .vscode/
-.idea/

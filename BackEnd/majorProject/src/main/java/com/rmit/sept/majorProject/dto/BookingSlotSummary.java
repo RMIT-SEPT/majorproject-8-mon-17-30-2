@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Service;
 
-public class BookingSlotSummary {
+public class BookingSlotSummary{
 
     private Long id;
     private Long workerId;

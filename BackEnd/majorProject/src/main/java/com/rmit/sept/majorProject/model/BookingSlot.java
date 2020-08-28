@@ -24,6 +24,8 @@ public class BookingSlot extends Slot {
 
     @ManyToOne
     private WorkSlot workSlot;
+
+    private boolean isSet;
     
     public BookingSlot(LocalDate date, LocalTime startTime, LocalTime endTime, List<Service> services){
         this.date = date;
@@ -63,6 +65,7 @@ public class BookingSlot extends Slot {
 
     public void setBookedService(Service service){
         this.bookedService = service;
+        this.isSet = true;
     }
 
     public void removeBookedService(){
@@ -78,6 +81,9 @@ public class BookingSlot extends Slot {
     }
 
     public boolean fullyBooked(){
+        if(!isSet){
+            return false;
+        }
         return(this.bookings.size() >= bookedService.getCapacity());
     }
 
@@ -104,7 +110,7 @@ public class BookingSlot extends Slot {
     }
 
     public boolean isSet(){
-        return this.bookedService != null;
+        return this.isSet;
     }
 
     public void setAvailableServices(List<Service> availableServices) {

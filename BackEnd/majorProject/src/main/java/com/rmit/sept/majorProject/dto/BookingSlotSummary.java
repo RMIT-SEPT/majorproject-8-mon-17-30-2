@@ -15,16 +15,19 @@ public class BookingSlotSummary {
     private boolean isSet;
     private Service bookedService;
     private Iterable<Service> availableServices;
+    private boolean fullyBooked;
 
     public BookingSlotSummary(BookingSlot bookingSlot){
         this.id = bookingSlot.getId();
         this.workerId = bookingSlot.getWorkSlot().getWorker().getId();
+        this.workerName = bookingSlot.getWorkSlot().getWorker().getName();
         this.startTime = bookingSlot.getStartTime();
         this.endTime = bookingSlot.getEndTime();
         this.workSlotId = bookingSlot.getWorkSlot().getId();
-        this.isSet = bookingSlot.getBookedService() != null;
+        this.isSet = bookingSlot.isSet();
         this.bookedService = bookingSlot.getBookedService();
         this.availableServices = bookingSlot.getAvailableServices();
+        this.fullyBooked = bookingSlot.fullyBooked();
     }
 
     public Long getId() {
@@ -97,6 +100,10 @@ public class BookingSlotSummary {
 
     public void setAvailableServices(Iterable<Service> availableServices) {
         this.availableServices = availableServices;
-    }    
+    }  
+    
+    public boolean isFullyBooked(){
+        return this.fullyBooked;
+    }
 
 }

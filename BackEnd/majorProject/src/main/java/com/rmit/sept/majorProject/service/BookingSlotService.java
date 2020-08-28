@@ -31,14 +31,12 @@ public class BookingSlotService{
     // 1: are unset (no booking has been created, and thus no service has been "set")
     // 2: have vacancy (booking(s) have been created, service has been set, but the capacity hasn't been reached)
     public Iterable<BookingSlot> getAvailableBookingSlots(){
-
         ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
         for(BookingSlot slot : repository.findAll()){
             if(!slot.isSet() || slot.getBookings().size() < slot.getBookedService().getCapacity()){
                 availableSlots.add(slot);
             }
-        }
-        
+        }        
         return availableSlots;
     }
 

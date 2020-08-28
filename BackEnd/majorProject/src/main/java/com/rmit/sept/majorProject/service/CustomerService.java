@@ -1,9 +1,12 @@
 package com.rmit.sept.majorProject.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
@@ -29,6 +32,19 @@ public class CustomerService implements PersonService<Customer>{
 		}
         Customer newCustomer = new Customer(customer);
         return repository.save(newCustomer);
+	}
+
+	public Iterable<Customer> getAllCustomers(){
+		return repository.findAll();
+	}
+
+	public Iterable<CustomerSummary> getAllCustomersDTO(){
+		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
+		Iterable<Customer> customers = repository.findAll();
+		for(Customer customer : customers){
+			customerDtos.add(new CustomerSummary(customer));
+		}
+		return customerDtos;
 	}
 
 	//---------GENERIC PERSON FUNCTIONS------------	

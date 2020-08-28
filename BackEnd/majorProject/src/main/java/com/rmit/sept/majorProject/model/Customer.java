@@ -88,5 +88,27 @@ public class Customer extends Person {
     public Iterable<Booking> getBookings(){
         return this.bookings;
     }
+    @Override
+    public boolean equals(Customer customer) {
+    	if(customer == null)
+    	{
+    		return false;
+    	}
+    	if(customer.getName() == this.name
+    			&& customer.getEmail() == this.email
+    			&& customer.getUsername() == this.username
+    			&& customer.getPassword() == this.password
+    			&& customer.getAddress() == this.address
+    			&& customer.getPhoneNumber() == this.phoneNumber
+    			&& customer.getBusiness() == this.business) {
+    		return true;
+    	}
+    	return false;
+    }
+    @Override
+    public boolean equals(Object object)
+    {
+    	return equals((Customer) object);
+    }
 
 }

@@ -2,6 +2,8 @@ package com.rmit.sept.majorProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
@@ -57,6 +59,14 @@ public class BookingService{
 	
 	public Iterable<Booking> getAllBookings(){
 		return repository.findAll();
+	}
+
+	public Iterable<BookingSummary> getAllBookingsDTO(){
+		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
+        for(Booking booking : getAllBookings()){
+            allBookingDtos.add(new BookingSummary(booking));
+        }
+        return allBookingDtos;
 	}
 
 	public Iterable<Booking> getBookingsByCustomer(String customerUsername){

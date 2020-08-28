@@ -1,0 +1,19 @@
+.dashboard-heading-container{
+    text-align: center;
+}
+.dashboard-heading{
+    font-size: 2.25rem;
+}
+.profile{
+    text-align: center;
+ 
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.profile-list{
+    margin-bottom:20px;
+}
+.profile-btn{
+    margin-bottom: 0;
+}

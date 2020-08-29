@@ -8,11 +8,14 @@ function Profile(props){
     const authenicatedUser = AuthenticationService.getLoggedInUserName();
    
     const[userDetails, setUserDetails] = useState({});
-
+    const [services, setServices] = useState([]); 
     useEffect(() => {
         GetRequestService.getRequestUsername(props.apiUrl, authenicatedUser)
         .then((response) => {
+            console.log(response.data);
             setUserDetails(response.data);
+            setServices(response.data.services);
+          
         })
         .catch(() => {
             console.log("ERROR USER CANNOT BE FOUND");
@@ -40,7 +43,10 @@ function Profile(props){
              
                 <li className="list-group-item">Role: {AuthenticationService.getRole()}</li>
                 { AuthenticationService.getRole() === WORKER && 
-                    <li className="list-group-item">Services: Service1, Service2, Service3</li>
+                    <div className="service-heading">
+                        <h2 className="display-4 text-center"> Services: </h2> 
+                        {services.map(service => <li className="list-group-item" key={service.id}> {service.title}</li>)}
+                   </div>
                }
             </ul>
             { !AuthenticationService.getRole() === WORKER && 

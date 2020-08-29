@@ -10,7 +10,7 @@ import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
 import Dashboard from "../Dashboard/Dashboard";
 import AuthenticationService from "../Service/AuthenticationService"
 import Footer from "../Footer";
-import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS} from "../../Utils/utils"
+import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL} from "../../Utils/utils"
 
 
 
@@ -44,7 +44,7 @@ function AppRouting() {
          {/*
           WORKER ROUTES
         */}
-        <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={`worker dashboard`} />} />
+        <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
         
         
       </Switch>

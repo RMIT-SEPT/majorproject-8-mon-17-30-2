@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Admin extends Person{
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Business business;
     
     public Admin(){

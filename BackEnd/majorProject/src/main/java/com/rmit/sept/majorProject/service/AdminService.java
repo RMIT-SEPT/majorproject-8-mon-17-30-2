@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.Optional;
 
+import com.rmit.sept.majorProject.dto.AdminSummary;
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -114,14 +115,17 @@ public class AdminService implements PersonService<Admin> {
 		return null;
 	}
 
-    public Admin getAdmin(String adminUsername) {
+    public AdminSummary getAdmin(String adminUsername) {
 		Admin admin = repository.findByUsername(adminUsername);
+		AdminSummary summary = null;
 		if(admin == null){
 			throw new UsernameNotFoundException("Admin not found in the database");
+		} else {
+			summary = new AdminSummary(admin);
 		}
 
 
-		return admin;
+		return summary;
     }
 
     //---------GENERIC PERSON FUNCTIONS------------

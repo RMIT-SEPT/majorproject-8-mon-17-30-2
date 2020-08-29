@@ -1,12 +1,6 @@
 package com.rmit.sept.majorProject;
 
-import com.rmit.sept.majorProject.model.Admin;
-import com.rmit.sept.majorProject.model.Booking;
-import com.rmit.sept.majorProject.model.BookingSlot;
-import com.rmit.sept.majorProject.model.Customer;
-import com.rmit.sept.majorProject.model.Service;
-import com.rmit.sept.majorProject.model.Worker;
-import com.rmit.sept.majorProject.model.WorkSlot;
+import com.rmit.sept.majorProject.model.*;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
@@ -60,7 +54,8 @@ public class MajorProjectApplication {
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
 			workerRepository.save(john);
 			Admin caramel = new Admin("Admin", "caramel6", "password");
-
+			Business business = new Business("Caramel's Hair salon!");
+			caramel.setBusiness(business);
 			adminRepository.save(caramel);
 
 			//create date/times

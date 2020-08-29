@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.controller;
 
+import com.rmit.sept.majorProject.dto.AdminSummary;
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class AdminController implements PersonController{
 
 	@GetMapping("/api/admin/{adminUsername}")
 	public ResponseEntity<?> getCustomer(@PathVariable String adminUsername){
-		Admin admin = adminService.getAdmin(adminUsername);
+		AdminSummary admin = adminService.getAdmin(adminUsername);
 		return new ResponseEntity<>(admin, admin != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 

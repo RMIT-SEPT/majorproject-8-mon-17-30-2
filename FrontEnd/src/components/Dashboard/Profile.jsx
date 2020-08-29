@@ -34,7 +34,7 @@ function Profile(props){
                     <li className="list-group-item">Phone: {userDetails.phoneNumber}</li>
                 </div>
                 :
-                    <li className="list-group-item">Business: {userDetails.business}</li>
+                    <li className="list-group-item">Business: {userDetails.businessname}</li>
                 }
              
                 <li className="list-group-item">Role: {AuthenticationService.getRole()}</li>

@@ -17,3 +17,17 @@
 .profile-btn{
     margin-bottom: 0;
 }
+.worker-assigned-hours-heading{
+    text-align: center;
+    padding-top:0;
+    margin-top:0;
+    padding-bottom: 2rem;
+}
+.worker-assigned-hours-heading h1{
+    font-size: 2rem;
+}
+.worker-table{
+    text-align: center;
+
+    
+}

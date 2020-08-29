@@ -44,7 +44,7 @@ function AppRouting() {
          {/*
           WORKER ROUTES
         */}
-        <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker`} desc={`worker dashboard`} />} />
+        <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={`worker dashboard`} />} />
         
         
       </Switch>

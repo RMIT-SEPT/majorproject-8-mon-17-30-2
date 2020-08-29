@@ -12,7 +12,6 @@ function Profile(props){
     useEffect(() => {
         GetRequestService.getRequestUsername(props.apiUrl, authenicatedUser)
         .then((response) => {
-            console.log(response.data);
             setUserDetails(response.data);
         })
         .catch(() => {

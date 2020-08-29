@@ -3,7 +3,7 @@ import Register from "../Register";
 import Login from "../Login"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "../Nav/Navbar";
-import ListCustomerBookings from "../ListCustomerBookings";
+// import ListCustomerBookings from "../TESTINGListCustomerBookings";
 import WorkerAuthenticatedRoute from "./WorkerAuthenticatedRoute";
 import CustomerAuthenticatedRoute from "./CustomerAuthenticatedRoute";
 import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
@@ -28,18 +28,19 @@ function AppRouting() {
          {/*
           GENERAL ROUTES
         */}
-        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} justRegistered={false} authorised ={true}/>} />
+        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} justRegistered={false} authorised={true}/>} />
         
         <Route path="/register" exact component={Register} />
         {/*
           CUSTOMER ROUTES
+             <CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} />
         */}
-        <CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} />
+     
         <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} apiUrl={GET_CUSTOMER_URL}/>} />
          {/*
           ADMIN ROUTES
         */}
-        <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />
+        <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />
          {/*
           WORKER ROUTES
         */}

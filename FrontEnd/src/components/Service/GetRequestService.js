@@ -1,6 +1,6 @@
 import axios from 'axios'
+import API_HOST from "../../Utils/utils";
 
-const API_HOST = 'http://localhost:8080'
 
 
 class GetRequestService {

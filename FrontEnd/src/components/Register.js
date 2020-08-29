@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../css/Register.css";
-import axios from "axios";
-
+import PostRequestService from "./Service/PostRequestService";
+import {POST_CUSTOMER_URL} from "../Utils/utils";
 
 class Register extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class Register extends Component {
       phoneNumber: this.state.mobile
     };
    
-    axios.post("http://localhost:8080/api/customer/register", customer)
+    PostRequestService.postRequest(POST_CUSTOMER_URL, customer)
           .then(response => {
             if(response.data != null){
               this.setState(this.intialState);

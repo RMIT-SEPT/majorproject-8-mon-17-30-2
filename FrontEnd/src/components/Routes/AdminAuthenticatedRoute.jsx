@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import AuthenticationService from '../Service/AuthenticationService';
-import {ADMIN} from "../../Utils/utils";
+import AuthenticationService from '../../services/AuthenticationService';
+import {ADMIN} from "../../utils/utils";
 
 // Admin Route only
 // use for admin access

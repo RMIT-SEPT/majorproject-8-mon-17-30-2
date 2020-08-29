@@ -1,7 +1,5 @@
 import axios from 'axios'
-import API_HOST from "../../Utils/utils";
-
-
+import API_HOST from "../utils/utils";
 
 class GetRequestService {
     // Grabs all bookings using backend API
@@ -15,8 +13,6 @@ class GetRequestService {
     async getRequestUsername(url, username) {
         return axios.get(`${API_HOST}${url}${username}`);
     }
-
-
 
 }
 

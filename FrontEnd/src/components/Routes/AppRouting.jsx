@@ -28,8 +28,8 @@ function AppRouting() {
          {/*
           GENERAL ROUTES
         */}
-        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} authorised={true}/>} />
-        <Route path="/login/unauthorised" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} authorised={false}/>} />
+        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} justRegistered={false} authorised ={true}/>} />
+        
         <Route path="/register" exact component={Register} />
         {/*
           CUSTOMER ROUTES

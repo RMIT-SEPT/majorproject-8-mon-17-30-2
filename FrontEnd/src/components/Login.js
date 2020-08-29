@@ -11,15 +11,20 @@ class Login extends Component {
       password: "",
       hasLoginFailed: false,
     };
+   
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this._isMounted = false;
   }
   componentDidMount() {
+  
     this.setState({ hasLoginFailed: false });
     this._isMounted = true;
   }
   componentWillUnmount() {
+    if(this.props.location.state){
+      this.props.location.state = null;
+    }
     this._isMounted = false;
  }
   handleSubmit(event) {
@@ -68,7 +73,8 @@ class Login extends Component {
 
           <div className="form">
           {this.state.hasLoginFailed && <div className="alert alert-warning"> Invalid Credentials </div>}
-          {!this.props.authorised && <div className="alert alert-danger"> Unauthorised Request</div>}
+          {this.props.location.state && this.props.location.state.justRegistered ? <div className="alert alert-success"> Successfully registered! Please Login to continue </div> : null}
+          {this.props.location.state && !this.props.location.state.authorised && <div className="alert alert-danger"> Unauthorised Request</div>}
          
             
 

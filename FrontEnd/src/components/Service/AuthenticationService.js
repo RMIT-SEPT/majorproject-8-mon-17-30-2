@@ -1,7 +1,6 @@
 import axios from "axios";
-const API_URL = 'http://localhost:8080';
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
-export const ROLE_SESSION_ATTRIBUTE = "Role"
+import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE} from "../../Utils/utils";
+
 // Service class that stores the authenticated user variables
 class AuthenticationService {
     executeBasicAuthenticationService(username, password) {
@@ -11,7 +10,7 @@ class AuthenticationService {
             );
     }
     createBasicAuthToken(username, password) {
-        return 'Basic ' + window.btoa(username + ":" + password)
+        return 'Basic ' + window.btoa(username + ":" + password);
     }
 
     registerSuccessfulLogin(username, password) {
@@ -27,27 +26,36 @@ class AuthenticationService {
         axios.interceptors.request.use(
             (config) => {
                 if (this.isUserLoggedIn()) {
-                    config.headers.authorization = token
+                    config.headers.authorization = token;
                 }
-                return config
+                return config;
             }
         )
     }
 
     isUserLoggedIn() {
-        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-        if (user === null) return false
-        return true
+        let retVal = true;
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        if (user === null){
+            retVal = false;
+        }
+        return retVal;
     }
     getLoggedInUserName() {
-        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-        if (user === null) return ''
-        return user
+        let retVal = ''
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        if (user !== null){
+            retVal = user;
+        }
+        return retVal;
     }
     getRole() {
+        let retVal = ''
         let role = sessionStorage.getItem(ROLE_SESSION_ATTRIBUTE)
-        if (role === null) return ''
-        return role
+        if (role !== null){
+            retVal = role;
+        }
+        return retVal;
     }
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);

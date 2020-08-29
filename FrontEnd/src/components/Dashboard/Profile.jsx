@@ -44,7 +44,7 @@ function Profile(props){
                 <li className="list-group-item">Role: {AuthenticationService.getRole()}</li>
                 { AuthenticationService.getRole() === WORKER && 
                     <div className="service-heading">
-                        <h2 className="display-4 text-center"> Services: </h2> 
+                        <h2 className="display-4 text-center"> Services </h2> 
                         {services.map(service => <li className="list-group-item" key={service.id}> {service.title}</li>)}
                    </div>
                }

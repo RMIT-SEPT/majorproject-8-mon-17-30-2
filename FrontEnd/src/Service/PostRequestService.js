@@ -1,5 +1,5 @@
 import axios from 'axios'
-import API_HOST from "../../Utils/utils";
+import API_HOST from "../Utils/utils";
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import AuthenticationService from '../Service/AuthenticationService';
+import AuthenticationService from '../../Service/AuthenticationService';
 import {WORKER, ADMIN} from "../../Utils/utils";
 // Worker routes only
 // use for Worker only access

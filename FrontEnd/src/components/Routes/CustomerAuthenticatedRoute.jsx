@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import AuthenticationService from '../Service/AuthenticationService';
+import AuthenticationService from '../../Service/AuthenticationService';
 import {CUSTOMER, ADMIN} from "../../Utils/utils";
 
 // Customer routes only

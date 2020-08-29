@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
-import AuthenticationService from "../Service/AuthenticationService"
-import GetRequestService from "../Service/GetRequestService";
+import AuthenticationService from "../../Service/AuthenticationService"
+import GetRequestService from "../../Service/GetRequestService";
 import {CUSTOMER, WORKER, ADMIN} from "../../Utils/utils";
 
 function Profile(props){
@@ -39,15 +39,14 @@ function Profile(props){
                 }
                 { AuthenticationService.getRole() === ADMIN && 
                      <li className="list-group-item">Business: {userDetails.businessname}</li>
-                }
-             
+                }             
                 <li className="list-group-item">Role: {AuthenticationService.getRole()}</li>
                 { AuthenticationService.getRole() === WORKER && 
                     <div className="service-heading">
                         <h2 className="display-4 text-center"> Services </h2> 
                         {services.map(service => <li className="list-group-item" key={service.id}> {service.title}</li>)}
                    </div>
-               }
+                }
             </ul>
             {AuthenticationService.getRole() !== WORKER && 
                 <button className="btn btn-info profile-btn">Edit Details here</button>

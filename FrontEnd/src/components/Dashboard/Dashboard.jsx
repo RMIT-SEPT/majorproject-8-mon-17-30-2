@@ -2,7 +2,7 @@ import React from "react";
 import DashboardCard from "./DashboardCard";
 import "../../css/Dashboard.css";
 import Profile from "./Profile";
-import AuthenticationService from "../Service/AuthenticationService";
+import AuthenticationService from "../../Service/AuthenticationService";
 import {WORKER} from "../../Utils/utils";
 import WorkerScheduleTable from "./WorkerScheduleTable";
 

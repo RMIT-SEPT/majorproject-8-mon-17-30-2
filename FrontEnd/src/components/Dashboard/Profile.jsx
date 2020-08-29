@@ -49,7 +49,7 @@ function Profile(props){
                    </div>
                }
             </ul>
-            { !AuthenticationService.getRole() === WORKER && 
+            {AuthenticationService.getRole() !== WORKER && 
                 <button className="btn btn-info profile-btn">Edit Details here</button>
            }
             

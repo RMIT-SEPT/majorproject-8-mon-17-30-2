@@ -1,5 +1,5 @@
 import axios from "axios";
-import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE} from "../Utils/utils";
+import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE} from "../utils/utils";
 
 // Service class that stores the authenticated user variables
 class AuthenticationService {

@@ -3,9 +3,7 @@ const GET_CUSTOMER_URL = '/api/customer/';
 const POST_CUSTOMER_URL= "/api/customer/register/";
 
 const GET_ADMIN_URL = '/api/admin/';
-
 const GET_WORKER_URL = '/api/worker/';
-
 
 const CUSTOMER = "CUSTOMER";
 const ADMIN = "ADMIN";
@@ -19,9 +17,9 @@ const CUSTOMER_BUTTON_DETAILS = [
 ];
 
 const ADMIN_BUTTON_DETAILS = [
-{key: 1, title: "Manage Employees", desc: "View, Add or Edit employees!"},
-{key: 2, title: "Manage Schedule", desc: "Add or Edit working times!"},
-{key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!"}
+    {key: 1, title: "Manage Employees", desc: "View, Add or Edit employees!"},
+    {key: 2, title: "Manage Schedule", desc: "Add or Edit working times!"},
+    {key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!"}
 ];
 
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AuthenticationService from "../../Service/AuthenticationService";
+import AuthenticationService from "../../services/AuthenticationService";
 
 //basic navbar with bootstrap
 function Navbar(props){

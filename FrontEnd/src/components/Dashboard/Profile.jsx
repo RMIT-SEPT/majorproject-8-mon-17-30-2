@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
-import AuthenticationService from "../../Service/AuthenticationService"
-import GetRequestService from "../../Service/GetRequestService";
-import {CUSTOMER, WORKER, ADMIN} from "../../Utils/utils";
+import AuthenticationService from "../../services/AuthenticationService"
+import GetRequestService from "../../services/GetRequestService";
+import {CUSTOMER, WORKER, ADMIN} from "../../utils/utils";
 
 function Profile(props){
     const authenicatedUser = AuthenticationService.getLoggedInUserName();

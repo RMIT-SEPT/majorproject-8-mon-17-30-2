@@ -1,10 +1,9 @@
 package com.rmit.sept.majorProject.dto;
 
 import com.rmit.sept.majorProject.model.Admin;
-import com.rmit.sept.majorProject.model.Business;
-
 
 public class AdminSummary {
+
     private long id;
     private String name;
     private String username;
@@ -21,7 +20,6 @@ public class AdminSummary {
         this.businessname = admin.getBusiness().getBusinessName();
         this.businessId = admin.getBusiness().getId();
     }
-
 
     public long getId() {
         return id;
@@ -62,4 +60,5 @@ public class AdminSummary {
     public void setBusinessId(long businessId) {
         this.businessId = businessId;
     }
+
 }

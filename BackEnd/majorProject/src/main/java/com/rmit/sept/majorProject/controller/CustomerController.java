@@ -16,7 +16,7 @@ import com.rmit.sept.majorProject.service.CustomerService;
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;	
+	private CustomerService customerService;
     
 	public Iterable<Customer> getAllCustomers() {
 		return customerService.findAll();
@@ -32,7 +32,5 @@ public class CustomerController {
 		CustomerSummary summary = customerService.findByIdDTO(customerId);
 		return new ResponseEntity<>(summary, summary != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
-
-	
 
 }

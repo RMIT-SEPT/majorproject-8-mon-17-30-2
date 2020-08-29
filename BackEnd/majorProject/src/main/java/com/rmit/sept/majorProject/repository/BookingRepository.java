@@ -9,6 +9,10 @@ public interface BookingRepository extends CrudRepository<Booking, Long>{
 	
 	public Iterable<Booking> findByCustomerUsername(String customerUsername);
 
+	public Iterable<Booking> findByCustomerId(Long customerId);
+
 	public Iterable<Booking> findByWorkerUsername(String workerUsername);
+
+	public Iterable<Booking> findByWorkerId(Long workerId);
 
 }

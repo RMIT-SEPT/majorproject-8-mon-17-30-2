@@ -73,6 +73,18 @@ public class BookingService{
 		return repository.findByCustomerUsername(customerUsername);
 	}
 
+	public Iterable<Booking> findByCustomerId(Long customerId){
+		return repository.findByCustomerId(customerId);
+	}
+
+	public Iterable<BookingSummary> findByCustomerIdDTO(Long customerId){
+		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
+        for(Booking booking : findByCustomerId(customerId)){
+            allBookingDtos.add(new BookingSummary(booking));
+        }
+        return allBookingDtos;
+	}
+
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
 		return repository.findByWorkerUsername(workerUsername);
 	}

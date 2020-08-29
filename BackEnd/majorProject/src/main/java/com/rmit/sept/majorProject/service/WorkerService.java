@@ -1,8 +1,13 @@
 package com.rmit.sept.majorProject.service;
 
 import java.util.Optional;
+
+import com.rmit.sept.majorProject.dto.AdminSummary;
+import com.rmit.sept.majorProject.dto.WorkerSummary;
+import com.rmit.sept.majorProject.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.model.Person.Role;
@@ -94,8 +99,21 @@ public class WorkerService implements PersonService<Worker>{
 	}
 
 	@Override
-	public Worker findByUsername(String username) {
+	public Worker findByUsername(String username){
 		return repository.findByUsername(username);
+	}
+
+	public WorkerSummary findByUsernameSummary(String username) {
+
+		Worker worker = repository.findByUsername(username);
+		WorkerSummary summary = null;
+		if(worker == null){
+			throw new UsernameNotFoundException("Worker not found in the database");
+		} else {
+			summary = new WorkerSummary(worker);
+		}
+
+		return summary;
 	}
 
 	@Override

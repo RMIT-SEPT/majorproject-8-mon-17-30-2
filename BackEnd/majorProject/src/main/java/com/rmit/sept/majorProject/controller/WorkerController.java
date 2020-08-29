@@ -1,7 +1,11 @@
 package com.rmit.sept.majorProject.controller;
 
+import com.rmit.sept.majorProject.dto.AdminSummary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
@@ -29,6 +33,12 @@ public class WorkerController implements PersonController{
 			workerDtos.add(new WorkerSummary(worker));
 		}
 		return workerDtos;
+	}
+
+	@GetMapping("/api/worker/{workerUsername}")
+	public ResponseEntity<?> getCustomer(@PathVariable String workerUsername){
+		WorkerSummary worker = workerService.findByUsernameSummary(workerUsername);
+		return new ResponseEntity<>(worker, worker != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 
 	@Override

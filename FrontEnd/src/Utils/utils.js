@@ -1,6 +1,6 @@
 const API_HOST = 'http://localhost:8080'
 const GET_CUSTOMER_URL = '/api/customer/';
-const POST_CUSTOMER_URL= "api/customer/register";
+const POST_CUSTOMER_URL= "/api/customer/register/";
 
 const GET_ADMIN_URL = '/api/admin/';
 

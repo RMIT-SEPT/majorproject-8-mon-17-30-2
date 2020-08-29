@@ -33,14 +33,20 @@ public class BookingController {
 		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 
-    @PostMapping("/api/booking/")
+    @PostMapping("/api/booking")
     public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result){
     	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
     	}
 		Booking booking1 = this.bookingService.createNewBooking(booking);
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
-    }
+	}
+	
+	@GetMapping("/api/customer/{customerId}/bookings")
+	public ResponseEntity<?> getBookingsByCustomer(@PathVariable Long customerId){
+		Iterable<BookingSummary> bookings = bookingService.findByCustomerIdDTO(customerId);
+		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
     
 //	@PostMapping("/api/booking/customer")
 //	public ResponseEntity<?> getBookingsByCustomer(@RequestBody String customerUsername){

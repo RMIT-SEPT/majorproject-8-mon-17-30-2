@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../css/Register.css";
-import axios from "axios";
-
+import PostRequestService from "../services/PostRequestService";
+import {POST_CUSTOMER_URL} from "../utils/utils";
 
 class Register extends Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class Register extends Component {
       password: "",
       address: "",
       mobile: "",
-      email: ""
+      email: "",
+      hasRegisterFailed: false,
      
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,12 +32,17 @@ class Register extends Component {
       phoneNumber: this.state.mobile
     };
    
-    axios.post("http://localhost:8080/api/customer/register", customer)
+    PostRequestService.postRequest(POST_CUSTOMER_URL, customer)
           .then(response => {
             if(response.data != null){
               this.setState(this.intialState);
-              alert("Customer saved successfully");
+              this.props.history.push({
+                pathname: '/login',
+                state: {justRegistered: true, authorised: true}
+              });
             }
+          }).catch(() => {
+            this.setState({hasRegisterFailed: true });
           });
          
           
@@ -52,6 +58,7 @@ class Register extends Component {
           <header className="Register-header">Create an Account</header>
 
           <div className="form">
+          {this.state.hasRegisterFailed && <div className="alert alert-danger"> Invalid Credentials </div>}
             <div className="form-input">
               <label>Full Name:</label>
               <input

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AuthenticationService from "../Service/AuthenticationService";
+import AuthenticationService from "../../services/AuthenticationService";
 
 //basic navbar with bootstrap
 function Navbar(props){
@@ -36,7 +36,7 @@ function Navbar(props){
 
             {props.isLoggedIn ? 
                 <ul className="navbar-nav ml-auto">
-                    <span className = "navbar-text">Hello {AuthenticationService.getLoggedInUserName()}!  </span>
+                    <span className = "navbar-text">{AuthenticationService.getLoggedInUserName()}</span>
                     <Link to = "/login" className = "nav-link">
                         <li onClick={handleClick} className = "nav-item">Logout</li>
                     </Link>

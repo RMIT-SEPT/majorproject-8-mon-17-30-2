@@ -1,82 +1,79 @@
 package com.rmit.sept.majorProject.dto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.Booking;
 
 public class BookingSummary {
 
     private Long id;
-    private Long customer;
-    private Long worker;
+    private Long customerId;
+    private String customerName;
+    private Long workerId;
+    private String workerName;
+    private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private Long bookingSlot;
-    private Long service;
+    private Long bookingSlotId;
+    private Long serviceId;
+    private String serviceTitle;
 
     public BookingSummary(Booking booking){
         this.id = booking.getBookingId();
-        this.customer = booking.getCustomer().getId();
-        this.worker = booking.getWorker().getId();
+        this.customerId = booking.getCustomer().getId();
+        this.customerName = booking.getCustomer().getName();
+        this.workerId = booking.getWorker().getId();
+        this.workerName = booking.getWorker().getName();
+        this.date = booking.getBookingSlot().getDate();
         this.startTime = booking.getBookingSlot().getStartTime();
         this.endTime = booking.getBookingSlot().getEndTime();
-        this.bookingSlot = booking.getBookingSlot().getId();
-        this.service = booking.getService().getId();
+        this.bookingSlotId = booking.getBookingSlot().getId();
+        this.serviceId = booking.getService().getId();
+        this.serviceTitle = booking.getService().getTitle();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Long customer) {
-        this.customer = customer;
-    }
-
-    public Long getWorker() {
-        return worker;
-    }
-
-    public void setWorker(Long worker) {
-        this.worker = worker;
-    }
-
     public LocalTime getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
     }
 
     public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public Long getBookingSlot() {
-        return bookingSlot;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setBookingSlot(Long bookingSlot) {
-        this.bookingSlot = bookingSlot;
+    public Long getWorkerId() {
+        return workerId;
     }
 
-    public Long getService() {
-        return service;
+    public String getWorkerName() {
+        return workerName;
     }
 
-    public void setService(Long service) {
-        this.service = service;
+    public Long getBookingSlotId() {
+        return bookingSlotId;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public String getServiceTitle() {
+        return serviceTitle;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
 }

@@ -11,6 +11,8 @@ public class CustomerSummary {
     private String name;
     private String email;
     private String username;
+    private String address;
+    private String phoneNumber;
     private List<Long> bookings = new ArrayList<Long>();
 
     public CustomerSummary(Customer customer){
@@ -21,22 +23,16 @@ public class CustomerSummary {
         }
         this.email = customer.getEmail();
         this.username = customer.getUsername();
+        this.address = customer.getAddress();
+        this.phoneNumber = customer.getPhoneNumber();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Iterable<Long> getBookings() {
@@ -47,16 +43,16 @@ public class CustomerSummary {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
 }

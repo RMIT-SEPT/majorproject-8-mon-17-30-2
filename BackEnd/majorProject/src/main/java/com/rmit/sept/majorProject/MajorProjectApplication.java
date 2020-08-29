@@ -1,12 +1,6 @@
 package com.rmit.sept.majorProject;
 
-import com.rmit.sept.majorProject.model.Admin;
-import com.rmit.sept.majorProject.model.Booking;
-import com.rmit.sept.majorProject.model.BookingSlot;
-import com.rmit.sept.majorProject.model.Customer;
-import com.rmit.sept.majorProject.model.Service;
-import com.rmit.sept.majorProject.model.Worker;
-import com.rmit.sept.majorProject.model.WorkSlot;
+import com.rmit.sept.majorProject.model.*;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
@@ -60,10 +54,13 @@ public class MajorProjectApplication {
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
 			workerRepository.save(john);
 			Admin caramel = new Admin("Admin", "caramel6", "password");
+			Business business = new Business("Caramel's Hair salon!");
+			caramel.setBusiness(business);
 			adminRepository.save(caramel);
 
 			//create date/times
 			LocalDate day              = LocalDate.of(2021, 12, 31);
+			LocalDate oldDay           = LocalDate.of(2007, 9, 25);
 			LocalTime shiftStartTime   = LocalTime.of(10, 00);
 			LocalTime shiftEndTime     = LocalTime.of(17, 00);
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
@@ -86,14 +83,17 @@ public class MajorProjectApplication {
 
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
 			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
+			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
 			johnShift.addBookingSlot(johnSlot);
 			workSlotRepository.save(johnShift);
 			bookingSlotRepository.save(johnSlot);
+			bookingSlotRepository.save(oldSlot);
 
 			//bookings
-//			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), bookingSlotRepository.getNewest());
-//			bookingRepository.save(austinBooking);
-
+			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), johnSlot);
+			bookingRepository.save(austinBooking);
+			Booking oldBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking);
 		};
 	}
 

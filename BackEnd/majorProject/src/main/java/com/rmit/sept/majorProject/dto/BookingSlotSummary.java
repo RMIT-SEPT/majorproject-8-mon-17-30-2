@@ -34,74 +34,38 @@ public class BookingSlotSummary{
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getWorkerId() {
         return workerId;
-    }
-
-    public void setWorkerId(Long workerId) {
-        this.workerId = workerId;
     }
 
     public String getWorkerName(){
         return this.workerName;
     }
 
-    public void setWorkerName(String workerName){
-        this.workerName = workerName;
-    }
-
     public LocalTime getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
     }
 
     public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
     public Long getWorkSlotId() {
         return workSlotId;
-    }
-
-    public void setWorkSlotId(Long workSlotId) {
-        this.workSlotId = workSlotId;
     }
 
     public boolean isSet() {
         return isSet;
     }
 
-    public void setSet(boolean isSet) {
-        this.isSet = isSet;
-    }
-
     public Service getBookedService() {
         return bookedService;
-    }
-
-    public void setBookedService(Service bookedService) {
-        this.bookedService = bookedService;
     }
 
     public Iterable<Service> getAvailableServices() {
         return availableServices;
     }
-
-    public void setAvailableServices(Iterable<Service> availableServices) {
-        this.availableServices = availableServices;
-    }  
-    
+   
     public boolean isFullyBooked(){
         return this.fullyBooked;
     }

@@ -1,13 +1,18 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import AuthenticationService from '../Service/AuthenticationService';
+import AuthenticationService from '../../services/AuthenticationService';
+import {ADMIN} from "../../utils/utils";
+
 // Admin Route only
 // use for admin access
 function AdminAuthenticatedRoute(props) {
-    if (AuthenticationService.isUserLoggedIn() && (AuthenticationService.getRole() === "ADMIN")) {
+    if (AuthenticationService.isUserLoggedIn() && (AuthenticationService.getRole() === ADMIN)) {
         return <Route {...props} />
     } else {
-        return <Redirect to="/login/unauthorised" />
+        return <Redirect to={{
+            pathname: '/login',
+            state: { authorised: false }
+          }} />
     }
     
 }

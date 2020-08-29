@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import CustomerBookingDataService from './Service/CustomerBookingDataService';
+import CustomerBookingDataService from './Service/TESTINGCustomerBookingDataService';
 
 function ListCustomerBookings(props){
     const [customerBookings, setCustomerBookings] = useState([]);

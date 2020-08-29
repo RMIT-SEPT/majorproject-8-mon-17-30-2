@@ -41,7 +41,7 @@ public class Business {
 
     // --------------GETTERS AND SETTERS---------------
 
-    public long getId(){
+    public Long getId(){
         return this.id;
     }
     public String getBusinessName(){

@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.rmit.sept.majorProject.dto.AdminSummary;
@@ -34,6 +35,28 @@ public class WorkerService implements PersonService<Worker>{
 		}
 		Worker newWorker = new Worker(worker);
 		return repository.save(newWorker);
+	}
+
+	//---------------DTO FUNCTIONS--------------
+
+	public Iterable<WorkerSummary> getAllWorkersDTO(){
+		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
+		Iterable<Worker> workers = repository.findAll();
+		for(Worker worker : workers){
+			workerDtos.add(new WorkerSummary(worker));
+		}
+		return workerDtos;
+	}
+
+	public WorkerSummary findByUsernameDTO(String username) {
+		Worker worker = repository.findByUsername(username);
+		WorkerSummary summary = null;
+		if(worker == null){
+			throw new UsernameNotFoundException("Worker not found in the database");
+		} else {
+			summary = new WorkerSummary(worker);
+		}
+		return summary;
 	}
 	
 	//---------GENERIC PERSON FUNCTIONS------------
@@ -101,19 +124,6 @@ public class WorkerService implements PersonService<Worker>{
 	@Override
 	public Worker findByUsername(String username){
 		return repository.findByUsername(username);
-	}
-
-	public WorkerSummary findByUsernameSummary(String username) {
-
-		Worker worker = repository.findByUsername(username);
-		WorkerSummary summary = null;
-		if(worker == null){
-			throw new UsernameNotFoundException("Worker not found in the database");
-		} else {
-			summary = new WorkerSummary(worker);
-		}
-
-		return summary;
 	}
 
 	@Override

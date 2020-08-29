@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person.Role;
@@ -35,11 +33,9 @@ public class CustomerService implements PersonService<Customer>{
         return repository.save(newCustomer);
 	}
 
-	public Iterable<Customer> getAllCustomers(){
-		return repository.findAll();
-	}
+	//---------------DTO FUNCTIONS--------------	
 
-	public Iterable<CustomerSummary> getAllCustomersDTO(){
+	public Iterable<CustomerSummary> findAllDTO(){
 		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
 		Iterable<Customer> customers = repository.findAll();
 		for(Customer customer : customers){
@@ -48,16 +44,24 @@ public class CustomerService implements PersonService<Customer>{
 		return customerDtos;
 	}
 
-	public CustomerSummary getCustomer(String username){
+	public CustomerSummary findByIdDTO(Long id){
 		CustomerSummary summary = null;
-		Customer customerFound = repository.findByUsername(username);
-
+		Optional<Customer> customerOptional = repository.findById(id);
+		Customer customerFound = customerOptional.get();
 		if (customerFound != null){
 			summary = new CustomerSummary(customerFound);
 		}
 		return summary;
 	}
 
+	public CustomerSummary findByUsernameDTO(String username){
+		CustomerSummary summary = null;
+		Customer customerFound = repository.findByUsername(username);
+		if (customerFound != null){
+			summary = new CustomerSummary(customerFound);
+		}
+		return summary;
+	}
 
 	//---------GENERIC PERSON FUNCTIONS------------	
 

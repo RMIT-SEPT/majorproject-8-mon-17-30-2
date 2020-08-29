@@ -1,14 +1,12 @@
 package com.rmit.sept.majorProject.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
-
 import com.rmit.sept.majorProject.dto.AdminSummary;
-import com.rmit.sept.majorProject.dto.CustomerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.AdminRepository;
@@ -32,40 +30,59 @@ public class AdminService implements PersonService<Admin> {
 		return repository.save(newAdmin);
 	}
 
+	//---------------DTO FUNCTIONS--------------
+
+	public Iterable<AdminSummary> findAllDTO(){
+		ArrayList<AdminSummary> adminDtos = new ArrayList<AdminSummary>();
+		Iterable<Admin> admins = repository.findAll();
+		for(Admin admin : admins){
+			adminDtos.add(new AdminSummary(admin));
+		}
+		return adminDtos;
+	}
+	
+    public AdminSummary findByUsernameDTO(String adminUsername) {
+		Admin admin = repository.findByUsername(adminUsername);
+		AdminSummary summary = null;
+		if(admin == null){
+			throw new UsernameNotFoundException("Admin not found in the database");
+		} 
+		else {
+			summary = new AdminSummary(admin);
+		}
+		return summary;
+    }
+	
+    //---------GENERIC PERSON FUNCTIONS---------
+
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+		return repository.count();
 	}
 
 	@Override
 	public void delete(Admin person) {
-		// TODO Auto-generated method stub
-
+		repository.delete(person);
 	}
 
 	@Override
 	public void deleteAll() {
-		// TODO Auto-generated method stub
-
+		repository.deleteAll();
 	}
 
 	@Override
 	public void deleteAll(Iterable<Admin> persons) {
-		// TODO Auto-generated method stub
-
+		repository.deleteAll(persons);
 	}
 
 	@Override
 	public void deleteById(long id) {
-		// TODO Auto-generated method stub
-
+		repository.deleteById(id);
 	}
 
 	@Override
 	public boolean existsById(long id) {
-		// TODO Auto-generated method stub
-		return false;
+		return repository.existsById(id);
 	}
 
 	@Override
@@ -75,60 +92,37 @@ public class AdminService implements PersonService<Admin> {
 
 	@Override
 	public Iterable<Admin> findAllById(Iterable<Long> ids) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAllById(ids);
 	}
 
 	@Override
 	public Optional<Admin> findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(id);
 	}
 
 	@Override
 	public Admin save(Admin person) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(person);
 	}
 
 	@Override
 	public Iterable<Admin> saveAll(Iterable<Admin> persons) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.saveAll(persons);
 	}
 
 	@Override
 	public Iterable<Admin> findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByName(name);
 	}
 
 	@Override
 	public Admin findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByUsername(username);
 	}
 
 	@Override
 	public Iterable<Admin> findByRole(Role role) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByRole(role);
 	}
-
-    public AdminSummary getAdmin(String adminUsername) {
-		Admin admin = repository.findByUsername(adminUsername);
-		AdminSummary summary = null;
-		if(admin == null){
-			throw new UsernameNotFoundException("Admin not found in the database");
-		} else {
-			summary = new AdminSummary(admin);
-		}
-
-
-		return summary;
-    }
-
-    //---------GENERIC PERSON FUNCTIONS------------
-	
 	
 }

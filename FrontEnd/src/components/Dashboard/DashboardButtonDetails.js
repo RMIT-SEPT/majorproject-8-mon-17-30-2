@@ -12,5 +12,5 @@ const AdminButtonDetails = [
 
 
 
-
-export {customerButtonDetails, AdminButtonDetails};
+export default customerButtonDetails;
+export {AdminButtonDetails};

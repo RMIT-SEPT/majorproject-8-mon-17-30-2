@@ -2,10 +2,10 @@ import React from "react";
 import DashboardCard from "./DashboardCard";
 import "../../css/Dashboard.css";
 import Profile from "./Profile";
-import customerButtonDetails from "./DashboardButtonDetails";
+import {AdminButtonDetails} from "./DashboardButtonDetails";
 
-function Dashboard(props) {
-  const GET_CUSTOMER_URL = '/api/customer/';
+function AdminDashboard(props) {
+    const GET_ADMIN_URL = '/api/admin/';
   return (
         <div>
 
@@ -15,9 +15,9 @@ function Dashboard(props) {
             </div>
             <div className="card-body">
             
-              <Profile apiUrl={GET_CUSTOMER_URL}/>
+              <Profile apiUrl={GET_ADMIN_URL} />
               <div className="card-deck">
-              {customerButtonDetails.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} />)}
+              {AdminButtonDetails.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} />)}
             </div>
           </div>
         </div>
@@ -27,4 +27,4 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+export default AdminDashboard;

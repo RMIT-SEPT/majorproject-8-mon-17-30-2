@@ -8,6 +8,7 @@ import WorkerAuthenticatedRoute from "./WorkerAuthenticatedRoute";
 import CustomerAuthenticatedRoute from "./CustomerAuthenticatedRoute";
 import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
 import Dashboard from "../Dashboard/Dashboard";
+import AdminDashboard from "../Dashboard/AdminDashboard";
 import AuthenticationService from "../Service/AuthenticationService"
 import Footer from "../Footer";
 
@@ -33,11 +34,11 @@ function AppRouting() {
           CUSTOMER ROUTES
         */}
         <CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} />
-        <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} desc={`customer dashboard`} />} />
+        <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} />} />
          {/*
           ADMIN ROUTES
         */}
-        <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin`} desc={`Admin dashboard`} />} />
+        <AdminAuthenticatedRoute path="/admin" exact render={(props) => <AdminDashboard {...props} title={`Admin Dashboard`}/>} />
          {/*
           WORKER ROUTES
         */}

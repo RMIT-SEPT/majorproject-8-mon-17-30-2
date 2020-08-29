@@ -60,6 +60,7 @@ public class MajorProjectApplication {
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
 			workerRepository.save(john);
 			Admin caramel = new Admin("Admin", "caramel6", "password");
+
 			adminRepository.save(caramel);
 
 			//create date/times

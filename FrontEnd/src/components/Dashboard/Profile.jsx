@@ -3,13 +3,13 @@ import "../../css/Dashboard.css";
 import AuthenticationService from "../Service/AuthenticationService"
 import GetRequestService from "../Service/GetRequestService";
 
-function Profile(){
+function Profile(props){
     const authenicatedUser = AuthenticationService.getLoggedInUserName();
-    const GET_CUSTOMER_URL = '/api/customer/';
+   
     const[userDetails, setUserDetails] = useState({});
 
     useEffect(() => {
-        GetRequestService.getRequestUsername(GET_CUSTOMER_URL, authenicatedUser)
+        GetRequestService.getRequestUsername(props.apiUrl, authenicatedUser)
         .then((response) => {
             console.log(response.data);
             setUserDetails(response.data);
@@ -18,7 +18,7 @@ function Profile(){
             console.log("ERROR USER CANNOT BE FOUND");
         });
 
-    }, [authenicatedUser]);
+    }, [authenicatedUser, props.apiUrl]);
 
     return(
         <div className="jumbotron profile">
@@ -28,8 +28,15 @@ function Profile(){
             <ul className="list-group profile-list">
                 <li className="list-group-item">Username: {userDetails.username}</li>
                 <li className="list-group-item">Name: {userDetails.name}</li>
-                <li className="list-group-item">Address: {userDetails.address}</li>
-                <li className="list-group-item">Phone: {userDetails.phoneNumber}</li>
+                {AuthenticationService.getRole() === "CUSTOMER" ?    
+                <div>
+                    <li className="list-group-item">Address: {userDetails.address}</li>
+                    <li className="list-group-item">Phone: {userDetails.phoneNumber}</li>
+                </div>
+                :
+                    <li className="list-group-item">Business: {userDetails.business}</li>
+                }
+             
                 <li className="list-group-item">Role: {AuthenticationService.getRole()}</li>
             </ul>
             <button className="btn btn-info profile-btn">Edit Details here</button>

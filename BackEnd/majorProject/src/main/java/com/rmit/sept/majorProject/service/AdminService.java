@@ -1,8 +1,11 @@
 package com.rmit.sept.majorProject.service;
 
 import java.util.Optional;
+
+import com.rmit.sept.majorProject.dto.CustomerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.rmit.sept.majorProject.model.Admin;
@@ -110,8 +113,18 @@ public class AdminService implements PersonService<Admin> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	//---------GENERIC PERSON FUNCTIONS------------
+
+    public Admin getAdmin(String adminUsername) {
+		Admin admin = repository.findByUsername(adminUsername);
+		if(admin == null){
+			throw new UsernameNotFoundException("Admin not found in the database");
+		}
+
+
+		return admin;
+    }
+
+    //---------GENERIC PERSON FUNCTIONS------------
 	
 	
 }

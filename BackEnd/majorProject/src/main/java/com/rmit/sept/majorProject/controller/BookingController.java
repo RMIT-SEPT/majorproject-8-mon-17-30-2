@@ -33,7 +33,7 @@ public class BookingController {
 		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 
-    @PostMapping("/api/booking/")
+    @PostMapping("/api/booking")
     public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result){
     	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../css/Login.css";
-import "../Utils/utils";
+import "../utils/utils";
 import AuthenticationService from "../services/AuthenticationService";
-import { ROLE_SESSION_ATTRIBUTE } from "../Utils/utils";
+import { ID_SESSION_ATTRIBUTE, ROLE_SESSION_ATTRIBUTE } from "../utils/utils";
 
 class Login extends Component {
 

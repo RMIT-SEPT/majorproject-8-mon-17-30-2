@@ -82,10 +82,13 @@ public class MajorProjectApplication {
 			workerRepository.save(john);
 
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
+			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
 			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
 			johnShift.addBookingSlot(johnSlot);
+			oldShift.addBookingSlot(oldSlot);
 			workSlotRepository.save(johnShift);
+			workSlotRepository.save(oldShift);
 			bookingSlotRepository.save(johnSlot);
 			bookingSlotRepository.save(oldSlot);
 

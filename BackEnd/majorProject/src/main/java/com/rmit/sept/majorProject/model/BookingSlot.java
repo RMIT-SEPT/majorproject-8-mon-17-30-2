@@ -87,6 +87,10 @@ public class BookingSlot extends Slot {
         return(this.bookings.size() >= bookedService.getCapacity());
     }
 
+    public java.time.LocalDate getBookSlotDate() {
+        return this.date;
+    }
+
     public void setWorkSlot(WorkSlot newSlot) {
         //prevent endless loop
         if(sameAsFormer(newSlot)){

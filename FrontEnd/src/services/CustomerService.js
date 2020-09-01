@@ -24,7 +24,7 @@ class CustomerService {
 
     //all bookings for now
     getCustomerPastBookings(customerId){
-        return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings');
+        return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings/past');
     }
 
 }

@@ -25,7 +25,6 @@ public class BasicAuthenticationController {
     @Autowired
     private WorkerRepository workerRepository;
 
-    @CrossOrigin(origins={ "http://localhost:3000" })
     @GetMapping(path = "/auth/{username}/{password}")
     public AuthenticationBean authenticate(@PathVariable String username, @PathVariable String password ) {
         Person person = null;
@@ -43,7 +42,7 @@ public class BasicAuthenticationController {
             throw new UsernameNotFoundException("Username does not exist in the database");
         }
 
-        return new AuthenticationBean(person.getRole().toString());
+        return new AuthenticationBean(person.getRole().toString(), person.getId());
     }
 
 }

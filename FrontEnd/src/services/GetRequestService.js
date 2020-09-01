@@ -13,6 +13,9 @@ class GetRequestService {
     async getRequestUsername(url, username) {
         return axios.get(`${API_HOST}${url}${username}`);
     }
+    async getRequestId(url, id){
+        return axios.get(`${API_HOST}${url}${id}`);
+    }
 
 }
 

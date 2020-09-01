@@ -4,6 +4,9 @@ import "../utils/utils";
 import AuthenticationService from "../services/AuthenticationService";
 import { ID_SESSION_ATTRIBUTE, ROLE_SESSION_ATTRIBUTE } from "../utils/utils";
 
+//for debug printing using util2.inspect(object, false, null, true)
+const util2 = require('util');
+
 class Login extends Component {
 
   constructor(props) {

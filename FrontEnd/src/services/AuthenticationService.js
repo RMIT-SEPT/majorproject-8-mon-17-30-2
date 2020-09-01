@@ -11,18 +11,17 @@ class AuthenticationService {
             );
     }
 
-    createBasicAuthToken(username, password) {
+    createBasicAuthToken(username, password, id) {
         return 'Basic ' + window.btoa(username + ":" + password);
     }
 
-    registerSuccessfulLogin(username, password) {
-
+    registerSuccessfulLogin(username, password, id) {
         // We only register successful login if the returned axios request is not an exception
         // i.e the user was found with the right creditentials in the database
-        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
         // From now on every request will have an authorisation token created
         // so that we don't have to create it each time we make a request to our server
-        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
+        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
     }
 
     setupAxiosInterceptors(token) {
@@ -75,6 +74,7 @@ class AuthenticationService {
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
         sessionStorage.removeItem(ROLE_SESSION_ATTRIBUTE);
+        sessionStorage.removeItem(ID_SESSION_ATTRIBUTE);
     }
 }
 

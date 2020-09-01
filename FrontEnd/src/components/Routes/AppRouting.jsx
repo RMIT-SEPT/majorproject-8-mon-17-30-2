@@ -11,7 +11,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
 import AuthenticationService from "../../services/AuthenticationService";
 import Footer from "../Footer";
-import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL} from "../../utils/utils.js";
+import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL} from "../../utils/utils";
 
 // Routes the application
 // Google React-Router-Dom to learn more about routing

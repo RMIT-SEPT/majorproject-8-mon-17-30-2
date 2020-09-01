@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../css/Register.css";
 import PostRequestService from "../services/PostRequestService";
-import {POST_CUSTOMER_URL} from "../utils/utils";
+import {POST_CUSTOMER_URL} from "../Utils/utils";
 
 class Register extends Component {
   constructor(props) {

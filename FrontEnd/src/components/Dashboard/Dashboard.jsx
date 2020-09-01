@@ -3,7 +3,7 @@ import DashboardCard from "./DashboardCard";
 import "../../css/Dashboard.css";
 import Profile from "./Profile";
 import AuthenticationService from "../../services/AuthenticationService";
-import {WORKER} from "../../utils/utils";
+import {WORKER} from "../../Utils/utils";
 import WorkerScheduleTable from "./WorkerScheduleTable";
 
 

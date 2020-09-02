@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 
@@ -23,8 +26,13 @@ public class BookingService{
 	private ServiceRepository servRepository;
 	@Autowired
 	private BusinessRepository busiRepository;
+	@Autowired
+	private BookingSlotRepository bookingSlotRepository;
 	
-	public Booking createNewBooking(Booking booking){
+	
+	public Booking createNewBooking(Booking booking)
+	{
+		//TODO Retest, maybe modify the equals?
 		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
 				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
 			return null;
@@ -33,10 +41,13 @@ public class BookingService{
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-		if(duplicateBooking(booking)){
+		booking.setBookingSlot(this.bookingSlotRepository.findById(booking.getBookingSlot().getId()).get());
+		if(duplicateBooking(booking))
+		{
 			return booking;
 		}
-		return this.repository.save(booking);		
+		booking.getBookingSlot().setBookedService(booking.getService());
+		return this.repository.save(booking);
 	}
 	
 	public boolean duplicateBooking(Booking booking){
@@ -92,5 +103,46 @@ public class BookingService{
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
 		return repository.findByWorkerUsername(workerUsername);
 	}
-
+	
+	public Iterable<Booking> getAvailableBookingsByBusiness(Business business)
+	{
+		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBusiness(business);
+		ArrayList<Booking> businessBooking = new ArrayList<Booking>();
+		for(Booking booking: bookingList)
+		{
+			if(booking.getBusiness() == business && booking.getCustomer() == null)
+			{
+				businessBooking.add(booking);
+			}
+		}
+		return businessBooking;
+	}
+	
+	public Iterable<Booking> getAvailableBookingsByWorker(Worker worker)
+	{
+		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByWorker(worker);
+		ArrayList<Booking> workerBooking = new ArrayList<Booking>();
+		for(Booking booking: bookingList)
+		{
+			if(booking.getWorker() == worker && booking.getCustomer() == null)
+			{
+				workerBooking.add(booking);
+			}
+		}
+		return workerBooking;
+	}
+	
+	public Iterable<Booking> getAvailableBookingsByDay(LocalDate day)
+	{
+		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBookingSlotDate(day);
+		ArrayList<Booking> dayBooking = new ArrayList<Booking>();
+		for(Booking booking: bookingList)
+		{
+			if(booking.getBookingSlot().getDate() == day && booking.getCustomer() == null)
+			{
+				dayBooking.add(booking);
+			}
+		}
+		return dayBooking;
+	}
 }

@@ -13,7 +13,7 @@ function Profile(props){
     useEffect(() => {
         // GetRequestService.getRequestUsername(props.apiUrl, authenticatedUser)
         GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)
-        .then((response) => {
+        .then((response) => {        
             setUserDetails(response.data);
             setServices(response.data.services);          
         })

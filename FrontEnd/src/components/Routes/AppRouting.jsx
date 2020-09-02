@@ -11,7 +11,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
 import AuthenticationService from "../../services/AuthenticationService";
 import Footer from "../Footer";
-import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL} from "../../Utils/utils";
+import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
 
 // Routes the application
 // Google React-Router-Dom to learn more about routing
@@ -28,7 +28,8 @@ function AppRouting() {
         <Route path="/register" exact component={Register} />
         {/* CUSTOMER ROUTES
          CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} /> */}
-        <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} apiUrl={GET_CUSTOMER_URL}/>} />       
+        <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} 
+        apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 
          {/* ADMIN ROUTES */}
         <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />

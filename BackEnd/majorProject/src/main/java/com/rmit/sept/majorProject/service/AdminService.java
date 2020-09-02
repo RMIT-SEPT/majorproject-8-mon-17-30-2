@@ -51,7 +51,17 @@ public class AdminService implements PersonService<Admin> {
 			summary = new AdminSummary(admin);
 		}
 		return summary;
-    }
+	}
+	
+	public AdminSummary findByIdDTO(Long id){
+		AdminSummary summary = null;
+		Optional<Admin> customerOptional = repository.findById(id);
+		Admin adminFound = customerOptional.get();
+		if (adminFound != null){
+			summary = new AdminSummary(adminFound);
+		}
+		return summary;
+	}
 	
     //---------GENERIC PERSON FUNCTIONS---------
 

@@ -58,6 +58,16 @@ public class WorkerService implements PersonService<Worker>{
 		}
 		return summary;
 	}
+
+	public WorkerSummary findByIdDTO(Long id){
+		WorkerSummary summary = null;
+		Optional<Worker> workerOptional = repository.findById(id);
+		Worker workerFound = workerOptional.get();
+		if (workerFound != null){
+			summary = new WorkerSummary(workerFound);
+		}
+		return summary;
+	}
 	
 	//---------GENERIC PERSON FUNCTIONS------------
 	

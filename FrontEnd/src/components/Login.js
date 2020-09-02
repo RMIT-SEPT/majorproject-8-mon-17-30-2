@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../css/Login.css";
-import "../utils/utils";
+import "../Utils/utils";
 import AuthenticationService from "../services/AuthenticationService";
-import { ID_SESSION_ATTRIBUTE, ROLE_SESSION_ATTRIBUTE } from "../utils/utils";
+import { ID_SESSION_ATTRIBUTE, ROLE_SESSION_ATTRIBUTE } from "../Utils/utils";
 
 //for debug printing using util2.inspect(object, false, null, true)
 const util2 = require('util');

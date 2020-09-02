@@ -68,7 +68,7 @@ public class BookingSlotService{
 		{
 			try {
 				for(BookingSlot slot : getAvailableBookingSlots()) {
-					if(slot.getWorkSlot().getWorker().getBusiness().getBusinessName() == business.getBusinessName() 
+					if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
 					&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername())
 					&& slot.getDate().isEqual(date)) 
 					{
@@ -87,7 +87,7 @@ public class BookingSlotService{
 			{
 				try {
 					for(BookingSlot slot : getAvailableBookingSlots()) {
-						if(slot.getWorkSlot().getWorker().getBusiness().getBusinessName() == business.getBusinessName())
+						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId())
 						{
 							availableSlots.add(new BookingSlotSummary(slot));
 						}
@@ -101,7 +101,7 @@ public class BookingSlotService{
 				
 					try {
 						for(BookingSlot slot : getAvailableBookingSlots()) {
-							if(slot.getWorkSlot().getWorker().getBusiness().getBusinessName() == business.getBusinessName() 
+							if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
 									&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
 									{
 										availableSlots.add(new BookingSlotSummary(slot));
@@ -115,7 +115,7 @@ public class BookingSlotService{
 			{
 				try {
 					for(BookingSlot slot : getAvailableBookingSlots()) {
-						if(slot.getWorkSlot().getWorker().getBusiness().getBusinessName() == business.getBusinessName() 
+						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
 								&& slot.getDate().isEqual(date))
 						{
 							availableSlots.add(new BookingSlotSummary(slot));

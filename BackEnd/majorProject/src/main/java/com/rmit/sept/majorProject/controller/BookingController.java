@@ -30,14 +30,7 @@ public class BookingController {
 		return bookingService.getAllBookingsDTO();
 	}
 
-	@GetMapping("/api/booking/customer/{customerUsername}")
-	public ResponseEntity<?> getBookingsByCustomer(@PathVariable String customerUsername) {
-		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);
-		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
-		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-	}
-
-    @PostMapping("/api/booking")
+	@PostMapping("/api/booking")
     public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result){
     	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
@@ -45,11 +38,21 @@ public class BookingController {
 		Booking booking1 = this.bookingService.createNewBooking(booking);
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
 	}
-	
+
+	//---------------------CUSTOMER BOOKING API----------------------
+
+	@GetMapping("/api/customer/{customerId}/bookings/past")
+	public ResponseEntity<?> getPastBookingsByCustomerIdDTO(@PathVariable Long customerId) {
+		Iterable<BookingSummary> matchingBookings = bookingService.getPastBookingsByCustomerIdDTO(customerId);
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+
 	@GetMapping("/api/customer/{customerId}/bookings")
-	public ResponseEntity<?> getBookingsByCustomer(@PathVariable Long customerId){
-		Iterable<BookingSummary> bookings = bookingService.findByCustomerIdDTO(customerId);
-		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	public ResponseEntity<?> getBookingsByCustomerId(@PathVariable Long customerId) {
+		Iterable<BookingSummary> matchingBookings = bookingService.findByCustomerIdDTO(customerId);
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("/api/business/{business}/bookings")

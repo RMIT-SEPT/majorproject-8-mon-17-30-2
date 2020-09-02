@@ -1,11 +1,10 @@
 package com.rmit.sept.majorProject.service;
 
+import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
@@ -35,8 +34,7 @@ public class BookingService{
 	{
 		//TODO Retest, maybe modify the equals?
 		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
-				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null)
-		{
+				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
 			return null;
 		}
 		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
@@ -52,16 +50,12 @@ public class BookingService{
 		return this.repository.save(booking);
 	}
 	
-	public boolean duplicateBooking(Booking booking)
-	{
-		for(Booking bookings:getBookingsByCustomer(booking.getCustomer().getUsername()))
-		{
+	public boolean duplicateBooking(Booking booking){
+		for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
 			if(bookings.getBusiness().equals(booking.getBusiness()) && 
 					bookings.getWorker().equals(booking.getWorker())
 					&& bookings.getService().equals(booking.getService())
-					&& bookings.getBookingSlot().equals(booking.getBookingSlot())
-					)
-			{
+					&& bookings.getBookingSlot().equals(booking.getBookingSlot())){
 				return true;
 			}
 		}
@@ -80,7 +74,7 @@ public class BookingService{
         return allBookingDtos;
 	}
 
-	public Iterable<Booking> getBookingsByCustomer(String customerUsername){
+	public Iterable<Booking> findByCustomerUsername(String customerUsername){
 		return repository.findByCustomerUsername(customerUsername);
 	}
 
@@ -94,6 +88,16 @@ public class BookingService{
             allBookingDtos.add(new BookingSummary(booking));
         }
         return allBookingDtos;
+	}
+
+	public Iterable<BookingSummary> getPastBookingsByCustomerIdDTO(Long customerId){
+		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByCustomerId(customerId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
 	}
 
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){

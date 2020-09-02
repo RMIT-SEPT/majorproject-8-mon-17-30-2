@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.dto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Service;
@@ -9,6 +10,7 @@ public class BookingSlotSummary{
     private Long id;
     private Long workerId;
     private String workerName;
+    private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
     private Long workSlotId;
@@ -21,6 +23,7 @@ public class BookingSlotSummary{
         this.id = bookingSlot.getId();
         this.workerId = bookingSlot.getWorkSlot().getWorker().getId();
         this.workerName = bookingSlot.getWorkSlot().getWorker().getName();
+        this.date = bookingSlot.getDate();
         this.startTime = bookingSlot.getStartTime();
         this.endTime = bookingSlot.getEndTime();
         this.workSlotId = bookingSlot.getWorkSlot().getId();
@@ -40,6 +43,10 @@ public class BookingSlotSummary{
 
     public String getWorkerName(){
         return this.workerName;
+    }
+
+    public LocalDate getDate(){
+        return this.date;
     }
 
     public LocalTime getStartTime() {

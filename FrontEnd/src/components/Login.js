@@ -1,40 +1,46 @@
 import React, { Component } from "react";
 import "../css/Login.css";
+import "../utils/utils";
 import AuthenticationService from "../services/AuthenticationService";
+import { ID_SESSION_ATTRIBUTE, ROLE_SESSION_ATTRIBUTE } from "../utils/utils";
 
+//for debug printing using util2.inspect(object, false, null, true)
+const util2 = require('util');
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
       hasLoginFailed: false,
-    };
-   
+    };   
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this._isMounted = false;
   }
-  componentDidMount() {
-  
+
+  componentDidMount() {  
     this.setState({ hasLoginFailed: false });
     this._isMounted = true;
   }
+
   componentWillUnmount() {
     if(this.props.location.state){
       this.props.location.state = null;
     }
     this._isMounted = false;
- }
-  handleSubmit(event) {
+  }
 
+  handleSubmit(event) {
     event.preventDefault();
     AuthenticationService
     .executeBasicAuthenticationService(this.state.username, this.state.password)
-    .then((response) => {
-        
-        sessionStorage.setItem("Role", response.data.role);
+    .then((response) => {    
+
+        sessionStorage.setItem(ROLE_SESSION_ATTRIBUTE, response.data.role);
+        sessionStorage.setItem(ID_SESSION_ATTRIBUTE, response.data.id);
         AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
         if(AuthenticationService.getRole() === "CUSTOMER"){
           this.props.history.push(`/customer`);
@@ -48,21 +54,15 @@ class Login extends Component {
         } else{
           AuthenticationService.logout();
           this.props.history.push(`/`);
-        }
+        } 
 
-
-    
-
-        
-    }).catch(() => {
-       
+    }).catch(() => {       
         this.setState({ hasLoginFailed: true });
     })
-
   }
+
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  
+    this.setState({ [event.target.name]: event.target.value });  
   }
 
   render() {
@@ -74,9 +74,7 @@ class Login extends Component {
           <div className="form">
           {this.state.hasLoginFailed && <div className="alert alert-warning"> Invalid Credentials </div>}
           {this.props.location.state && this.props.location.state.justRegistered ? <div className="alert alert-success"> Successfully registered! Please Login to continue </div> : null}
-          {this.props.location.state && !this.props.location.state.authorised && <div className="alert alert-danger"> Unauthorised Request</div>}
-         
-            
+          {this.props.location.state && !this.props.location.state.authorised && <div className="alert alert-danger"> Unauthorised Request</div>}      
 
             <div className="form-input">
               <label>Username:</label>
@@ -107,11 +105,11 @@ class Login extends Component {
             <button className="button buttonshadow" type="submit" onClick = {this.handleSubmit}>
                Login 
             </button>
-          </div>
-          
+          </div>          
   
       </div>
     );
   }
 }
+
 export default Login;

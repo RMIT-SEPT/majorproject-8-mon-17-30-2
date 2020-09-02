@@ -21,7 +21,7 @@ function Dashboard(props) {
           {AuthenticationService.getRole() !== WORKER ?  
             
           <div className="card-deck">
-            {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} />)}
+            {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} link={details.link} />)}
           </div>
           :
             <WorkerScheduleTable/>

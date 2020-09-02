@@ -11,15 +11,15 @@ const WORKER = "WORKER";
 
 
 const CUSTOMER_BUTTON_DETAILS = [
-    {key: 1, title: "Make a Booking", desc: "Make Bookings!"},
-    {key: 2, title: "Manage Bookings", desc: "Edit or Cancel your current bookings!"},
-    {key: 3, title: "Booking History", desc: "View successfully completed bookings"}
+    {key: 1, title: "Make a Booking", desc: "Make Bookings!", link:"/bookings/create"},
+    {key: 2, title: "Manage Bookings", desc: "Edit or Cancel your current bookings!", link:"/bookings/manage"},
+    {key: 3, title: "Booking History", desc: "View successfully completed bookings", link:"/bookings/past"}
 ];
 
 const ADMIN_BUTTON_DETAILS = [
-    {key: 1, title: "Manage Employees", desc: "View, Add or Edit employees!"},
-    {key: 2, title: "Manage Schedule", desc: "Add or Edit working times!"},
-    {key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!"}
+    {key: 1, title: "Manage Employees", desc: "View, Add or Edit employees!", link:"/workers"},
+    {key: 2, title: "Manage Schedule", desc: "Add or Edit working times!", link:"/schedule"},
+    {key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!", link:"/bookings/summary"}
 ];
 
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'

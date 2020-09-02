@@ -1,9 +1,10 @@
 import React from "react";
-
+import {Link} from "react-router-dom";
+import "../../css/BookingHistory.css";
 function DashboardCard(props){
 
     return(
-        <div className="card text-center">
+      <Link className="card text-center dashboard-link" to={props.link}>
         <button className="btn btn-light">
         <div className="card-body">
           <h4 className="card-title">{props.title}</h4>
@@ -15,7 +16,8 @@ function DashboardCard(props){
        
         </div>
         </button>
-      </div>
+      </Link>      
+    
     )
 
 

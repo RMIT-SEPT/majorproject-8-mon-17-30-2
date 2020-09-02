@@ -5,7 +5,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 import { Table } from 'reactstrap';
 
 //for debug printing using util2.inspect(object, false, null, true)
-const util2 = require('util');
+// const util2 = require('util');
 
 class BookingHistory extends Component {
 

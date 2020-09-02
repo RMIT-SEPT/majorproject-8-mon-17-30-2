@@ -2,10 +2,7 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
-import com.rmit.sept.majorProject.dto.AdminSummary;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
-import com.rmit.sept.majorProject.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

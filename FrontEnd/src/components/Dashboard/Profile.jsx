@@ -5,27 +5,27 @@ import GetRequestService from "../../services/GetRequestService";
 import {CUSTOMER, WORKER, ADMIN} from "../../Utils/utils";
 
 function Profile(props){
-    const authenicatedUser = AuthenticationService.getLoggedInUserName();
+    const authenticatedUser = AuthenticationService.getLoggedInUserName();
+    const authenticatedUserId = AuthenticationService.getLoggedInId();
    
     const[userDetails, setUserDetails] = useState({});
     const [services, setServices] = useState([]); 
     useEffect(() => {
-        GetRequestService.getRequestUsername(props.apiUrl, authenicatedUser)
+        // GetRequestService.getRequestUsername(props.apiUrl, authenticatedUser)
+        GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)
         .then((response) => {
-            console.log(response.data);
             setUserDetails(response.data);
-            setServices(response.data.services);
-          
+            setServices(response.data.services);          
         })
         .catch(() => {
             console.log("ERROR USER CANNOT BE FOUND");
         });
 
-    }, [authenicatedUser, props.apiUrl]);
+    }, [authenticatedUserId, props.apiUrl]);
 
     return(
         <div className="jumbotron profile">
-            <h1 className="display-4">Hi, {authenicatedUser}!</h1>
+            <h1 className="display-4">Hi, {authenticatedUser}!</h1>
             <p className="lead">View your details</p>
             <hr className="my-4"/>
             <ul className="list-group profile-list">

@@ -33,9 +33,9 @@ public class WorkerController{
 		return workerDtos;
 	}
 
-	@GetMapping("/api/worker/{workerUsername}")
-	public ResponseEntity<?> getCustomer(@PathVariable String workerUsername){
-		WorkerSummary worker = workerService.findByUsernameDTO(workerUsername);
+	@GetMapping("/api/worker/{workerId}")
+	public ResponseEntity<?> getCustomer(@PathVariable Long workerId){
+		WorkerSummary worker = workerService.findByIdDTO(workerId);
 		return new ResponseEntity<>(worker, worker != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 

@@ -23,9 +23,9 @@ public class AdminController {
 		return adminService.findAll();
 	}
 
-	@GetMapping("/api/admin/{adminUsername}")
-	public ResponseEntity<?> getAdminByUsername(@PathVariable String adminUsername){
-		AdminSummary admin = adminService.findByUsernameDTO(adminUsername);
+	@GetMapping("/api/admin/{adminId}")
+	public ResponseEntity<?> getAdminById(@PathVariable Long adminId){
+		AdminSummary admin = adminService.findByIdDTO(adminId);
 		return new ResponseEntity<>(admin, admin != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 

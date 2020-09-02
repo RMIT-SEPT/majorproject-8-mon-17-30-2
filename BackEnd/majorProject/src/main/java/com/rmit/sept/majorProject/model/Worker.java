@@ -117,5 +117,9 @@ public class Worker extends Person {
         //TODO
         return false;
     }    
+    //TODO equals method worker
+    public boolean equals() {
+    	return false;
+    }
 
 }

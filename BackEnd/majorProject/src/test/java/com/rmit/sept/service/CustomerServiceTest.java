@@ -37,6 +37,7 @@ public class CustomerServiceTest {
     private AdminRepository adminRepository;
 	@MockBean
 	private DuplicateCheckService duplicateCheck;
+	
 	//Test with no details given
 	@Test
 	public void testRegisterNewCustomer0() {

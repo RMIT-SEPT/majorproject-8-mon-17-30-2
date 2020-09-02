@@ -57,4 +57,10 @@ public class Admin extends Person{
     	return this.password;
     }
     
+    //TODO equals method admin
+    public boolean equals() {
+    	return false;
+    }
+
+    
 }

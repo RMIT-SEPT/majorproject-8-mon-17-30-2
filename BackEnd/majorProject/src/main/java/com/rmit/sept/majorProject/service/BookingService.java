@@ -10,6 +10,7 @@ import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 
@@ -26,9 +27,13 @@ public class BookingService{
 	private ServiceRepository servRepository;
 	@Autowired
 	private BusinessRepository busiRepository;
+	@Autowired
+	private BookingSlotRepository bookingSlotRepository;
+	
 	
 	public Booking createNewBooking(Booking booking)
 	{
+		//TODO Retest, maybe modify the equals?
 		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
 				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null)
 		{
@@ -38,11 +43,13 @@ public class BookingService{
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
+		booking.setBookingSlot(this.bookingSlotRepository.findById(booking.getBookingSlot().getId()).get());
 		if(duplicateBooking(booking))
 		{
 			return booking;
 		}
-		return this.repository.save(booking);		
+		booking.getBookingSlot().setBookedService(booking.getService());
+		return this.repository.save(booking);
 	}
 	
 	public boolean duplicateBooking(Booking booking)

@@ -97,6 +97,10 @@ public class MajorProjectApplication {
 			bookingRepository.save(austinBooking);
 			Booking oldBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
 			bookingRepository.save(oldBooking);
+			Booking oldBooking1 = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking1);
+			Booking oldBooking2 = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking2);
 			
 		};
 	}

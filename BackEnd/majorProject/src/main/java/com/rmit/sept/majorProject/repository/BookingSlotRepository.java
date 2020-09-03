@@ -1,11 +1,8 @@
 package com.rmit.sept.majorProject.repository;
 
-import com.rmit.sept.majorProject.model.Worker;
 import org.springframework.transaction.annotation.Transactional;
 import com.rmit.sept.majorProject.model.BookingSlot;
-
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

@@ -35,7 +35,7 @@ public class BookingController {
     	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
     	}
-		Booking booking1 = this.bookingService.createNewBooking(booking);
+		BookingSummary booking1 = this.bookingService.createNewBooking(booking);
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
 	}
 

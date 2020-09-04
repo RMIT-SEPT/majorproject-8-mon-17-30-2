@@ -1,5 +1,7 @@
 package com.rmit.sept.majorProject.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,7 +22,8 @@ public class Booking {
 
     @ManyToOne
     private Service     service;
-    
+
+
     @ManyToOne
     private BookingSlot bookingSlot;
 
@@ -90,5 +93,16 @@ public class Booking {
         this.bookingSlot = bookingSlot;
     	return false;
     }
-   
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", customer=" + customer +
+                ", worker=" + worker +
+                ", business=" + business +
+                ", service=" + service +
+                ", bookingSlot=" + bookingSlot +
+                '}';
+    }
 }

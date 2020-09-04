@@ -102,4 +102,11 @@ public class Customer extends Person {
     	return equals((Customer) object);
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

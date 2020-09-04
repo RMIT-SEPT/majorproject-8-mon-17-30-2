@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.service;
 
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,9 +34,10 @@ public class BookingService{
 	public BookingSummary createNewBooking(Booking booking)
 	{
 		//TODO Retest, maybe modify the equals?
+		System.out.println(booking);
 		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
 				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
-			return null;
+			 throw new UsernameNotFoundException("worker not passed");
 		}
 		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));

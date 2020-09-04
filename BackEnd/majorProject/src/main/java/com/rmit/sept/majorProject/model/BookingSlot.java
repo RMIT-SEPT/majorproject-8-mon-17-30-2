@@ -122,5 +122,13 @@ public class BookingSlot extends Slot {
     public void setAvailableServices(List<Service> availableServices) {
         this.availableServices = availableServices;
     }
-    
+
+    @Override
+    public String toString() {
+        return "BookingSlot{" +
+                "date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }

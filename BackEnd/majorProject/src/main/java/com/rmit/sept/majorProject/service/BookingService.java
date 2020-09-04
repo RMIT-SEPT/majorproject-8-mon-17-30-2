@@ -47,11 +47,12 @@ public class BookingService{
 					booking.getBookingSlot().getStartTime(), 
 					booking.getBookingSlot().getEndTime()))
 			{
-				for(Object service: bookingSlots.getAvailableServices())
+				for(com.rmit.sept.majorProject.model.Service service: bookingSlots.getAvailableServices())
 				{
-					if(booking.getService() == service)
+					if(booking.getService() == service && !bookingSlots.fullyBooked())
 					{
 						booking.setBookingSlot(bookingSlots);
+						booking.getBookingSlot().setBookedService(service);
 					}
 				}
 			}

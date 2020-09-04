@@ -57,14 +57,6 @@ public abstract class Person {
     public Role getRole(){
         return this.role;
     }
-	public boolean equals(Customer customer) {
-		return false;
-	}
-	
-	@Override
-	public boolean equals(Object customer) {
-		return equals((Customer) customer);
-	}
 
 }
  

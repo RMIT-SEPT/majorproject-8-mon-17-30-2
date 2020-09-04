@@ -15,7 +15,7 @@ public class Booking {
     @ManyToOne
     private Worker      worker;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Business    business;
 
     @ManyToOne
@@ -35,7 +35,7 @@ public class Booking {
 
     public Booking(){}
 
-    // --------------GETTERS AND SETTERS---------------
+    //--------------GETTERS AND SETTERS---------------
     
     public Long getBookingId(){
     	return this.id;
@@ -57,10 +57,25 @@ public class Booking {
     public Business getBusiness(){
         return this.business;
     }
-    public boolean setBusiness(Business business){
-    	this.business = business;
-    	return true;
+
+    public void setBusiness(Business newBusiness) {
+        if(sameAsFormer(newBusiness)){
+            return;
+        }
+        Business oldBusiness = this.business;
+        this.business = newBusiness;
+        if (oldBusiness!=null){
+            oldBusiness.removeBooking(this);
+        }
+        if(newBusiness!=null){
+            newBusiness.addBooking(this);
+        }
     }
+
+    private boolean sameAsFormer(Business newBusiness) {
+        return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
+    }
+
     public Service getService(){
         return this.service;
     }

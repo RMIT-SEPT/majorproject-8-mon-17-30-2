@@ -18,11 +18,11 @@ public class Business {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
-    private Admin businessOwner;
-
     @NotNull
     private String businessName;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
+    private Admin businessOwner;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private List<Service> services = new ArrayList<Service>();
@@ -44,29 +44,81 @@ public class Business {
     public Long getId(){
         return this.id;
     }
+    
     public String getBusinessName(){
         return this.businessName;
     }
-    public boolean setBusinessName(String newBusinessName){
-        String current = this.businessName;
+
+    public void setBusinessName(String newBusinessName){
         this.businessName = newBusinessName;
-        return (current != newBusinessName);
     }
-    public Person getBusinessOwner(){
+    
+    public Admin getBusinessOwner(){
         return this.businessOwner;
     }
-    public boolean setBusinessOwner(Admin newBusinessOwner){
-        long current = this.businessOwner.getId();
+
+    public void setBusinessOwner(Admin newBusinessOwner){
+        if(this.businessOwner != null && this.businessOwner.equals(newBusinessOwner)){
+            return;
+        }
         this.businessOwner = newBusinessOwner;
-        return (current != newBusinessOwner.getId());
+        newBusinessOwner.setBusiness(this);
     }
-    public List<Service> getServices(){
-        return this.services;
+
+    public void addWorker(Worker worker) {
+        if(workers.contains(worker)){
+            return ;
+        }
+        workers.add(worker);
+        worker.setBusiness(this);
     }
+
+    public void removeWorker(Worker worker) {
+        if(!workers.contains(worker)){
+            return ;
+        }
+        workers.remove(worker);
+        worker.setBusiness(null);
+    }
+
     public List<Worker> getWorkers(){
         return this.workers;
     }
+
+    public void addBooking(Booking booking) {
+        if (bookings.contains(booking))
+            return;
+        bookings.add(booking);
+        booking.setBusiness(this);
+    }
+    
+    public void removeBooking(Booking booking) {
+        if (!bookings.contains(booking))
+            return ;
+        bookings.remove(booking);
+        booking.setBusiness(null);
+    }
+
     public List<Booking> getBookings(){
         return bookings;
     }
+
+    public void addService(Service service) {
+        if (services.contains(service))
+            return;
+        services.add(service);
+        service.setBusiness(this);
+    }
+
+    public void removeService(Service service) {
+        if (!services.contains(service))
+            return ;
+        services.remove(service);
+        service.setBusiness(null);
+    }
+
+    public List<Service> getServices(){
+        return this.services;
+    }
+
 } 

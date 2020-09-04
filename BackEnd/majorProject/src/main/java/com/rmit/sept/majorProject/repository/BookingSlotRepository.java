@@ -1,13 +1,9 @@
 package com.rmit.sept.majorProject.repository;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

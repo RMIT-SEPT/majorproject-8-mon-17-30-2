@@ -22,7 +22,7 @@ public class Service {
     @ManyToOne
     private Business business;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "services")
     private List<Worker> workers;
 
     public Service(String title, String description, int capacity){
@@ -62,5 +62,23 @@ public class Service {
         int current = this.capacity;
         this.capacity = newCapacity;
         return (current != newCapacity);
+    }
+
+    public void setBusiness(Business newBusiness) {
+        if(sameAsFormer(newBusiness)){
+            return;
+        }
+        Business oldBusiness = this.business;
+        this.business = newBusiness;
+        if (oldBusiness!=null){
+            oldBusiness.removeService(this);
+        }
+        if(newBusiness!=null){
+            newBusiness.addService(this);
+        }
+    }
+
+    private boolean sameAsFormer(Business newBusiness) {
+        return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
     }
 }

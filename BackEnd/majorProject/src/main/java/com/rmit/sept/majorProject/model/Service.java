@@ -81,4 +81,12 @@ public class Service {
     private boolean sameAsFormer(Business newBusiness) {
         return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
     }
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

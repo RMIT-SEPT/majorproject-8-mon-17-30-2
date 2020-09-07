@@ -121,4 +121,11 @@ public class Business {
         return this.services;
     }
 
-} 
+    @Override
+    public String toString() {
+        return "Business{" +
+                "id=" + id +
+                ", businessName='" + businessName + '\'' +
+                '}';
+    }
+}

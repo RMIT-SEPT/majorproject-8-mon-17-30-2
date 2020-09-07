@@ -19,7 +19,7 @@ public class BookingSlot extends Slot {
     @ManyToOne
     private Service bookedService;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "bookingSlot", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingSlot", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
     @ManyToOne
@@ -122,5 +122,13 @@ public class BookingSlot extends Slot {
     public void setAvailableServices(List<Service> availableServices) {
         this.availableServices = availableServices;
     }
-    
+
+    @Override
+    public String toString() {
+        return "BookingSlot{" +
+                "date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }

@@ -196,4 +196,12 @@ public class Worker extends Person {
         return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
     }
 
+
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

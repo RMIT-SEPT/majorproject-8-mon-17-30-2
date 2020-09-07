@@ -38,3 +38,6 @@
 .dashboard-link:hover{
    text-decoration: none;
 }
+.card-body-dashboard{
+    padding: 1.25rem;
+}

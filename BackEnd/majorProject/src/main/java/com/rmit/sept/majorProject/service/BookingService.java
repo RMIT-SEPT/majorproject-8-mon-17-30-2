@@ -2,6 +2,10 @@ package com.rmit.sept.majorProject.service;
 
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,37 +36,54 @@ public class BookingService{
 	
 	public BookingSummary createNewBooking(Booking booking)
 	{
-		//TODO Retest, maybe modify the equals?
-		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
-				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
-			return null;
+		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null) {
+			 throw new UsernameNotFoundException("worker not found");
+			
+		}
+		else if(this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null) {
+			throw new UsernameNotFoundException("customer not found");
+		}
+		else if(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()) == null) {
+			throw new DataRetrievalFailureException("Business not found");
+		}
+		else if(this.servRepository.findByTitle(booking.getService().getTitle()) == null) {
+			throw new DataRetrievalFailureException("Service not found");
 		}
 		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-//		booking.setBookingSlot(this.bookingSlotRepository.findById(booking.getBookingSlot().getId()).get());
+//		com.rmit.sept.majorProject.model.Service tempService = null;
 		try {
-			for(BookingSlot bookingSlots: bookingSlotRepository.findByDateAndStartTimeAndEndTime(booking.getBookingSlot().getDate(), 
-					booking.getBookingSlot().getStartTime(), 
-					booking.getBookingSlot().getEndTime()))
+			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
 			{
-				for(com.rmit.sept.majorProject.model.Service service: bookingSlots.getAvailableServices())
+				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
+						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
+						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
 				{
-					if(booking.getService() == service && !bookingSlots.fullyBooked())
+					for(com.rmit.sept.majorProject.model.Service service: bookingSlots.getAvailableServices())
 					{
-						booking.setBookingSlot(bookingSlots);
-						booking.getBookingSlot().setBookedService(service);
+						if(booking.getService() == service && !bookingSlots.fullyBooked())
+						{
+//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
+//							tempService = bookingSlots.getBookedService();
+							booking.getBookingSlot().setBookedService(service);
+							break;
+						}
+						else if(bookingSlots.fullyBooked())
+						{
+							throw new DataIntegrityViolationException("Service is fully booked");
+						}
 					}
 				}
 			}
 		}
 		catch(NullPointerException e) {}
 		
-		System.out.println(booking.getBookingSlot());
 		if(duplicateBooking(booking))
 		{
-			return new BookingSummary(booking);
+//			booking.getBookingSlot().setBookedService(tempService);
+			throw new DuplicateKeyException("This booking already exists");
 		}
 		return new BookingSummary(this.repository.save(booking));
 	}

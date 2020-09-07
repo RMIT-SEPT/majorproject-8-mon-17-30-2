@@ -19,7 +19,7 @@ public class BookingSlot extends Slot {
     @ManyToOne
     private Service bookedService;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "bookingSlot", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingSlot", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
     @ManyToOne

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import API_HOST from '../Utils/utils';
 
 const BOOKING_API_BASE_URL = 'http://localhost:8080/api/booking'
 
@@ -16,6 +17,10 @@ class BookingService {
 
     addBooking(booking){
         return axios.post(BOOKING_API_BASE_URL, booking);
+    }
+
+    getNewestBookingSlot(){
+        return axios.get(API_HOST + '/api/booking-slot/newest');
     }
 
 }

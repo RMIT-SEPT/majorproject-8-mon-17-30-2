@@ -11,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long> {
     
     //testing purposes
-    @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id DESC", nativeQuery = true)
+    @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id ASC", nativeQuery = true)
     public BookingSlot getNewest();
 
     public Iterable<BookingSlot> findByDateAndStartTimeAndEndTime(LocalDate date, LocalTime startTime, LocalTime endTime);

@@ -1,6 +1,17 @@
 # RMIT SEPT 2020 Major Project
 
-# Release 1.0.0
+# Release 1.1.0
+## Changelog
++ Customer Registration + Login
++ Booking Creation
++ Booking History
++ Customer Dashboard
++ Worker Dashboard
++ Admin Dashboard
++ Frontend/Backend integration
++ More APIs
++ Frontend Routing
+
 
 # Group 02
 

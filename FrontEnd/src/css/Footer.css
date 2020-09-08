@@ -1,0 +1,24 @@
+#footer{
+   
+    position: absolute;
+
+
+    width: 100%;
+   margin-top:10px;
+    color: #212529;
+    text-align: center;
+    font-size: 0.75em;
+
+    
+     
+}
+
+.copyright{
+    list-style-type: none;
+    padding-left:0;
+}
+.footer-item{
+    display:inline-block;
+    margin:0 2px;
+    
+}

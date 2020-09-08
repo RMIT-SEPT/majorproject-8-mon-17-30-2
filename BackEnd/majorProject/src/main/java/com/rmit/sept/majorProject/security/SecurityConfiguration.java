@@ -4,6 +4,7 @@ import com.rmit.sept.majorProject.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         
         //prevent 403 and x-frame errors
         http.csrf().disable();
+        http.cors();
         http.headers().frameOptions().disable();
 
         String customer = Person.Role.CUSTOMER.toString();
@@ -48,19 +50,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         String worker = Person.Role.WORKER.toString();
         http.authorizeRequests()
                 //browsing
+                .antMatchers("/**").permitAll()
+                .antMatchers("/api/booking").permitAll()
                 .antMatchers("/admin").hasRole(admin)
                 .antMatchers("/customer").hasAnyRole(admin, customer)
                 .antMatchers("/worker").hasRole(worker)
                 .antMatchers("/").permitAll()
                 //api (temporarily open)
                 .antMatchers("/api/customer/register").permitAll()
-                .antMatchers("/api/customer").permitAll()
-                .antMatchers("/api/worker").permitAll()
+                .antMatchers("/api/customer/**").permitAll()
+                .antMatchers("/api/worker/**").permitAll()
                 .antMatchers("/api/worker/register").permitAll()
-                .antMatchers("/api/admin").permitAll()
+                .antMatchers("/api/admin/**").permitAll()
                 .antMatchers("/api/admin/register").permitAll()
                 .antMatchers("/h2-console").permitAll()
-                .and().formLogin();
+
+                .antMatchers("/api/booking/customer").permitAll()
+                .antMatchers("/api/booking/customer/**").permitAll()
+                .antMatchers("/api/booking-slot/").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .anyRequest().authenticated()
+                .and().httpBasic();
+//                .and().formLogin();
 
     }
     @Bean

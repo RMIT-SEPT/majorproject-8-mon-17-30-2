@@ -1,23 +1,51 @@
 import React, { Component } from "react";
-import "./Register.css";
+import "../css/Register.css";
+import PostRequestService from "../services/PostRequestService";
+import {POST_CUSTOMER_URL} from "../Utils/utils";
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fullname: "",
-      address: "",
-      mobile: "",
       username: "",
       password: "",
+      address: "",
+      mobile: "",
+      email: "",
+      hasRegisterFailed: false,
+     
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     console.log(this.state);
-    alert("Submitted");
+    const customer = {
+      name: this.state.fullname,
+      username: this.state.username,
+      password: this.state.password,
+      address: this.state.address,
+      email:this.state.email,
+      phoneNumber: this.state.mobile
+    };
+   
+    PostRequestService.postRequest(POST_CUSTOMER_URL, customer)
+          .then(response => {
+            if(response.data != null){
+              this.setState(this.intialState);
+              this.props.history.push({
+                pathname: '/login',
+                state: {justRegistered: true, authorised: true}
+              });
+            }
+          }).catch(() => {
+            this.setState({hasRegisterFailed: true });
+          });
+         
+          
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -25,11 +53,12 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="Register">
+      <div className="Register" method="POST">  
         <form onSubmit={this.handleSubmit}>
           <header className="Register-header">Create an Account</header>
 
           <div className="form">
+          {this.state.hasRegisterFailed && <div className="alert alert-danger"> Invalid Credentials </div>}
             <div className="form-input">
               <label>Full Name:</label>
               <input
@@ -65,6 +94,17 @@ class Register extends Component {
                 required
               />
             </div>
+            <div className="form-input">
+            <label>email:</label>
+            <input
+              type="text"
+              name="email"
+              placeholder="john.doe@email.com"
+              value={this.state.email}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
 
             <div className="form-input">
               <label>Username:</label>

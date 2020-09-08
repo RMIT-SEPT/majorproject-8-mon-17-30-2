@@ -1,9 +1,11 @@
 package com.rmit.sept.majorProject.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
@@ -29,6 +31,36 @@ public class CustomerService implements PersonService<Customer>{
 		}
         Customer newCustomer = new Customer(customer);
         return repository.save(newCustomer);
+	}
+
+	//---------------DTO FUNCTIONS--------------	
+
+	public Iterable<CustomerSummary> findAllDTO(){
+		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
+		Iterable<Customer> customers = repository.findAll();
+		for(Customer customer : customers){
+			customerDtos.add(new CustomerSummary(customer));
+		}
+		return customerDtos;
+	}
+
+	public CustomerSummary findByIdDTO(Long id){
+		CustomerSummary summary = null;
+		Optional<Customer> customerOptional = repository.findById(id);
+		Customer customerFound = customerOptional.get();
+		if (customerFound != null){
+			summary = new CustomerSummary(customerFound);
+		}
+		return summary;
+	}
+
+	public CustomerSummary findByUsernameDTO(String username){
+		CustomerSummary summary = null;
+		Customer customerFound = repository.findByUsername(username);
+		if (customerFound != null){
+			summary = new CustomerSummary(customerFound);
+		}
+		return summary;
 	}
 
 	//---------GENERIC PERSON FUNCTIONS------------	

@@ -1,16 +1,11 @@
 import React from "react";
-// import logo from "./logo.svg";
-import "./App.css";
-import Register from "./components/Register";
-import Login from "./components/Login"
+import AppRouting from "./components/Routes/AppRouting";
+
 
 
 function App() {
   return (
-    <div>
-      <Login />
-      <Register />
-    </div>
+    <AppRouting/>
   );
 }
 

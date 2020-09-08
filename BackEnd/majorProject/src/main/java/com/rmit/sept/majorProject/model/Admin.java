@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Admin extends Person{
 
-    @ManyToOne
+    @OneToOne
     private Business business;
     
     public Admin(){
@@ -35,10 +35,13 @@ public class Admin extends Person{
     public Business getBusiness(){
         return this.business;
     }
-    public boolean setBusiness(Business newBusiness){
-        long current = this.business.getId();
+
+    public void setBusiness(Business newBusiness){
+        if(this.business != null && this.business.equals(newBusiness)){
+            return;
+        }
         this.business = newBusiness;
-        return (current != newBusiness.getId());
+        newBusiness.setBusinessOwner(this);
     }
     
     public String getUsername() {

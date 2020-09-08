@@ -10,6 +10,7 @@
 + Admin Dashboard
 + Frontend/Backend integration
 + More APIs
++ Frontend Routing
 
 
 # Group 02

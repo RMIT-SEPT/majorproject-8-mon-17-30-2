@@ -4,7 +4,7 @@ import CustomerService from "../../services/CustomerService";
 import AuthenticationService from "../../services/AuthenticationService";
 
 //for debug printing using util2.inspect(object, false, null, true)
-const util2 = require('util');
+// const util2 = require('util');
 
 class BookingHistory extends Component {
 
@@ -22,9 +22,12 @@ class BookingHistory extends Component {
   }
 
   render() {
-    let bookings = this.state.bookings.map((booking) => {
-      return BookingBubble(booking);
-    });
+    let bookings = <div className = "bookings-header">No Bookings Found</div>
+    if(this.state.bookings.length > 0){
+      bookings = this.state.bookings.map((booking) => {
+        return BookingBubble(booking);
+      });
+    }
 
     return (
       <div>

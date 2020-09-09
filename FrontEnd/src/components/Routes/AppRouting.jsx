@@ -9,7 +9,8 @@ import CustomerAuthenticatedRoute from "./CustomerAuthenticatedRoute";
 import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
 import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
-import BookingPage from "../BookingPage";
+// import BookingPage from "../BookingPage";
+import BookingSummary from "../AdminBookingSummary/BookingSummary"
 import BookingPageTest from "../BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
 import Footer from "../Footer";
@@ -28,14 +29,14 @@ function AppRouting() {
         {/* GENERAL ROUTES */}
         <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
         <Route path="/register" exact component={Register} />
-        {/* CUSTOMER ROUTES
-         CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} /> */}
+        {/* CUSTOMER ROUTES*/}
         <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} 
         apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 
         <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 
          {/* ADMIN ROUTES */}
         <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />
+        <AdminAuthenticatedRoute path="/bookings/summary" exact render={(props) => <BookingSummary {...props}/>} />
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
       </Switch>

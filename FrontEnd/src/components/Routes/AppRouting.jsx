@@ -29,8 +29,7 @@ function AppRouting() {
         {/* GENERAL ROUTES */}
         <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
         <Route path="/register" exact component={Register} />
-        {/* CUSTOMER ROUTES
-         CustomerAuthenticatedRoute path="/bookings" exact component={ListCustomerBookings} /> */}
+        {/* CUSTOMER ROUTES*/}
         <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} 
         apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 

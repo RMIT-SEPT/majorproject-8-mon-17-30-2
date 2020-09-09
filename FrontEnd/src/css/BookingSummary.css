@@ -1,0 +1,14 @@
+.booking-summary-deck{
+    margin-top: 10vh;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+
+}
+.booking-summary-heading{
+    text-align: center;
+    margin-top: 1rem;
+}
+.dashboard-link{
+    margin: 15px auto;
+}

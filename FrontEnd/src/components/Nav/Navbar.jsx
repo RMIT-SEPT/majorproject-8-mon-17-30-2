@@ -16,7 +16,8 @@ function Navbar(props){
 
     return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className = "navbar-brand nav-text" href= "/">AGME</a>
+        {props.isLoggedIn ? <Link to = {"/"+ AuthenticationService.getRole().toLowerCase()} className = "navbar-brand nav-text">AGME</Link> : 
+        <a className = "navbar-brand nav-text" href= "/">AGME</a>}
             <div className="navbar-collapse" id="navbarNav">
             <ul className = "navbar-nav">
                 <Link to = "/" className = "nav-link">

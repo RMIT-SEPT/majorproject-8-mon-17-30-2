@@ -1,6 +1,17 @@
 # RMIT SEPT 2020 Major Project
 
-# Release 1.0.0
+# Release 1.1.0
+## Changelog
++ Customer Registration + Login
++ Booking Creation
++ Booking History
++ Customer Dashboard
++ Worker Dashboard
++ Admin Dashboard
++ Frontend/Backend integration
++ More APIs
++ Frontend Routing
+
 
 # Group 02
 
@@ -14,7 +25,7 @@
 ## Records
 
 * Github repository : https://github.com/RMIT-SEPT/majorproject-8-mon-17-30-2
-* Notion Workspace : https://www.notion.so/Product-Backlog-56817d9184cd409bbdc0ccc3aefa25e1
+* Notion Workspace : https://www.notion.so/sept02
 
 
 ## Code documentation

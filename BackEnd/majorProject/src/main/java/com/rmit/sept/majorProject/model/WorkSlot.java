@@ -15,6 +15,9 @@ public class WorkSlot extends Slot {
     @ManyToOne
     private Worker worker;
 
+    @ManyToOne
+    private Business business;
+
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "workSlot", orphanRemoval = true)
     private List<BookingSlot> bookingSlots = new ArrayList<BookingSlot>();
     
@@ -23,6 +26,7 @@ public class WorkSlot extends Slot {
         this.startTime = startTime;
         this.endTime = endTime;
         this.worker = worker;
+        this.business = worker.getBusiness();
     }
 
     public WorkSlot(){

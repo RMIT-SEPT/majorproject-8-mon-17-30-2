@@ -136,6 +136,6 @@ public class WorkerService implements PersonService<Worker>{
 	@Override
 	public Iterable<Worker> findByRole(Role role) {
 		return repository.findByRole(role);
-	}	
+	}
 
 }

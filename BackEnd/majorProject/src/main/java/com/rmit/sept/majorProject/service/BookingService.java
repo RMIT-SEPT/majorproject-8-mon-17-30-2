@@ -6,7 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
@@ -17,7 +17,8 @@ import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
-@Service
+
+@org.springframework.stereotype.Service
 public class BookingService{
 
 	@Autowired
@@ -53,7 +54,7 @@ public class BookingService{
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-//		com.rmit.sept.majorProject.model.Service tempService = null;
+//		Service tempService = null;
 		try {
 			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
 			{
@@ -61,7 +62,7 @@ public class BookingService{
 						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
 						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
 				{
-					for(com.rmit.sept.majorProject.model.Service service: bookingSlots.getAvailableServices())
+					for(Service service: bookingSlots.getAvailableServices())
 					{
 						if(booking.getService() == service && !bookingSlots.fullyBooked())
 						{

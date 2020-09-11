@@ -11,7 +11,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
 // import BookingPage from "../BookingPage";
 import BookingSummary from "../AdminBookingSummary/BookingSummary"
-import BookingPageTest from "../BookingPageTest";
+import BookingPageTest from "../MakeABooking/BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";

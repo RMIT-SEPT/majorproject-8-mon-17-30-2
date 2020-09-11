@@ -10,10 +10,12 @@ function SelectBusinessPage(){
 
         BusinessService.getAllBusinesses()
         .then((response) =>{
-            console.log(response.data);
+          
+            setBussiness(response.data);
         })
         .catch(() => {
-
+            console.log("Error in getting businesses");
+            setBussiness([]);
         })
 
 
@@ -23,7 +25,7 @@ function SelectBusinessPage(){
         <div className="booking-summary-heading">
         <h1 className="select-business-page-header">Select a Business</h1>
         <ul className="list-group business-card-list-group">
-            {businesses.length > 0 ? <BusinessCard businessName="John's Barber"/> : 
+            {businesses.length > 0 ? businesses.map(business => <BusinessCard key={business.id} businessName={business.name}/>) : 
             <div>
                 <h1> No businesses available </h1>
             </div>

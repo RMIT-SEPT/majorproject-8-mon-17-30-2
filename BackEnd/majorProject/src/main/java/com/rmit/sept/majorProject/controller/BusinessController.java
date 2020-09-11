@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.controller;
 
+import com.rmit.sept.majorProject.dto.BusinessSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ public class BusinessController {
 	private BusinessService businessService;
 	
 	@GetMapping("api/business")
-	public Iterable<Business> getAllBusinesses(){
+	public Iterable<BusinessSummary> getAllBusinesses(){
+
+
 		return businessService.getAllBusinesses();
 	}
 

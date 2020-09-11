@@ -13,6 +13,7 @@ import BookingHistory from "../BookingHistory/BookingHistory";
 import BookingSummary from "../AdminBookingSummary/BookingSummary"
 import BookingPageTest from "../MakeABooking/BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
+import SelectBusinessPage from "../MakeABooking/SelectBusinessPage";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
 
@@ -34,6 +35,7 @@ function AppRouting() {
         apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 
         <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 
+        <CustomerAuthenticatedRoute path="/bookings/business" exact component={SelectBusinessPage}/> 
          {/* ADMIN ROUTES */}
         <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />
         <AdminAuthenticatedRoute path="/bookings/summary" exact render={(props) => <BookingSummary {...props}/>} />

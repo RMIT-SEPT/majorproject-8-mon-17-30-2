@@ -11,7 +11,7 @@ function Dashboard(props) {
 
   return (
     <div>
-      <div className="card">
+      <div className="card dashboard-card">
         <div className="card-header dashboard-heading-container">
           <h1 className="dashboard-heading">{props.title}</h1>
         </div>

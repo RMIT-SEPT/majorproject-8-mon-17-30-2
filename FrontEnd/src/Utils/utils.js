@@ -11,7 +11,7 @@ const WORKER = "WORKER";
 
 
 const CUSTOMER_BUTTON_DETAILS = [
-    {key: 1, title: "Make a Booking", desc: "Make Bookings!", link:"/bookings/create"},
+    {key: 1, title: "Make a Booking", desc: "Make Bookings!", link:"/bookings/business"},
     {key: 2, title: "Manage Bookings", desc: "Edit or Cancel your current bookings!", link:"/bookings/manage"},
     {key: 3, title: "Booking History", desc: "View successfully completed bookings", link:"/bookings/past"}
 ];

@@ -31,7 +31,7 @@ class BookingHistory extends Component {
 
     return (
       <div>
-        <header className="bookings-header">🕒 Booking History 🕒</header>
+        <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> Booking History <span role="img" aria-label="Time emoji">🕒</span></header>
         {bookings}
       </div>
 

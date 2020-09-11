@@ -3,12 +3,16 @@ import BusinessCard from "./BusinessCard";
 import "../../css/SelectABusiness.css";
 import BusinessService from "../../services/BusinessService";
 
-
+/*
+    For select a business page,
+    Shows a list of businesses using the backend api /api/business
+    Each business has a dynamic routing to /bookings/create/:businessId
+*/
 function SelectBusinessPage(){
 
     const [businesses, setBussiness] = useState([]);
     useEffect(() => {
-
+        
         BusinessService.getAllBusinesses()
         .then((response) =>{
           
@@ -26,6 +30,7 @@ function SelectBusinessPage(){
         <div className="booking-summary-heading">
         <h1 className="select-business-page-header">Select a business</h1>
         <ul className="list-group business-card-list-group">
+            
             {businesses.length > 0 ? businesses.map(business => <BusinessCard key={business.id} id={business.id} businessName={business.name}/>) : 
             <div>
                 <h1> No businesses available </h1>

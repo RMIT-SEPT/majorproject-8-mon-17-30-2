@@ -10,7 +10,7 @@ import BookingService from "../../services/BookingService";
 
 
 function BookingPage() {
-
+  // TO access business ID use props.match.params.businessId
   const [bookingSlot, setBookingSlot] = useState({
       id: "",
       businessName: "",

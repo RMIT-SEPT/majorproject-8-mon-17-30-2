@@ -47,7 +47,7 @@ public class Business {
     public Long getId(){
         return this.id;
     }
-
+    //Used to generate mock-id for testing purposes
     public void setId(Long id) {
         this.id = id;
     }

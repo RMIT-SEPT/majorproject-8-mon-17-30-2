@@ -73,15 +73,7 @@ public class AdminServiceTest {
 
     @Test
     public void findByUsernameDTO_ReturnsAdminDTO_UsernameFound(){
-//        Admin admin = repository.findByUsername(adminUsername);
-//        AdminSummary summary = null;
-//        if(admin == null){
-//            throw new UsernameNotFoundException("Admin not found in the database");
-//        }
-//        else {
-//            summary = new AdminSummary(admin);
-//        }
-//        return summary;
+
         when(repository.findByUsername(admin.getUsername())).thenReturn(admin);
         assertEquals(new AdminSummary(admin), adminService.findByUsernameDTO(admin.getUsername()));
 

@@ -52,7 +52,18 @@ public class Admin extends Person{
     	return this.password;
     }
 
+    //Equals used to compare if 2 admins are equal, used for testing purposes
+    @Override
+    public boolean equals(Object obj) {
+        if(obj != null && obj instanceof Admin){
+            return equals((Admin)obj);
+        }
+
+        return false;
+    }
+    public boolean equals(Admin admin) {
+        return ((name == admin.name) && (username == admin.username) && (password == admin.password));
+    }
 
 
-    
 }

@@ -1,16 +1,16 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AuthenticationService from "../services/AuthenticationService";
-import PostRequestService from "../services/PostRequestService";
+import AuthenticationService from "../../services/AuthenticationService";
+import PostRequestService from "../../services/PostRequestService";
 import moment from "moment";
-import CustomerService from "../services/CustomerService";
-import WorkerService from "../services/WorkerService";
-import BookingService from "../services/BookingService";
-import BookingSlotBubble from "./BookingHistory/BookingSlotBubble";
+import CustomerService from "../../services/CustomerService";
+import WorkerService from "../../services/WorkerService";
+import BookingService from "../../services/BookingService";
+
 
 function BookingPage() {
-
+  // TO access business ID use props.match.params.businessId
   const [bookingSlot, setBookingSlot] = useState({
       id: "",
       businessName: "",
@@ -155,10 +155,10 @@ function BookingPage() {
       <form onSubmit={handleSubmit}>
       {/* {BookingSlotBubble(bookingSlot)} */}
         <h4>Service</h4>
-        <select required="true"
+        <select required={true}
           name="service"
           onChange={handleChange}>
-          <option value="" disabled selected hidden>
+          <option value="" disabled defaultValue hidden>
             Select an option
           </option>
           <option value="Haircut">Haircut</option>
@@ -169,7 +169,7 @@ function BookingPage() {
         <select
           name="worker"
           onChange={handleChange}>
-          <option value="" disabled selected hidden>
+          <option value="" disabled defaultValue hidden>
             Select an option
           </option>
           <option value="1">John</option>
@@ -188,7 +188,7 @@ function BookingPage() {
 
         <h4>Time</h4>
         <select name="time" onChange={handleChange}>
-          <option value="" disabled selected hidden>
+          <option value="" disabled hidden>
             Select an option
           </option>
           <option value="1330">1330-1430</option>

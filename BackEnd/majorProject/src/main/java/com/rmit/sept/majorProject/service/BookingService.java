@@ -124,6 +124,9 @@ public class BookingService{
 	public Iterable<Booking> findByCustomerId(Long customerId){
 		return repository.findByCustomerId(customerId);
 	}
+	public Iterable<Booking> findByBusinessId(Long businessId){
+		return repository.findByBusinessId(businessId);
+	}
 
 	public Iterable<BookingSummary> findByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
@@ -136,6 +139,15 @@ public class BookingService{
 	public Iterable<BookingSummary> getPastBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
+	}
+	public Iterable<BookingSummary> getPastBookingsByBusinessIdDTO(Long businessId){
+		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByBusinessId(businessId)){
 			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
 				pastBookings.add(new BookingSummary(booking));
 			}

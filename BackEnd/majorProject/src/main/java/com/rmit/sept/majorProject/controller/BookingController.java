@@ -58,6 +58,12 @@ public class BookingController {
 		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingBookings, matchingBookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
+	@GetMapping("/api/business/{businessId}/bookings/past")
+	public ResponseEntity<?> getPastBookingsByBusiness(@PathVariable Long businessId)
+	{
+		Iterable<BookingSummary> bookings = bookingService.getPastBookingsByBusinessIdDTO(businessId);
+		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
 	
 	@GetMapping("/api/business/{business}/bookings")
 	public ResponseEntity<?> getAvailableBookingsByBusiness(@PathVariable("business") Business business)

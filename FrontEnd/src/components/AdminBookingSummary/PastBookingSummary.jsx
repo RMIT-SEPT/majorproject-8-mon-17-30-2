@@ -19,7 +19,6 @@ function PastBookingSummary(props){
         BusinessService.getBusinessPastBookings(businessId).then(response => {
             setBookings(response.data)
         }).catch();
-
     }
 
     return(

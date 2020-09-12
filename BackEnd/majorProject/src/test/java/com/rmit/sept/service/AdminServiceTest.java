@@ -44,6 +44,7 @@ public class AdminServiceTest {
 
     private Admin admin;
 
+    // Before each test, Create a new admin and assign a business to the admin
     @BeforeEach
     public void setupBeforeEachTest(){
 
@@ -53,6 +54,7 @@ public class AdminServiceTest {
         business.setId((long) 1);
         admin.setBusiness(business);
     }
+    //Tests registration given a valid admin passed
     @Test
     public void registerNewAdmin_Registration_IfValidAdmin(){
 
@@ -62,6 +64,7 @@ public class AdminServiceTest {
          assertEquals(admin, adminService.registerNewAdmin(admin));
     }
 
+    //Tests registration given an admin that already exists
     @Test
     public void registerNewAdmin_ThrowsDuplicateKeyException_IfAdminAlreadyExists(){
         String errorMsg = "An account already exists with username: " + admin.getUsername();
@@ -71,6 +74,7 @@ public class AdminServiceTest {
         assertThrows(DuplicateKeyException.class, () -> adminService.registerNewAdmin(admin), errorMsg);
     }
 
+    //Tests finding an admin by username given that username passed exists in the system
     @Test
     public void findByUsernameDTO_ReturnsAdminDTO_UsernameFound(){
 
@@ -79,6 +83,7 @@ public class AdminServiceTest {
 
     }
 
+    //Tests finding an admin by username given that username passed does not exists in the system
     @Test
     public void findByUsernameDTO_ThrowsUsernameNotFoundException_UsernameNotFound(){
         String errorMsg = "Admin not found in the database";

@@ -41,4 +41,21 @@ public class AdminSummary {
         return businessId;
     }
 
+    //Equals used to compare if 2 AdminSummary are equal, used for testing purposes
+    @Override
+    public boolean equals(Object obj) {
+        if(obj != null && obj instanceof AdminSummary){
+            return equals((AdminSummary)obj);
+        }
+
+        return false;
+    }
+    public boolean equals(AdminSummary summary) {
+        return ((name == summary.name)
+                && (username == summary.username)
+                && (businessname == summary.businessname)
+                && (businessId == summary.businessId));
+    }
+
+
 }

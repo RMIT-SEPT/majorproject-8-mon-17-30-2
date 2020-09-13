@@ -8,7 +8,6 @@ import com.rmit.sept.majorProject.model.Service;
 public class BookingSlotSummary{
 
     private Long id;
-    private String businessName;
     private Long workerId;
     private String workerName;
     private LocalDate date;
@@ -22,7 +21,6 @@ public class BookingSlotSummary{
 
     public BookingSlotSummary(BookingSlot bookingSlot){
         this.id = bookingSlot.getId();
-        this.businessName = bookingSlot.getWorkSlot().getWorker().getBusiness().getBusinessName();
         this.workerId = bookingSlot.getWorkSlot().getWorker().getId();
         this.workerName = bookingSlot.getWorkSlot().getWorker().getName();
         this.date = bookingSlot.getDate();
@@ -77,10 +75,6 @@ public class BookingSlotSummary{
    
     public boolean isFullyBooked(){
         return this.fullyBooked;
-    }
-
-    public String getBusinessName() {
-        return businessName;
     }
 
 }

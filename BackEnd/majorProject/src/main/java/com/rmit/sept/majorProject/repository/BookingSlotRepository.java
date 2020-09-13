@@ -1,9 +1,11 @@
 package com.rmit.sept.majorProject.repository;
 
+import com.rmit.sept.majorProject.model.Worker;
 import org.springframework.transaction.annotation.Transactional;
 import com.rmit.sept.majorProject.model.BookingSlot;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,10 +13,10 @@ import org.springframework.data.repository.CrudRepository;
 public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long> {
     
     //testing purposes
-    @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id ASC", nativeQuery = true)
+    @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id DESC", nativeQuery = true)
     public BookingSlot getNewest();
 
-    public Iterable<BookingSlot> findByDateAndStartTimeAndEndTime(LocalDate date, LocalTime startTime, LocalTime endTime);
+    public Optional<BookingSlot> findById(Long Id);
     // @Query(value = "SELECT * FROM booking_slot WHERE ")
     // public Iterable<BookingSlot> getAllAvailable();
 

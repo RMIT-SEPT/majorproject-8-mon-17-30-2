@@ -1,7 +1,5 @@
 package com.rmit.sept.majorProject.model;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 
 @Entity
@@ -17,13 +15,12 @@ public class Booking {
     @ManyToOne
     private Worker      worker;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Business    business;
 
     @ManyToOne
     private Service     service;
-
-
+    
     @ManyToOne
     private BookingSlot bookingSlot;
 
@@ -38,7 +35,7 @@ public class Booking {
 
     public Booking(){}
 
-    //--------------GETTERS AND SETTERS---------------
+    // --------------GETTERS AND SETTERS---------------
     
     public Long getBookingId(){
     	return this.id;
@@ -60,25 +57,10 @@ public class Booking {
     public Business getBusiness(){
         return this.business;
     }
-
-    public void setBusiness(Business newBusiness) {
-        if(sameAsFormer(newBusiness)){
-            return;
-        }
-        Business oldBusiness = this.business;
-        this.business = newBusiness;
-        if (oldBusiness!=null){
-            oldBusiness.removeBooking(this);
-        }
-        if(newBusiness!=null){
-            newBusiness.addBooking(this);
-        }
+    public boolean setBusiness(Business business){
+    	this.business = business;
+    	return true;
     }
-
-    private boolean sameAsFormer(Business newBusiness) {
-        return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
-    }
-
     public Service getService(){
         return this.service;
     }
@@ -93,16 +75,5 @@ public class Booking {
         this.bookingSlot = bookingSlot;
     	return false;
     }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", worker=" + worker +
-                ", business=" + business +
-                ", service=" + service +
-                ", bookingSlot=" + bookingSlot +
-                '}';
-    }
+   
 }

@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
@@ -83,8 +82,8 @@ public class BookingServiceTest {
 		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		
-		BookingSummary result = bookingService.createNewBooking(bookingTest);
-		assertEquals(new BookingSummary(bookingTest), result);
+		Booking result = bookingService.createNewBooking(bookingTest);
+		assertEquals(bookingTest, result);
 	}
 	
 	//Test get all bookings

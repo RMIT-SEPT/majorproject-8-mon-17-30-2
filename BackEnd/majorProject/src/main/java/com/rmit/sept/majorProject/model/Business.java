@@ -18,11 +18,11 @@ public class Business {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String businessName;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private Admin businessOwner;
+
+    @NotNull
+    private String businessName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private List<Service> services = new ArrayList<Service>();
@@ -44,88 +44,29 @@ public class Business {
     public Long getId(){
         return this.id;
     }
-    
     public String getBusinessName(){
         return this.businessName;
     }
-
-    public void setBusinessName(String newBusinessName){
+    public boolean setBusinessName(String newBusinessName){
+        String current = this.businessName;
         this.businessName = newBusinessName;
+        return (current != newBusinessName);
     }
-    
-    public Admin getBusinessOwner(){
+    public Person getBusinessOwner(){
         return this.businessOwner;
     }
-
-    public void setBusinessOwner(Admin newBusinessOwner){
-        if(this.businessOwner != null && this.businessOwner.equals(newBusinessOwner)){
-            return;
-        }
+    public boolean setBusinessOwner(Admin newBusinessOwner){
+        long current = this.businessOwner.getId();
         this.businessOwner = newBusinessOwner;
-        newBusinessOwner.setBusiness(this);
+        return (current != newBusinessOwner.getId());
     }
-
-    public void addWorker(Worker worker) {
-        if(workers.contains(worker)){
-            return ;
-        }
-        workers.add(worker);
-        worker.setBusiness(this);
-    }
-
-    public void removeWorker(Worker worker) {
-        if(!workers.contains(worker)){
-            return ;
-        }
-        workers.remove(worker);
-        worker.setBusiness(null);
-    }
-
-    public List<Worker> getWorkers(){
-        return this.workers;
-    }
-
-    public void addBooking(Booking booking) {
-        if (bookings.contains(booking))
-            return;
-        bookings.add(booking);
-        booking.setBusiness(this);
-    }
-    
-    public void removeBooking(Booking booking) {
-        if (!bookings.contains(booking))
-            return ;
-        bookings.remove(booking);
-        booking.setBusiness(null);
-    }
-
-    public List<Booking> getBookings(){
-        return bookings;
-    }
-
-    public void addService(Service service) {
-        if (services.contains(service))
-            return;
-        services.add(service);
-        service.setBusiness(this);
-    }
-
-    public void removeService(Service service) {
-        if (!services.contains(service))
-            return ;
-        services.remove(service);
-        service.setBusiness(null);
-    }
-
     public List<Service> getServices(){
         return this.services;
     }
-
-    @Override
-    public String toString() {
-        return "Business{" +
-                "id=" + id +
-                ", businessName='" + businessName + '\'' +
-                '}';
+    public List<Worker> getWorkers(){
+        return this.workers;
     }
-}
+    public List<Booking> getBookings(){
+        return bookings;
+    }
+} 

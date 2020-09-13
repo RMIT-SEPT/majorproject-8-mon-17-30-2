@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Admin extends Person{
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Business business;
     
     public Admin(){
@@ -35,13 +35,18 @@ public class Admin extends Person{
     public Business getBusiness(){
         return this.business;
     }
-
-    public void setBusiness(Business newBusiness){
-        if(this.business != null && this.business.equals(newBusiness)){
-            return;
-        }
+    public boolean setBusiness(Business newBusiness){
+//        long current = this.business.getId();
         this.business = newBusiness;
-        newBusiness.setBusinessOwner(this);
+//        return (current != newBusiness.getId());
+        return true;
+    }
+    
+    public boolean setNewBusiness(Business newBusiness)
+    {
+      long current = this.business.getId();
+      this.business = newBusiness;
+      return (current != newBusiness.getId());
     }
     
     public String getUsername() {
@@ -51,5 +56,11 @@ public class Admin extends Person{
     public String getPassword() {
     	return this.password;
     }
+    
+    //TODO equals method admin
+    public boolean equals() {
+    	return false;
+    }
+
     
 }

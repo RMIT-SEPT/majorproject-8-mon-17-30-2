@@ -175,8 +175,4 @@ public class BookingSlotService{
 		return availableSlots;
 	}
 
-	public BookingSlot getNewest(){
-		return repository.getNewest();
-	}
-
 }

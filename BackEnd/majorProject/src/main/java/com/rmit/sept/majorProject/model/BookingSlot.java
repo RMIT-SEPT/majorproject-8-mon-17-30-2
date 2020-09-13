@@ -19,7 +19,7 @@ public class BookingSlot extends Slot {
     @ManyToOne
     private Service bookedService;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingSlot", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "bookingSlot", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
     @ManyToOne
@@ -42,18 +42,14 @@ public class BookingSlot extends Slot {
         return this.availableServices;
     }
 
-    public void addAvailableService(Service newService){
+    public void addService(Service newService){
         if(!availableServices.contains(newService)){
             this.availableServices.add(newService);
         }
     }
 
-    public void removeAvailableService(Service service){
+    public void removeService(Service service){
         availableServices.remove(service);
-    }
-
-    public Service getBookedService(){
-        return this.bookedService;
     }
 
     public void addBooking(Booking booking){
@@ -61,7 +57,10 @@ public class BookingSlot extends Slot {
         if(this.bookedService == null){
             setBookedService(booking.getService());
         }
-        this.getWorkSlot().getWorker().getBusiness().addBooking(booking);
+    }
+
+    public Service getBookedService(){
+        return this.bookedService;
     }
 
     public void setBookedService(Service service){
@@ -71,7 +70,6 @@ public class BookingSlot extends Slot {
 
     public void removeBookedService(){
         this.bookedService = null;
-        this.isSet = false;
     }
 
     public List<Booking> getBookings(){
@@ -102,7 +100,7 @@ public class BookingSlot extends Slot {
         WorkSlot oldSlot = this.workSlot;
         this.workSlot = newSlot;
         //remove from the old workslot
-        if(oldSlot!=null){
+        if (oldSlot!=null){
             oldSlot.removeBookingSlot(this);
         }
         //set myself into new owner
@@ -122,13 +120,5 @@ public class BookingSlot extends Slot {
     public void setAvailableServices(List<Service> availableServices) {
         this.availableServices = availableServices;
     }
-
-    @Override
-    public String toString() {
-        return "BookingSlot{" +
-                "date=" + date +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
-    }
+    
 }

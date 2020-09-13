@@ -4,7 +4,6 @@ import com.rmit.sept.majorProject.model.*;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
-import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 import com.rmit.sept.majorProject.repository.WorkSlotRepository;
@@ -39,8 +38,6 @@ public class MajorProjectApplication {
 	private BookingSlotRepository bookingSlotRepository;
 	@Autowired
 	private WorkSlotRepository workSlotRepository;
-	@Autowired
-	private BusinessRepository businessRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MajorProjectApplication.class, args);
@@ -51,21 +48,15 @@ public class MajorProjectApplication {
 	InitializingBean sendDatabase() {
 		return () -> {
 
-			//---create people---
-
-			//customers
+			//create people
 			Customer austin = new Customer("Austin", "aus", "pass", "address", "customer@bookworm.com", "12345");
-
-			//workers
+			customerRepository.save(austin);
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
-
-			//admins/businessowners
-			Admin caramel = new Admin("Admin", "caramel6", "password");			
-
-			//create a business
-			Business barber = new Business("Barber");
-			barber.addWorker(john);
-			barber.setBusinessOwner(caramel);			
+			workerRepository.save(john);
+			Admin caramel = new Admin("Admin", "caramel6", "password");
+			Business business = new Business("Caramel's Hair salon!");
+			caramel.setBusiness(business);
+			adminRepository.save(caramel);
 
 			//create date/times
 			LocalDate day              = LocalDate.of(2021, 12, 31);
@@ -77,48 +68,40 @@ public class MajorProjectApplication {
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
-			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);			
+			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);
+			serviceRepository.save(haircut);
+			serviceRepository.save(beardtrim);
 
-			//john offers haircuts or beard trims during his working slots
+			//----create workslot/bookingslot----
+
+			// john offers haircuts or beard trims during his working slots
 			List<Service> johnServices = new ArrayList<Service>();
 			johnServices.add(haircut);
 			johnServices.add(beardtrim);
 			john.setServices(johnServices);
-
-			//upcoming workslot and bookingslot for schedule and available booking testing
-			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, john);
-			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
-			johnShift.addBookingSlot(johnSlot);
-
-			// // //old shift and bookingslot for past booking/booking history testing
-			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
-			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
-			oldShift.addBookingSlot(oldSlot);
-
-			// //upcoming bookings
-			Booking austinBooking = new Booking(austin, john, barber, haircut, johnSlot);		
-
-			// //old bookings
-			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
-			Booking oldBooking1 = new Booking(austin, john, barber, beardtrim, oldSlot);
-			Booking oldBooking2 = new Booking(austin, john, barber, beardtrim, oldSlot);
-
-			//save everything to repos (do this at the end to avoid detach errors)
-			businessRepository.save(barber);
-			adminRepository.save(caramel);
 			workerRepository.save(john);
-			serviceRepository.save(haircut);
-			serviceRepository.save(beardtrim);
-			customerRepository.save(austin);
+
+			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, workerRepository.findByUsername("john"));
+			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
+			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
+			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
+			johnShift.addBookingSlot(johnSlot);
+			oldShift.addBookingSlot(oldSlot);
 			workSlotRepository.save(johnShift);
 			workSlotRepository.save(oldShift);
 			bookingSlotRepository.save(johnSlot);
-			bookingSlotRepository.save(oldSlot);			
-			bookingRepository.save(austinBooking);
-			bookingRepository.save(oldBooking);
-			bookingRepository.save(oldBooking1);
-			bookingRepository.save(oldBooking2);
+			bookingSlotRepository.save(oldSlot);
 			
+
+			//bookings
+			Booking austinBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Haircut"), johnSlot);
+			bookingRepository.save(austinBooking);
+			Booking oldBooking = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking);
+			Booking oldBooking1 = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking1);
+			Booking oldBooking2 = new Booking(customerRepository.findByUsername("aus"), workerRepository.findByUsername("john"), null, serviceRepository.findByTitle("Beard Trim"), oldSlot);
+			bookingRepository.save(oldBooking2);
 		};
 	}
 

@@ -11,6 +11,8 @@ public class BookingSummary {
     private String customerName;
     private Long workerId;
     private String workerName;
+    private Long businessId;
+    private String businessName;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -24,6 +26,8 @@ public class BookingSummary {
         this.customerName = booking.getCustomer().getName();
         this.workerId = booking.getWorker().getId();
         this.workerName = booking.getWorker().getName();
+        this.businessId = booking.getBusiness().getId();
+        this.businessName = booking.getBusiness().getBusinessName();
         this.date = booking.getBookingSlot().getDate();
         this.startTime = booking.getBookingSlot().getStartTime();
         this.endTime = booking.getBookingSlot().getEndTime();
@@ -74,6 +78,10 @@ public class BookingSummary {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public String getBusinessName() {
+        return businessName;
     }
 
 }

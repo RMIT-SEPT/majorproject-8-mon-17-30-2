@@ -10,7 +10,7 @@ function BookingBubble(props) {
         <Card className='bookingbubble' bg="light">
             <Card.Body>
               <Card.Header className="text-muted">Booking #{props.booking.id}</Card.Header>
-              <Card.Title className="cardtitle">John's Barbershop{props.booking.business}</Card.Title>
+              <Card.Title className="cardtitle">{props.booking.businessName}</Card.Title>
               <Card.Text className="cardtext">
                 <span className="bookingbubble-line">
                     <span className="bookingbubble-title">Service:</span>

@@ -41,3 +41,7 @@
 .card-body-dashboard{
     padding: 1.25rem;
 }
+.dashboard-card-deck{
+    margin-left: 0;
+    margin-right: 0;
+}

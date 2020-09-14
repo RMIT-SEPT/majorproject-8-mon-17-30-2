@@ -10,4 +10,6 @@ public interface ServiceRepository extends CrudRepository<Service, Long>{
 	
     public Service findByTitle(String title);
 
+    public Iterable<Service> findByBusinessId(Long businessId);
+
 }

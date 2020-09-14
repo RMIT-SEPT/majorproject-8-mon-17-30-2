@@ -2,10 +2,15 @@ package com.rmit.sept.majorProject.service;
 
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
@@ -13,7 +18,7 @@ import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 
-@Service
+@org.springframework.stereotype.Service
 public class BookingService{
 
 	@Autowired
@@ -30,61 +35,95 @@ public class BookingService{
 	private BookingSlotRepository bookingSlotRepository;
 	
 	
-	public Booking createNewBooking(Booking booking)
+	public BookingSummary createNewBooking(Booking booking)
 	{
-		//TODO Retest, maybe modify the equals?
-		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
-				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
-			return null;
+		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null) {
+			 throw new UsernameNotFoundException("worker not found");
+			
+		}
+		else if(this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null) {
+			throw new UsernameNotFoundException("customer not found");
+		}
+		else if(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()) == null) {
+			throw new DataRetrievalFailureException("Business not found");
+		}
+		else if(this.servRepository.findByTitle(booking.getService().getTitle()) == null) {
+			throw new DataRetrievalFailureException("Service not found");
 		}
 		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-		booking.setBookingSlot(this.bookingSlotRepository.findById(booking.getBookingSlot().getId()).get());
-		if(duplicateBooking(booking))
-		{
-			return booking;
-		}
-		booking.getBookingSlot().setBookedService(booking.getService());
-		return this.repository.save(booking);
-	}
-
-	///////////////////
-	///////////////////
-	///////////////////
-	///////////////////
-	///////////////////
-
-	public Booking removeExistingBooking(Booking booking){
-		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
-			|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
-				
-				return null;
-
-		} else{
-			for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
-				if(bookings.getCustomer().getBookings().equals(booking.getCustomer().getBookings())){
-					bookings.setBookingSlot(null);
+//		Service tempService = null;
+		try {
+			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
+			{
+				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
+						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
+						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
+				{
+					for(Service service: bookingSlots.getAvailableServices())
+					{
+						if(booking.getService() == service && !bookingSlots.fullyBooked())
+						{
+//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
+//							tempService = bookingSlots.getBookedService();
+							booking.getBookingSlot().setBookedService(service);
+							break;
+						}
+						else if(bookingSlots.fullyBooked())
+						{
+							throw new DataIntegrityViolationException("Service is fully booked");
+						}
+					}
 				}
 			}
-			return booking;
 		}
+		catch(NullPointerException e) {}
+		
+		if(duplicateBooking(booking))
+		{
+//			booking.getBookingSlot().setBookedService(tempService);
+			throw new DuplicateKeyException("This booking already exists");
+		}
+		return new BookingSummary(this.repository.save(booking));
 	}
-
-
 	
 	public boolean duplicateBooking(Booking booking){
 		for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
-			if(bookings.getBusiness().equals(booking.getBusiness()) && 
-					bookings.getWorker().equals(booking.getWorker())
-					&& bookings.getService().equals(booking.getService())
-					&& bookings.getBookingSlot().equals(booking.getBookingSlot())){
-				return true;
+			try {
+				if(bookings.getBusiness().equals(booking.getBusiness()) && 
+						bookings.getWorker().equals(booking.getWorker())
+						&& bookings.getService().equals(booking.getService())
+						&& bookings.getBookingSlot().equals(booking.getBookingSlot())){
+					return true;
+				}
 			}
+			catch(NullPointerException e) {}
+			
 		}
 		return false;
 	}
+
+	public Booking removeExistingBooking(Booking booking, Business business){
+		
+			if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
+				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
+					
+				throw new UsernameNotFoundException("Booking not found");
+
+			} else{
+				for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
+					if(bookings.getCustomer().getBookings().equals(booking.getCustomer().getBookings())){
+						// booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
+						bookings.setBookingSlot(null);
+						business.removeBooking(booking);
+					}
+				}
+				return booking;
+			}
+	}
+
 	
 	public Iterable<Booking> getAllBookings(){
 		return repository.findAll();

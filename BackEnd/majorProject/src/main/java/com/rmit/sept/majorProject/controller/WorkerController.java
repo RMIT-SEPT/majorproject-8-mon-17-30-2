@@ -22,6 +22,8 @@ public class WorkerController{
 	public Iterable<Worker> getAllWorkers() {
 		return workerService.findAll();
 	}
+
+	
 	
     @GetMapping("/api/worker")
 	public Iterable<WorkerSummary> getAllWorkerDtos() {

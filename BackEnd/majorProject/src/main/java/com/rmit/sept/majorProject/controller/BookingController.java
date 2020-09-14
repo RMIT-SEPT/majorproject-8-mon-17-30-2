@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
+
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
@@ -31,35 +32,27 @@ public class BookingController {
 	}
 
 	@PostMapping("/api/booking")
-    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking, BindingResult result){
-    	if(result.hasErrors()){
-    		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking){
+		BookingSummary booking1;
+    	try {
+    		booking1 = this.bookingService.createNewBooking(booking);
     	}
-		Booking booking1 = this.bookingService.createNewBooking(booking);
+    	catch (DuplicateKeyException dkEx) {
+    		return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
 
-	@DeleteMapping("/api/manage/booking")
+	@DeleteMapping("/api/booking")
     public ResponseEntity<?> removeBooking(@Valid @RequestBody Booking booking, BindingResult result){
     	if(result.hasErrors()){
     		return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
     	}
+		
 		Booking booking1 = this.bookingService.removeExistingBooking(booking);
+
     	return new ResponseEntity<>(booking1, HttpStatus.RESET_CONTENT);
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////////////
 
 	//---------------------CUSTOMER BOOKING API----------------------
 

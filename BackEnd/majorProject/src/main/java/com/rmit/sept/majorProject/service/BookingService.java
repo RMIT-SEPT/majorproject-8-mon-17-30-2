@@ -145,6 +145,17 @@ public class BookingService{
 		}
 		return pastBookings;
 	}
+
+	public Iterable<BookingSummary> getCurrentBookingsByCustomerIdDTO(Long customerId){
+		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByCustomerId(customerId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
+	}
+
 	public Iterable<BookingSummary> getPastBookingsByBusinessIdDTO(Long businessId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByBusinessId(businessId)){

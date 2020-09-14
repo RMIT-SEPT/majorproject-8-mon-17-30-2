@@ -55,31 +55,32 @@ public class BookingService{
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
 //		Service tempService = null;
-		try {
+		
 			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
 			{
-				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
-						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
-						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
-				{
-					for(Service service: bookingSlots.getAvailableServices())
+				try {
+					if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
+							bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
+							bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
 					{
-						if(booking.getService() == service && !bookingSlots.fullyBooked())
+						for(Service service: bookingSlots.getAvailableServices())
 						{
-//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
-//							tempService = bookingSlots.getBookedService();
-							booking.getBookingSlot().setBookedService(service);
-							break;
-						}
-						else if(bookingSlots.fullyBooked())
-						{
-							throw new DataIntegrityViolationException("Service is fully booked");
+							if(booking.getService() == service && !bookingSlots.fullyBooked())
+							{
+	//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
+	//							tempService = bookingSlots.getBookedService();
+								booking.getBookingSlot().setBookedService(service);
+								break;
+							}
+							else if(bookingSlots.fullyBooked())
+							{
+								throw new DataIntegrityViolationException("Service is fully booked");
+							}
 						}
 					}
 				}
+				catch(NullPointerException e) {}
 			}
-		}
-		catch(NullPointerException e) {}
 		
 		if(duplicateBooking(booking))
 		{

@@ -58,15 +58,20 @@ public class MajorProjectApplication {
 
 			//workers
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
+			Worker tom = new Worker("Tom", "tom", "blisters", "fish@restaurant.com", "in a restaurant", "647382");
 
 			//admins/businessowners
 			Admin caramel = new Admin("Admin", "caramel6", "password");			
+			Admin puzzleboy = new Admin("Puzzle Boy","puzzles", "are fun");
 
 			//create a business
 			Business barber = new Business("Barber");
 			barber.addWorker(john);
 			barber.setBusinessOwner(caramel);			
-
+			Business restaurant = new Business("Restaurant");
+			restaurant.addWorker(tom);
+			restaurant.setBusinessOwner(puzzleboy);
+			
 			//create date/times
 			LocalDate day              = LocalDate.of(2021, 12, 31);
 			LocalDate oldDay           = LocalDate.of(2007, 9, 25);
@@ -77,19 +82,29 @@ public class MajorProjectApplication {
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
-			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);			
+			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);		
+			Service reserveTable = new Service("Book Table", "Book a table at the restaurant", 1);
 
 			//john offers haircuts or beard trims during his working slots
 			List<Service> johnServices = new ArrayList<Service>();
 			johnServices.add(haircut);
 			johnServices.add(beardtrim);
 			john.setServices(johnServices);
+			
+			List<Service> tomServices = new ArrayList<Service>();
+			tomServices.add(reserveTable);
+			tomServices.add(haircut);		//Never had a haircut at a restaurant? Me neither.	
+			tom.setServices(tomServices);
+			
 
 			//upcoming workslot and bookingslot for schedule and available booking testing
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, john);
 			BookingSlot johnSlot = new BookingSlot(day, bookingStartTime, bookingEndTime, johnServices);
 			johnShift.addBookingSlot(johnSlot);
-
+			
+			//Tom likes to work a lot 
+//			WorkSlot tomShift0 = new WorkSlot()
+			
 			// // //old shift and bookingslot for past booking/booking history testing
 			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
@@ -105,6 +120,7 @@ public class MajorProjectApplication {
 
 			//save everything to repos (do this at the end to avoid detach errors)
 			businessRepository.save(barber);
+			businessRepository.save(restaurant);
 			adminRepository.save(caramel);
 			workerRepository.save(john);
 			serviceRepository.save(haircut);

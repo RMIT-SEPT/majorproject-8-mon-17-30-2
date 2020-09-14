@@ -13,7 +13,7 @@ class BookingHistory extends Component {
     bookings: []
   }
 
-  componentWillMount() {
+  componentDidMount() {
     CustomerService.getCustomerPastBookings(AuthenticationService.getLoggedInId()).then((response) => {
       this.setState({
         bookings: response.data
@@ -25,7 +25,7 @@ class BookingHistory extends Component {
     let bookings = <div className = "bookings-header">No Bookings Found</div>
     if(this.state.bookings.length > 0){
       bookings = this.state.bookings.map((booking) => {
-        return BookingBubble(booking);
+        return <BookingBubble key = {booking.id} booking = {booking} />
       });
     }
 

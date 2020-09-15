@@ -162,7 +162,7 @@ function BookingPage() {
             Select an option
           </option>
           <option value="Haircut">Haircut</option>
-          <option value="BeardTrim">BeardTrim</option>
+          <option value="Beard Trim">Beard Trim</option>
         </select> 
 
         <h4>Worker</h4>

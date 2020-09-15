@@ -37,7 +37,7 @@ class Register extends Component {
             if(response.data != null){
               this.setState(this.intialState);
               this.props.history.push({
-                pathname: '/login',
+                pathname: '/',
                 state: {justRegistered: true, authorised: true}
               });
             }

@@ -22,9 +22,12 @@ class CustomerService {
         return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings');
     }
 
-    //all bookings for now
     getCustomerPastBookings(customerId){
         return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings/past');
+    }
+
+    getCustomerCurrentBookings(customerId){
+        return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings/current');
     }
 
 }

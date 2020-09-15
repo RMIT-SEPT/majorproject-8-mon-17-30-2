@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AuthenticationService from "../services/AuthenticationService";
-import PostRequestService from "../services/PostRequestService";
+import AuthenticationService from "../../services/AuthenticationService";
+import PostRequestService from "../../services/PostRequestService";
 import moment from "moment";
-import CustomerService from "../services/CustomerService";
-import WorkerService from "../services/WorkerService";
+import CustomerService from "../../services/CustomerService";
+import WorkerService from "../../services/WorkerService";
 
 class BookingPage extends Component {
   constructor(props) {

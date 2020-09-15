@@ -6,7 +6,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 //for debug printing using util2.inspect(object, false, null, true)
 // const util2 = require('util');
 
-class BookingHistory extends Component {
+class CurrentBookings extends Component {
 
   // Change options to get from backend
   state = {
@@ -14,7 +14,7 @@ class BookingHistory extends Component {
   }
 
   componentDidMount() {
-    CustomerService.getCustomerPastBookings(AuthenticationService.getLoggedInId()).then((response) => {
+    CustomerService.getCustomerCurrentBookings(AuthenticationService.getLoggedInId()).then((response) => {
       this.setState({
         bookings: response.data
       })
@@ -31,7 +31,7 @@ class BookingHistory extends Component {
 
     return (
       <div>
-        <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> Booking History <span role="img" aria-label="Time emoji">🕒</span></header>
+        <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> Bookings <span role="img" aria-label="Time emoji">🕒</span></header>
         {bookings}
       </div>
 
@@ -40,4 +40,4 @@ class BookingHistory extends Component {
 
 }
 
-export default BookingHistory;
+export default CurrentBookings;

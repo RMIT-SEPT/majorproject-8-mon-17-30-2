@@ -112,10 +112,10 @@ public class BookingSlotService{
 
 			// if any of the specified search parameters don't match, break the loop to ignore the current slot in loop
 			if((businessId != null && businessId != slot.getBusinessId()) ||
-				(serviceId != null && slot.isSet() && serviceId != slot.getBookedService().getId()) ||
-				(serviceId != null && !slot.isSet() && !serviceIds.contains(serviceId)) ||
-				(workerId != null && workerId != slot.getWorkerId()) ||
-				(date != null && slot.getDate() != date)){
+				(service != null && slot.isSet() && serviceId != slot.getBookedService().getId()) ||
+				(service != null && !slot.isSet() && !serviceIds.contains(serviceId)) ||
+				(worker != null && workerId != slot.getWorkerId()) ||
+				(date != null && date.compareTo(slot.getDate()) != 0)){
 				continue;
 			}
 

@@ -87,10 +87,16 @@ function BookingPageTest(props) {
     }
   }  
 
-  function handleDate(date) {   
-    var convertedDate = moment(date).format("YYYY-MM-DD");
-    setDate(date);
-    setDateString(convertedDate);
+  function handleDate(chosenDate) {   
+    if(chosenDate === null){
+      setDate("");
+      setDateString("");
+    }
+    else{
+      var convertedDate = moment(chosenDate).format("YYYY-MM-DD");
+      setDate(chosenDate);
+      setDateString(convertedDate);
+    }
   }
 
   var serviceList = <option value="" disabled hidden></option>;
@@ -150,7 +156,12 @@ function BookingPageTest(props) {
     console.log(searchRequest);
     BookingService.getMatchingBookingSlots(searchRequest)
       .then((response) => {
-        forceSetBookingSlots(response.data);
+        if(Array.isArray(response.data)){
+          forceSetBookingSlots(response.data);
+        }
+        else{
+          forceSetBookingSlots([]);
+        }
     });
 
     setShow(true);  

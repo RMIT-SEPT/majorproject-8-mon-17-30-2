@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
@@ -66,6 +67,7 @@ public class BookingServiceTest {
 	static ArrayList<Service> serviceList = new ArrayList<Service>();
 	BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
 	Booking bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
+	BookingBlueprint bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), serviceTest.getId(), bookingSlotTest.getId());
 	
 	@BeforeAll
 	public static void init() {
@@ -83,7 +85,7 @@ public class BookingServiceTest {
 		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		
-		BookingSummary result = bookingService.createNewBooking(bookingTest);
+		BookingSummary result = bookingService.createNewBooking(bookingTestBlueprint);
 		assertEquals(new BookingSummary(bookingTest), result);
 	}
 	

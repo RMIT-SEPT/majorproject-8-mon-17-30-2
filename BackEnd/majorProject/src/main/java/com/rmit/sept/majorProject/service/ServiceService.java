@@ -19,7 +19,11 @@ public class ServiceService{
 	
 	public Iterable<Service> findAll(){
 		return repository.findAll();
-	}
+    }
+    
+    public Service findById(Long id){
+        return repository.findById(id).get();
+    }
 
     public Iterable<Service> findByBusinessId(Long businessId){
         return repository.findByBusinessId(businessId);

@@ -84,6 +84,8 @@ public class MajorProjectApplication {
 			johnServices.add(haircut);
 			johnServices.add(beardtrim);
 			john.setServices(johnServices);
+			barber.addService(haircut);
+			barber.addService(beardtrim);
 
 			//upcoming workslot and bookingslot for schedule and available booking testing
 			WorkSlot johnShift = new WorkSlot(day, shiftStartTime, shiftEndTime, john);

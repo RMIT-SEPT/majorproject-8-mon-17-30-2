@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
-import BookingBubble from "../BookingHistory/BookingBubble";
+import BookingBubble from "../Bubbles/BookingBubble";
 
 function PastBookingSummary(props){
 

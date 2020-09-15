@@ -38,7 +38,7 @@ function AppRouting() {
         <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} 
         apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 
-        <CustomerAuthenticatedRoute path="/bookings/create/:businessId" component={BookingPageTest} />
+        <CustomerAuthenticatedRoute path="/bookings/create/:businessId" exact component={BookingPageTest} />
         <CustomerAuthenticatedRoute path="/bookings/business" exact component={SelectBusinessPage}/> 
         <CustomerAuthenticatedRoute path="/bookings/manage" exact component={CurrentBookings}/> 
 

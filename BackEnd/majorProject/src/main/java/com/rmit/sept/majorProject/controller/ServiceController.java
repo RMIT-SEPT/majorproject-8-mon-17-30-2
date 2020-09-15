@@ -21,7 +21,13 @@ public class ServiceController{
 
 	public Iterable<Service> getAllServices() {
 		return serviceService.findAll();
-    }
+	}
+	
+	@GetMapping("/api/service/{serviceId}")
+	public ResponseEntity<?> findByIdDTO(@PathVariable Long serviceId){
+		ServiceSummary service = new ServiceSummary(serviceService.findById(serviceId));
+		return new ResponseEntity<>(service, service != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
     
     public Iterable<Service> findByBusinessId(Long businessId){
         return serviceService.findByBusinessId(businessId);

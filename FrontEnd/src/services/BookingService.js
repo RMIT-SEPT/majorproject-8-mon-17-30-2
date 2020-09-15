@@ -23,6 +23,14 @@ class BookingService {
         return axios.get(API_HOST + '/api/booking-slot/newest');
     }
 
+    getMatchingBookingSlots(searchRequest){
+        return axios.post(API_HOST + '/api/booking-slot/search', searchRequest);
+    }
+
+    getBookingSlotById(bookingSlotId){
+        return axios.get(API_HOST + '/api/booking-slot/' + bookingSlotId);
+    }
+
 }
 
 export default new BookingService()

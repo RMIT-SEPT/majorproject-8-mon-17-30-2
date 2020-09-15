@@ -12,5 +12,11 @@ class BusinessService {
     getBusinessPastBookings(businessId){
         return axios.get(BUSINESS_API_BASE_URL + '/' + businessId + '/bookings/past');
     }
+
+    getBusinessById(businessId){
+        return axios.get(BUSINESS_API_BASE_URL + '/' + businessId);
+    }
+
 }
+
 export default new BusinessService()

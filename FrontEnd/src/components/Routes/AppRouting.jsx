@@ -30,7 +30,7 @@ function AppRouting() {
       
       <Switch>
         {/* GENERAL ROUTES */}
-        <Route path="/login" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
+        <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
         <Route path="/register" exact component={Register} />
         {/* CUSTOMER ROUTES
          <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 

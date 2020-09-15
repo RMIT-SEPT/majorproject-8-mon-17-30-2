@@ -10,7 +10,7 @@ function AdminAuthenticatedRoute(props) {
         return <Route {...props} />
     } else {
         return <Redirect to={{
-            pathname: '/login',
+            pathname: '/',
             state: { authorised: false }
           }} />
     }

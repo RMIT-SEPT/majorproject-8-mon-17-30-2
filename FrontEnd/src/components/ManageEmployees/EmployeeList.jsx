@@ -1,37 +1,27 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import AddEmployeeButton from "./AddEmployeeButton";
 import WorkerService from "../../services/WorkerService";
 import AuthenticationService from "../../services/AuthenticationService";
+import EmployeeListItem from "./EmployeeListItem";
 
-function EmployeeList(props){
+function EmployeeList(){
 
     const [workers, setworkers] = useState([]);
     useEffect(()=>{
-        console.log(AuthenticationService.getBusinessId());
-        // WorkerService.getWorkersByBusiness
-    },[])
+        WorkerService.getWorkersByBusiness(AuthenticationService.getBusinessId()).then(response => {
+            setworkers(response.data);
+        }).catch();
+
+    },[]);
 
 
     return(
         <div className="card list list-width">
             <ul className="list-group list-group-flush remove-list-bullet">
-                <Link to="/" className="employee-link">
-                    <button className="list-group-item custom-list-item task list-button">
-                        <li> {`John`}</li>
-                    </button>
-                </Link>  
-                <Link to="/">
-                    <button className="list-group-item custom-list-item task list-button">
-                        <li> {`John`}</li>
-                    </button>
-                </Link>     
-                <Link to="/">
-                    <button className="list-group-item custom-list-item task list-button">
-                        <li> {`John`}</li>
-                    </button>
-                </Link>   
-                
+            {workers.map(worker => {
+                return(<EmployeeListItem key={worker.id} id={worker.id} name={worker.name}/>)
+            })}
+            
                 <AddEmployeeButton />
             </ul>
 

@@ -48,8 +48,8 @@ public class WorkerService implements PersonService<Worker>{
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		Iterable<Worker> workers = repository.findWorkersByBusinessId(businessId);
 		for(Worker worker : workers){
-			System.out.println(worker);
-//			workerDtos.add(new WorkerSummary(worker));
+
+			workerDtos.add(new WorkerSummary(worker));
 		}
 		return workerDtos;
 	}

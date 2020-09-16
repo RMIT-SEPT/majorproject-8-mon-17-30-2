@@ -17,6 +17,7 @@ import SelectBusinessPage from "../MakeABooking/SelectBusinessPage";
 import PastBookingSummary from "../AdminBookingSummary/PastBookingSummary";
 import CurrentBookings from "../CurrentBookings/CurrentBookings";
 import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
+import WorkerProfile from "../ManageEmployees/WorkerProfile";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
 
@@ -48,6 +49,7 @@ function AppRouting() {
         <AdminAuthenticatedRoute path="/bookings/summary" exact render={(props) => <BookingSummary {...props}/>} />
         <AdminAuthenticatedRoute path="/bookings/summary/past" exact render={(props) => <PastBookingSummary {...props} title={`Past Booking Summary`}/> } />
         <AdminAuthenticatedRoute path="/workers" exact render={(props) => <ManageEmployeePage {...props}/> } />
+        <AdminAuthenticatedRoute path="/worker/:workerId" exact render={(props) => <WorkerProfile {...props} apiUrl={GET_WORKER_URL}/> } />
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
       </Switch>

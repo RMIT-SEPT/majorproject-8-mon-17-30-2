@@ -93,6 +93,13 @@ public class BookingController {
 		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
+	@GetMapping("/api/newest/{number}/bookings")
+	public ResponseEntity<?> getNewestBookings(@PathVariable("number") int number)
+	{
+		Iterable<BookingSummary> bookings = bookingService.getNewestBookings(number);
+		return new ResponseEntity<>(bookings,bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+	
 //	@PostMapping("/api/booking/customer")
 //	public ResponseEntity<?> getBookingsByCustomer(@RequestBody String customerUsername){
 //		Iterable<Booking> matchingBookings = bookingService.getBookingsByCustomer(customerUsername);

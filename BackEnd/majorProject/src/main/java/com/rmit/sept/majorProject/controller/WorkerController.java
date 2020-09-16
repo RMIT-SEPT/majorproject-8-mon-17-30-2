@@ -22,6 +22,13 @@ public class WorkerController{
 	public Iterable<Worker> getAllWorkers() {
 		return workerService.findAll();
 	}
+	@GetMapping("/api/worker/business/{businessId}")
+	public Iterable<WorkerSummary> getAllWorkerDtosFromBusiness(@PathVariable Long businessId) {
+		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
+		workerDtos = workerService.getAllWorkerDtosFromBusiness(businessId);
+
+		return workerDtos;
+	}
 
 	
 	
@@ -34,6 +41,8 @@ public class WorkerController{
 		}
 		return workerDtos;
 	}
+
+
 
 	@GetMapping("/api/worker/{workerId}")
 	public ResponseEntity<?> getCustomer(@PathVariable Long workerId){

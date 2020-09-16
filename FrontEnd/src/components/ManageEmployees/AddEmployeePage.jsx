@@ -1,0 +1,2 @@
+//For Muhammad to fill in to add employee with relevant details to the current business
+// use AuthenticationService.getBusinessId() to get the current admin business id so that you know which business to add the employee to

@@ -34,9 +34,11 @@ public class CustomerService implements PersonService<Customer>{
 	}
 
 	public CustomerSummary editCustomer(Long customerId, Customer newCustomer){
+		// Find Target Customer using the source ID (customerId)
 		Optional<Customer> customerOptional = repository.findById(customerId);
 		Customer customerFound = customerOptional.get();
 		if (customerFound != null){
+			// Update details if customer is found
 			if(newCustomer.getAddress() != null) {
 				customerFound.setAddress(newCustomer.getAddress());
 			}
@@ -53,6 +55,7 @@ public class CustomerService implements PersonService<Customer>{
 				customerFound.setUsername(newCustomer.getUsername());
 			}
 		}
+		// Update backend repo with the new details
 		repository.save(customerFound);
 		return new CustomerSummary(customerFound);
 	}

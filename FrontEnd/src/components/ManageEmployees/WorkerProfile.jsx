@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
 import GetRequestService from "../../services/GetRequestService";
 import WorkerScheduleTable from "../Dashboard/WorkerScheduleTable";
+import {Link} from "react-router-dom";
 
 function WorkerProfile(props){
       // TO access business ID use props.match.params.workerId
@@ -20,7 +21,7 @@ function WorkerProfile(props){
             console.log("ERROR USER CANNOT BE FOUND");
         });
 
-    }, [props.apiUrl]);
+    }, [props.apiUrl, props.match.params.workerId]);
 
     return(
         
@@ -46,7 +47,9 @@ function WorkerProfile(props){
                 
                 </ul>
                 
-                <button className="btn btn-info profile-btn">Edit Details here</button>
+                <Link to={`/workers/edit/${props.match.params.workerId}`}>
+                    <button className="btn btn-info profile-btn">Edit Details here</button>
+                </Link>
             
                 
             

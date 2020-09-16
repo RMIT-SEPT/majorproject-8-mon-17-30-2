@@ -8,7 +8,7 @@ function AddEmployeeButton(props){
 
 
 return (<div>
-            <Link to="/" className="employee-link">
+            <Link to="/workers/add" className="employee-link">
                 <button type="button" className="btn btn-primary list-group-item add-task-button" >
                     <li>
                         Add Employee...

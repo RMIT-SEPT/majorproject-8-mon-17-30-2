@@ -24,7 +24,7 @@ public class BookingSlotController {
 
 	@GetMapping("/api/booking-slot/{id}")
 	public ResponseEntity<?> getBookingSlot(@PathVariable Long id){
-		BookingSlot summary = bookingSlotService.findById(id);
+		BookingSlotSummary summary = new BookingSlotSummary(bookingSlotService.findById(id));
 		return new ResponseEntity<>(summary, summary != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 	

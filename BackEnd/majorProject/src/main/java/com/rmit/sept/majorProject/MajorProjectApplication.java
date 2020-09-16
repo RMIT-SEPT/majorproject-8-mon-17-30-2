@@ -98,7 +98,21 @@ public class MajorProjectApplication {
 			oldShift.addBookingSlot(oldSlot);
 
 			// //upcoming bookings
-			Booking austinBooking = new Booking(austin, john, barber, haircut, johnSlot);		
+			Booking austinBooking = new Booking(austin, john, barber, haircut, johnSlot);
+			
+			// vacant upcoming bookingSlots
+			LocalDate newDay1 = day.plusDays(1);
+			LocalDate newDay2 = day.plusDays(2);
+			WorkSlot newShift1 = new WorkSlot(newDay1, shiftStartTime, shiftEndTime, john);
+			WorkSlot newShift2 = new WorkSlot(newDay2, shiftStartTime, shiftEndTime, john);
+			List<Service> newService = new ArrayList<Service>();
+			List<Service> newService2 = new ArrayList<Service>();
+			newService.add(beardtrim);
+			newService2.add(haircut);
+			BookingSlot newSlot1 = new BookingSlot(newDay1, bookingStartTime, bookingEndTime, newService);
+			BookingSlot newSlot2 = new BookingSlot(newDay2, bookingStartTime, bookingEndTime, newService2);
+			newShift1.addBookingSlot(newSlot1);
+			newShift2.addBookingSlot(newSlot2);
 
 			// //old bookings
 			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
@@ -114,8 +128,12 @@ public class MajorProjectApplication {
 			customerRepository.save(austin);
 			workSlotRepository.save(johnShift);
 			workSlotRepository.save(oldShift);
+			workSlotRepository.save(newShift1);
+			workSlotRepository.save(newShift2);
 			bookingSlotRepository.save(johnSlot);
-			bookingSlotRepository.save(oldSlot);			
+			bookingSlotRepository.save(oldSlot);
+			bookingSlotRepository.save(newSlot1);
+			bookingSlotRepository.save(newSlot2);			
 			bookingRepository.save(austinBooking);
 			bookingRepository.save(oldBooking);
 			bookingRepository.save(oldBooking1);

@@ -25,7 +25,6 @@ function BookingPageTest(props) {
     workers: []
   });
   const [businessId, setBusinessId] = useState(null);
-  const [customer, setCustomer] = useState(null);
   const [customerId, setCustomerId] = useState(null);
   const [service, setService] = useState(null);
   const [serviceId, setServiceId] = useState(null);
@@ -39,6 +38,10 @@ function BookingPageTest(props) {
   const [dateString, setDateString] = useState("");
   const [bookingSlots, setBookingSlots] = useState([]);
 
+  var bookingSlot2 = null;
+  var bookingSlotId2 = null;
+  var serviceId2 = null;
+
   // modal logic
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -47,7 +50,6 @@ function BookingPageTest(props) {
 
     CustomerService.getCustomerById(AuthenticationService.getLoggedInId())
     .then((response) =>{
-      setCustomer(response.data)
       setCustomerId(response.data.id)
     });
 
@@ -62,19 +64,19 @@ function BookingPageTest(props) {
   }, [] )
 
   function forceSetServiceId(id){
-    console.log("Setting serviceId to ", id);
     setServiceId(id);
   }
 
   function forceSetWorkerId(id){
-    console.log("Setting workerId to ", id);
     setWorkerId(id);
   }
 
+  function forceSetBookingSlotId(id){
+    setBookingSlotId(id);
+  }
+
   function forceSetBookingSlots(data){
-    console.log("Setting bookingSlots to ", data);
     setBookingSlots(data);
-    console.log(bookingSlots);
   }
 
   function handleChange(event) {
@@ -110,29 +112,33 @@ function BookingPageTest(props) {
   });
 
   function handleChosenSlot(bookingSlot_id, service_id){
-    setBookingSlotId(bookingSlot_id);
-    forceSetServiceId(service_id);
+    console.log("incoming", bookingSlot_id, service_id);
+    bookingSlotId2 = bookingSlot_id;
+    serviceId2 = service_id;
+    forceSetBookingSlotId(bookingSlot_id);
+    forceSetServiceId(service_id);    
+    console.log("now", bookingSlotId, serviceId)
     handleChoose();
   }
   
-  // clicking "BOOK" on a result card inside the modal (committing to creating a booking)
-  function handleChoose() {
+  // CREATE BOOKING by clicking "BOOK" on a result card inside the modal
+  function handleChoose() {    
+    BookingService.getBookingSlotById(bookingSlotId2)
+      .then((response) => {
+        console.log("api returned ", response.data);
+        const newBooking = {
+          customerId: customerId,
+          workerId: response.data.workerId,
+          businessId: response.data.businessId,
+          bookingSlotId: response.data.id,
+          serviceId: serviceId2
+        }
+        submitBooking(newBooking);
+    });    
+  }
 
-    BookingService.getBookingSlotById(bookingSlotId).then((response) => {
-      setBookingSlot(response);
-    });
-    
-    const newBooking = {
-      customerId: {customerId},
-      workerId: {workerId},
-      serviceId: {serviceId},
-      businessId: {businessId},
-      bookingSlotId: {bookingSlotId}
-    };
-
-    console.log(newBooking);
-
-    PostRequestService.postRequest("/api/booking", newBooking)
+  function submitBooking(booking){
+    PostRequestService.postRequest("/api/booking", booking)
       .then((response) => {
         if (response.data != null) {
           alert("Booking Created");
@@ -140,13 +146,14 @@ function BookingPageTest(props) {
           alert("error");
         }
       })
-      .catch(() => {
-        
+      .catch(() => {        
     });
+    handleClose();
   }
 
   let bookingSlotList = <p>No Bookings Found!</p>;  
-  function handleModal(){
+  function handleModal(event){
+    event.preventDefault();
     const searchRequest = {
       businessId: businessId,
       serviceId: serviceId,
@@ -163,9 +170,7 @@ function BookingPageTest(props) {
           forceSetBookingSlots([]);
         }
     });
-
     setShow(true);  
-
   }
  
   return (   
@@ -223,7 +228,7 @@ function BookingPageTest(props) {
           {bookingSlots.map((bookingSlot) => (
             <BookingSlotBubble 
               bookingSlot={bookingSlot} 
-              onChoose={() => handleChosenSlot}
+              handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
             />))
           }
       </Modal.Body>

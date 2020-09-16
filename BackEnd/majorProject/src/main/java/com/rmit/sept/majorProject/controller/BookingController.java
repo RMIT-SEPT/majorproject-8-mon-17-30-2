@@ -35,6 +35,7 @@ public class BookingController {
 	@PostMapping("/api/booking")
     public ResponseEntity<?> addBooking(@Valid @RequestBody BookingBlueprint blueprint){
 		BookingSummary booking;
+		System.out.println("Hello");
     	try {
     		booking = this.bookingService.createNewBooking(blueprint);
     	}

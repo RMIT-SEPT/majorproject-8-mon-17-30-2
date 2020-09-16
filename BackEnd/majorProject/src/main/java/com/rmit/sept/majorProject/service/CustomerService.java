@@ -33,6 +33,31 @@ public class CustomerService implements PersonService<Customer>{
         return repository.save(newCustomer);
 	}
 
+	public CustomerSummary editCustomer(Long customerId, Customer newCustomer){
+		Optional<Customer> customerOptional = repository.findById(customerId);
+		Customer customerFound = customerOptional.get();
+		if (customerFound != null){
+			if(newCustomer.getAddress() != null) {
+				customerFound.setAddress(newCustomer.getAddress());
+			}
+			if(newCustomer.getEmail() != null) {
+				customerFound.setEmail(newCustomer.getEmail());
+			}
+			if(newCustomer.getPassword() != null) {
+				customerFound.setPassword(newCustomer.getPassword());
+			}
+			if(newCustomer.getPhoneNumber() != null) {
+				customerFound.setPhoneNumber(newCustomer.getPhoneNumber());
+			}
+			if(newCustomer.getUsername() != null) {
+				customerFound.setUsername(newCustomer.getUsername());
+			}
+		}
+		repository.save(customerFound);
+		return new CustomerSummary(customerFound);
+	}
+	
+
 	//---------------DTO FUNCTIONS--------------	
 
 	public Iterable<CustomerSummary> findAllDTO(){

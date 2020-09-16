@@ -158,18 +158,18 @@ function BookingPage() {
         <select required={true}
           name="service"
           onChange={handleChange}>
-          <option value="" disabled defaultValue hidden>
+          <option value="" disabled selected  hidden>
             Select an option
           </option>
           <option value="Haircut">Haircut</option>
-          <option value="BeardTrim">BeardTrim</option>
+          <option value="Beard Trim">Beard Trim</option>
         </select> 
 
         <h4>Worker</h4>
         <select
           name="worker"
           onChange={handleChange}>
-          <option value="" disabled defaultValue hidden>
+          <option value="" disabled selected hidden>
             Select an option
           </option>
           <option value="1">John</option>
@@ -188,7 +188,7 @@ function BookingPage() {
 
         <h4>Time</h4>
         <select name="time" onChange={handleChange}>
-          <option value="" disabled hidden>
+          <option value="" disabled selected hidden>
             Select an option
           </option>
           <option value="1330">1330-1430</option>

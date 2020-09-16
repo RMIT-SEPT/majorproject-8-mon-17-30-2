@@ -30,6 +30,9 @@ public class Business {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private List<Worker>  workers = new ArrayList<Worker>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
+    private List<WorkSlot> workSlots = new ArrayList<WorkSlot>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business", orphanRemoval = false)
     private List<Booking> bookings = new ArrayList<Booking>();
 
@@ -44,7 +47,11 @@ public class Business {
     public Long getId(){
         return this.id;
     }
-    
+    //Used to generate mock-id for testing purposes
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getBusinessName(){
         return this.businessName;
     }

@@ -1,10 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AddEmployeeButton from "./AddEmployeeButton";
-
-
+import WorkerService from "../../services/WorkerService";
+import AuthenticationService from "../../services/AuthenticationService";
 
 function EmployeeList(props){
+
+    const [workers, setworkers] = useState([]);
+    useEffect(()=>{
+        console.log(AuthenticationService.getBusinessId());
+        // WorkerService.getWorkersByBusiness
+    },[])
 
 
     return(

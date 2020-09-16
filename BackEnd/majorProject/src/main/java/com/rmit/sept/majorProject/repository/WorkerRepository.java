@@ -21,4 +21,8 @@ public interface WorkerRepository extends PersonRepository<Worker>{
 
 	public Iterable<Service> findServicesById(Long workerId);
 
+	public Iterable<Worker> findWorkersByBusinessId(Long businessId);
+
+
+
 }

@@ -44,6 +44,15 @@ public class WorkerService implements PersonService<Worker>{
 		}
 		return workerDtos;
 	}
+	public ArrayList<WorkerSummary> getAllWorkerDtosFromBusiness(long businessId){
+		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
+		Iterable<Worker> workers = repository.findWorkersByBusinessId(businessId);
+		for(Worker worker : workers){
+			System.out.println(worker);
+//			workerDtos.add(new WorkerSummary(worker));
+		}
+		return workerDtos;
+	}
 
 	public WorkerSummary findByUsernameDTO(String username) {
 		Worker worker = repository.findByUsername(username);

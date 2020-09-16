@@ -10,7 +10,6 @@ function BookingSlotBubble({bookingSlot, handleChosenSlot}) {
   
   function passChoices(event){
     event.preventDefault();
-    console.log("outgoing", bookingSlotId, serviceId);
     handleChosenSlot(bookingSlotId, serviceId);
   }
 
@@ -18,7 +17,6 @@ function BookingSlotBubble({bookingSlot, handleChosenSlot}) {
     const {name, value} = event.target;
     if(name === "service"){
       setServiceId(value);
-      console.log("changing serviceid to ", value);
     }
   }
 

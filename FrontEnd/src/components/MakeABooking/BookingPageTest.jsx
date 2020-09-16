@@ -3,12 +3,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AuthenticationService from "../../services/AuthenticationService";
 import PostRequestService from "../../services/PostRequestService";
-import GetRequestService from "../../services/GetRequestService";
 import moment from "moment";
 import CustomerService from "../../services/CustomerService";
 import BusinessService from "../../services/BusinessService";
-import WorkerService from "../../services/WorkerService";
-import ServiceService from "../../services/ServiceService";
 import BookingService from "../../services/BookingService";
 import BookingSlotBubble from "../Bubbles/BookingSlotBubble";
 import Modal from "react-bootstrap/Modal";
@@ -32,27 +29,25 @@ function BookingPageTest(props) {
   const [worker, setWorker] = useState(null);
   const [workerId, setWorkerId] = useState(null);
   const [workers, setWorkers] = useState([]);
-  const [bookingSlot, setBookingSlot] = useState(null);
   const [bookingSlotId, setBookingSlotId] = useState(null);
   const [date, setDate] = useState(null);
   const [dateString, setDateString] = useState("");
   const [bookingSlots, setBookingSlots] = useState([]);
 
-  var bookingSlot2 = null;
-  var bookingSlotId2 = null;
-  var serviceId2 = null;
+  var bookingSlotVar = null;
+  var bookingSlotIdVar = null;
+  var serviceIdVar = null;
 
   // modal logic
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
     
+  // initialise (classless equivalent of componentDidMount())
   useEffect(() => {
-
     CustomerService.getCustomerById(AuthenticationService.getLoggedInId())
     .then((response) =>{
       setCustomerId(response.data.id)
     });
-
     BusinessService.getBusinessById(props.match.params.businessId)
     .then((response) =>{
       setBusiness(response.data);
@@ -60,21 +55,18 @@ function BookingPageTest(props) {
       setServices(response.data.services);
       setWorkers(response.data.workers);
     });
-
   }, [] )
 
+  // these "force" functions are jank to force sync when updating usestate, changing context seems to make them take effect immediately
   function forceSetServiceId(id){
     setServiceId(id);
   }
-
   function forceSetWorkerId(id){
     setWorkerId(id);
   }
-
   function forceSetBookingSlotId(id){
     setBookingSlotId(id);
   }
-
   function forceSetBookingSlots(data){
     setBookingSlots(data);
   }
@@ -101,42 +93,31 @@ function BookingPageTest(props) {
     }
   }
 
-  var serviceList = <option value="" disabled hidden></option>;
-  serviceList = services.map((service) => {
-    return <option key={service.id} value={service.id}>{service.title}</option>
-  });
-
-  var workerList = <option value="" disabled hidden></option>;
-  workerList = workers.map((worker) => {
-    return <option key={worker.id} value={worker.id}>{worker.name}</option>
-  });
-
+  // clicking "BOOK" on a result card inside the moda
   function handleChosenSlot(bookingSlot_id, service_id){
-    console.log("incoming", bookingSlot_id, service_id);
-    bookingSlotId2 = bookingSlot_id;
-    serviceId2 = service_id;
+    bookingSlotVar = bookingSlot_id;
+    serviceIdVar = service_id;
     forceSetBookingSlotId(bookingSlot_id);
     forceSetServiceId(service_id);    
-    console.log("now", bookingSlotId, serviceId)
-    handleChoose();
+    prepareBooking();
   }
   
-  // CREATE BOOKING by clicking "BOOK" on a result card inside the modal
-  function handleChoose() {    
-    BookingService.getBookingSlotById(bookingSlotId2)
+  // clicking "BOOK" on a result card inside the modal
+  function prepareBooking() {    
+    BookingService.getBookingSlotById(bookingSlotVar)
       .then((response) => {
-        console.log("api returned ", response.data);
         const newBooking = {
           customerId: customerId,
           workerId: response.data.workerId,
           businessId: response.data.businessId,
           bookingSlotId: response.data.id,
-          serviceId: serviceId2
+          serviceId: serviceIdVar
         }
         submitBooking(newBooking);
     });    
   }
 
+  // confirming creation of booking with all chosen attributes
   function submitBooking(booking){
     PostRequestService.postRequest("/api/booking", booking)
       .then((response) => {
@@ -160,7 +141,6 @@ function BookingPageTest(props) {
       workerId: workerId,
       dateString: dateString
     }
-    console.log(searchRequest);
     BookingService.getMatchingBookingSlots(searchRequest)
       .then((response) => {
         if(Array.isArray(response.data)){
@@ -172,6 +152,16 @@ function BookingPageTest(props) {
     });
     setShow(true);  
   }
+
+  var serviceList = <option value="" disabled hidden></option>;
+  serviceList = services.map((service) => {
+    return <option key={service.id} value={service.id}>{service.title}</option>
+  });
+
+  var workerList = <option value="" disabled hidden></option>;
+  workerList = workers.map((worker) => {
+    return <option key={worker.id} value={worker.id}>{worker.name}</option>
+  });
  
   return (   
      

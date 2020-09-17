@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rmit.sept.majorProject.model.Business;
-import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.Worker;
 
 /*
@@ -19,14 +18,12 @@ public class SearchRequest {
 	@JsonInclude(value= JsonInclude.Include.NON_EMPTY)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
 	private LocalDate date;
-	private Service service;
 	
-	public SearchRequest(Business business, Worker worker, LocalDate date, Service service)
+	public SearchRequest(Business business, Worker worker, LocalDate date)
 	{
 		this.business = business;
 		this.worker = worker;
 		this.date = date;
-		this.service = service;
 	}
 	
 	public Business getBusiness() {
@@ -39,10 +36,6 @@ public class SearchRequest {
 	
 	public LocalDate getDate() {
 		return this.date;
-	}
-	
-	public Service getService() {
-		return this.service;
 	}
 	
 }

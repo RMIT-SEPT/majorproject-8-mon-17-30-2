@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
-import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.Worker;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 
-@org.springframework.stereotype.Service
+@Service
 public class BookingSlotService{
 
 	@Autowired
@@ -55,23 +55,99 @@ public class BookingSlotService{
         return availableSlotDtos;
     }
 
-	public Iterable<BookingSlotSummary> searchAvailableBookingSlots(Business business, Worker worker, LocalDate date, Service service) {
+	public Iterable<BookingSlotSummary> searchAvailableBookingSlots(Business business, Worker worker, LocalDate date) {
 		ArrayList<BookingSlotSummary> availableSlots = new ArrayList<BookingSlotSummary>();
 		
 		//If everything is null
-		if(business == null && worker == null && date == null && service == null)
+		if(business == null && worker == null && date == null)
 		{
 			return availableSlots;
 		}
 		//If none are null
-		if(worker != null && date != null && business != null && service != null)
+		if(worker != null && date != null && business != null)
 		{
-			for(BookingSlot slot : getAvailableBookingSlots()) {
-				try {
+			try {
+				for(BookingSlot slot : getAvailableBookingSlots()) {
 					if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
 					&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername())
-					&& slot.getDate().isEqual(date)
-					&& slot.searchServiceExist(service.getTitle())) 
+					&& slot.getDate().isEqual(date)) 
+					{
+						availableSlots.add(new BookingSlotSummary(slot));
+					}
+				}
+			}
+			catch(NullPointerException e){}
+			
+		}
+		
+		//If business is not null
+		else if(business != null)
+		{
+			if(worker == null && date == null)
+			{
+				try {
+					for(BookingSlot slot : getAvailableBookingSlots()) {
+						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId())
+						{
+							availableSlots.add(new BookingSlotSummary(slot));
+						}
+					}
+				}
+				catch(NullPointerException e){}
+				
+			}
+			else if(date == null)
+			{
+				
+					try {
+						for(BookingSlot slot : getAvailableBookingSlots()) {
+							if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
+									&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
+									{
+										availableSlots.add(new BookingSlotSummary(slot));
+									}
+						}
+					}
+					catch(NullPointerException e){}
+			}
+			
+			else if(worker == null)
+			{
+				try {
+					for(BookingSlot slot : getAvailableBookingSlots()) {
+						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
+								&& slot.getDate().isEqual(date))
+						{
+							availableSlots.add(new BookingSlotSummary(slot));
+						}
+					}
+				}
+				catch(NullPointerException e){}
+				
+			}
+		}
+		//If worker is not null
+		else if(worker != null)
+		{
+			if(business == null && date == null)
+			{
+				try {
+					for(BookingSlot slot : getAvailableBookingSlots()) {
+						if(slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
+						{
+							availableSlots.add(new BookingSlotSummary(slot));
+						}
+					}
+				}
+				catch(NullPointerException e){}
+				
+			}
+			else if(business == null)
+			{
+				try {
+					for(BookingSlot slot : getAvailableBookingSlots())
+						if(slot.getDate().isEqual(date) 
+								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
 						{
 							availableSlots.add(new BookingSlotSummary(slot));
 						}
@@ -79,205 +155,21 @@ public class BookingSlotService{
 				catch(NullPointerException e){}
 			}
 		}
-		//If business is not null
-		else if(business != null)
-		{
-			if(worker == null && date == null && service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId())
-							{
-								availableSlots.add(new BookingSlotSummary(slot));
-							}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(date == null && service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
-								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
-							{
-								availableSlots.add(new BookingSlotSummary(slot));
-							}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(worker == null && service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
-								&& slot.getDate().isEqual(date))
-							{
-								availableSlots.add(new BookingSlotSummary(slot));
-							}
-						}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(date == null && worker == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
-								&& slot.searchServiceExist(service.getTitle()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e) {}
-				}
-			}
-			else if(date == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
-								&& slot.searchServiceExist(service.getTitle())
-								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e) {}
-				}
-			}
-			
-			else if(worker == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId() 
-								&& slot.searchServiceExist(service.getTitle())
-								&& slot.getDate().isEqual(date))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e) {}
-				}
-			}
-			else if(service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker().getBusiness().getId() == business.getId()
-						&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername())
-						&& slot.getDate().isEqual(date)) 
-							{
-								availableSlots.add(new BookingSlotSummary(slot));
-							}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-		}
-		//If worker is not null
-		else if(worker != null)
-		{
-			if(business == null && date == null && service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(business == null && service == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.getDate().isEqual(date) 
-								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(business == null && date == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.searchServiceExist(service.getTitle())
-								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-			else if(business == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots()) {
-					try {
-						if(slot.searchServiceExist(service.getTitle())
-								&& slot.getWorkSlot().getWorker() == workerRepository.findByUsername(worker.getUsername())
-								&& slot.getDate().isEqual(date))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-		}
 		//If date is not null
 		else if(date != null)
 		{
-			if(business == null && worker == null && service == null)
+			if(business == null && worker == null)
 			{
-				for(BookingSlot slot : getAvailableBookingSlots())
-				{
-					try {
+				try {
+					for(BookingSlot slot : getAvailableBookingSlots())
+					{
 						if(slot.getDate().isEqual(date))
 						{
 							availableSlots.add(new BookingSlotSummary(slot));
 						}
 					}
-					catch(NullPointerException e){}
 				}
-			}
-			else if(business == null && worker == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots())
-				{
-					try {
-						if(slot.getDate().isEqual(date)
-								&& slot.searchServiceExist(service.getTitle()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
-			}
-		}
-		else if(service != null)
-		{
-			if(business == null && worker == null && date == null)
-			{
-				for(BookingSlot slot : getAvailableBookingSlots())
-				{
-					try {
-						if(slot.searchServiceExist(service.getTitle()))
-						{
-							availableSlots.add(new BookingSlotSummary(slot));
-						}
-					}
-					catch(NullPointerException e){}
-				}
+				catch(NullPointerException e){}
 			}
 		}
 		return availableSlots;

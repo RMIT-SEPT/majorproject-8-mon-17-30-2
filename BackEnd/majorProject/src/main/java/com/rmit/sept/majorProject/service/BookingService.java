@@ -82,6 +82,28 @@ public class BookingService{
 		}
 		return false;
 	}
+
+	public void removeExistingBooking(Long id){
+		
+		// if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
+		// 	|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
+				
+		// 	throw new UsernameNotFoundException("Booking not found");
+
+		// } else{
+		// 	for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
+		// 		if(bookings.getCustomer().getBookings().equals(booking.getCustomer().getBookings())){
+		// 			// booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
+		// 			bookings.setBookingSlot(null);
+		// 		}
+		// 	}
+		// 	return booking;
+		// }
+		ArrayList<Booking> removeBooking = new ArrayList<Booking>();
+		for(Booking booking : getAllBookings()){
+            removeBooking.remove(booking.getBookingId() == id);
+        }
+}
 	
 	public Iterable<Booking> getAllBookings(){
 		return repository.findAll();

@@ -32,6 +32,8 @@ public class BookingService{
 	@Autowired
 	private BusinessRepository busiRepository;
 	@Autowired
+	private BusinessRepository busiRepository;
+	@Autowired
 	private BookingSlotRepository bookingSlotRepository;
 	
 	
@@ -54,40 +56,40 @@ public class BookingService{
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-//		Service tempService = null;
-		try {
-			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
-			{
-				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
-						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
-						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
-				{
-					for(Service service: bookingSlots.getAvailableServices())
-					{
-						if(booking.getService() == service && !bookingSlots.fullyBooked())
-						{
-//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
-//							tempService = bookingSlots.getBookedService();
-							booking.getBookingSlot().setBookedService(service);
-							break;
-						}
-						else if(bookingSlots.fullyBooked())
-						{
-							throw new DataIntegrityViolationException("Service is fully booked");
-						}
-					}
-				}
-			}
-		}
-		catch(NullPointerException e) {}
+		booking.setBookingSlot((this.bookingSlotRepository.findById(booking.getBookingSlot().getId())).get());
+		booking.getBookingSlot().setBookedService(booking.getService());
 		
+//			System.out.println(booking.getBookingSlot().getId());
 		if(duplicateBooking(booking))
 		{
-//			booking.getBookingSlot().setBookedService(tempService);
 			throw new DuplicateKeyException("This booking already exists");
 		}
-		return new BookingSummary(this.repository.save(booking));
+		this.bookingSlotRepository.save(booking.getBookingSlot());
+		booking = this.repository.save(booking);
+		return new BookingSummary(booking);
 	}
+
+	public void removeExistingBooking(Long id){
+		
+		// if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
+		// 	|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
+				
+		// 	throw new UsernameNotFoundException("Booking not found");
+
+		// } else{
+		// 	for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
+		// 		if(bookings.getCustomer().getBookings().equals(booking.getCustomer().getBookings())){
+		// 			// booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
+		// 			bookings.setBookingSlot(null);
+		// 		}
+		// 	}
+		// 	return booking;
+		// }
+		ArrayList<Booking> removeBooking = new ArrayList<Booking>();
+		for(Booking booking : getAllBookings()){
+            removeBooking.remove(booking.getBookingId() == id);
+        }
+}
 	
 	public boolean duplicateBooking(Booking booking){
 		for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
@@ -104,26 +106,6 @@ public class BookingService{
 		}
 		return false;
 	}
-
-	public Booking removeExistingBooking(Booking booking, Business business){
-		
-			if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null 
-				|| this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null){
-					
-				throw new UsernameNotFoundException("Booking not found");
-
-			} else{
-				for(Booking bookings:findByCustomerUsername(booking.getCustomer().getUsername())){
-					if(bookings.getCustomer().getBookings().equals(booking.getCustomer().getBookings())){
-						// booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-						bookings.setBookingSlot(null);
-						business.removeBooking(booking);
-					}
-				}
-				return booking;
-			}
-	}
-
 	
 	public Iterable<Booking> getAllBookings(){
 		return repository.findAll();
@@ -144,6 +126,9 @@ public class BookingService{
 	public Iterable<Booking> findByCustomerId(Long customerId){
 		return repository.findByCustomerId(customerId);
 	}
+	public Iterable<Booking> findByBusinessId(Long businessId){
+		return repository.findByBusinessId(businessId);
+	}
 
 	public Iterable<BookingSummary> findByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
@@ -156,6 +141,26 @@ public class BookingService{
 	public Iterable<BookingSummary> getPastBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
+	}
+
+	public Iterable<BookingSummary> getCurrentBookingsByCustomerIdDTO(Long customerId){
+		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByCustomerId(customerId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0) {
+				pastBookings.add(new BookingSummary(booking));
+			}
+		}
+		return pastBookings;
+	}
+
+	public Iterable<BookingSummary> getPastBookingsByBusinessIdDTO(Long businessId){
+		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByBusinessId(businessId)){
 			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
 				pastBookings.add(new BookingSummary(booking));
 			}
@@ -207,5 +212,15 @@ public class BookingService{
 			}
 		}
 		return dayBooking;
+	}
+	
+	public Iterable<BookingSummary> getNewestBookings(int noBookings){
+		Iterable<Booking> temp =  this.repository.getNewestParameterised(noBookings);
+		ArrayList<BookingSummary> newList = new ArrayList<BookingSummary>();
+		for(Booking bookings:temp)
+		{
+			newList.add(new BookingSummary(bookings));
+		}
+		return newList;
 	}
 }

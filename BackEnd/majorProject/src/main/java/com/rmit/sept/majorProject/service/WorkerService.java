@@ -74,6 +74,40 @@ public class WorkerService implements PersonService<Worker>{
 		}
 		return summary;
 	}
+
+	public WorkerSummary editWorker(Long workerId, Worker newWorker){
+		// Search repository for existing target worker using Source ID (workerID)
+		Optional<Worker> workerOptional = repository.findById(workerId);
+		// Assign the found worker, can assign null due to OPTIONAL
+		Worker workerFound = workerOptional.get();
+		if (workerFound != null){
+			// If worker exist, updates the values of that worker if there are changes.
+			if (newWorker.getBusiness() != null) {
+				workerFound.setBusiness(newWorker.getBusiness());
+			}
+			if (newWorker.getPassword() != null) {
+				workerFound.setPassword(newWorker.getPassword());
+			}
+			if (newWorker.getServices().iterator().hasNext() == true) {
+				workerFound.setServices(newWorker.getServices());
+			}
+			if (newWorker.getAddress() != null) {
+				workerFound.setAddress(newWorker.getAddress());
+			}
+			if (newWorker.getEmail() != null) {
+				workerFound.setEmail(newWorker.getEmail());
+			}
+			if (newWorker.getUsername() != null) {
+				workerFound.setUsername(newWorker.getUsername());
+			}
+			if (newWorker.getPhoneNumber() != null) {
+				workerFound.setPhoneNumber((newWorker.getPhoneNumber()));
+			}
+		}
+		// Save new details to repository
+		repository.save(workerFound);
+		return new WorkerSummary(workerFound);
+	}
 	
 	//---------GENERIC PERSON FUNCTIONS------------
 	

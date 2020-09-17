@@ -54,17 +54,39 @@ public class BookingService{
 		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
 		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
 		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-		booking.setBookingSlot((this.bookingSlotRepository.findById(booking.getBookingSlot().getId())).get());
-		booking.getBookingSlot().setBookedService(booking.getService());
+//		Service tempService = null;
+		try {
+			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
+			{
+				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
+						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
+						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
+				{
+					for(Service service: bookingSlots.getAvailableServices())
+					{
+						if(booking.getService() == service && !bookingSlots.fullyBooked())
+						{
+//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
+//							tempService = bookingSlots.getBookedService();
+							booking.getBookingSlot().setBookedService(service);
+							break;
+						}
+						else if(bookingSlots.fullyBooked())
+						{
+							throw new DataIntegrityViolationException("Service is fully booked");
+						}
+					}
+				}
+			}
+		}
+		catch(NullPointerException e) {}
 		
-//			System.out.println(booking.getBookingSlot().getId());
 		if(duplicateBooking(booking))
 		{
+//			booking.getBookingSlot().setBookedService(tempService);
 			throw new DuplicateKeyException("This booking already exists");
 		}
-		this.bookingSlotRepository.save(booking.getBookingSlot());
-		booking = this.repository.save(booking);
-		return new BookingSummary(booking);
+		return new BookingSummary(this.repository.save(booking));
 	}
 	
 	public boolean duplicateBooking(Booking booking){
@@ -188,15 +210,5 @@ public class BookingService{
 			}
 		}
 		return dayBooking;
-	}
-	
-	public Iterable<BookingSummary> getNewestBookings(int noBookings){
-		Iterable<Booking> temp =  this.repository.getNewestParameterised(noBookings);
-		ArrayList<BookingSummary> newList = new ArrayList<BookingSummary>();
-		for(Booking bookings:temp)
-		{
-			newList.add(new BookingSummary(bookings));
-		}
-		return newList;
 	}
 }

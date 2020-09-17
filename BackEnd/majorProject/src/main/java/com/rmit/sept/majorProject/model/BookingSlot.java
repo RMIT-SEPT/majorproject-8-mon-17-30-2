@@ -41,30 +41,6 @@ public class BookingSlot extends Slot {
     public Iterable<Service> getAvailableServices(){
         return this.availableServices;
     }
-    
-    public boolean searchServiceExist(String title)
-    {
-    	for(Service service:getAvailableServices())
-    	{
-    		if(service.getTitle().equals(title))
-    		{
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    
-    public Service findService(String title)
-    {
-    	for(Service service:getAvailableServices())
-    	{
-    		if(service.getTitle().equals(title))
-    		{
-    			return service;
-    		}
-    	}
-    	return null;
-    }
 
     public void addAvailableService(Service newService){
         if(!availableServices.contains(newService)){

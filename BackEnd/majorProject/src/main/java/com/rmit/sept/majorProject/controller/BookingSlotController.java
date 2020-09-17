@@ -28,7 +28,7 @@ public class BookingSlotController {
 
 	@PostMapping("/api/search/booking-slot")
 	public ResponseEntity<?> searchAvailableBookingSlots(@Valid @RequestBody SearchRequest search){
-		Iterable<BookingSlotSummary> availableBookingSlots = bookingSlotService.searchAvailableBookingSlots(search.getBusiness(), search.getWorker(), search.getDate(), search.getService());
+		Iterable<BookingSlotSummary> availableBookingSlots = bookingSlotService.searchAvailableBookingSlots(search.getBusiness(), search.getWorker(), search.getDate());
 		return new ResponseEntity<>(availableBookingSlots, availableBookingSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 

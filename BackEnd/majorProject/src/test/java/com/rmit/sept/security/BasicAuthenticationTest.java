@@ -3,14 +3,12 @@ package com.rmit.sept.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.rmit.sept.majorProject.model.Admin;
@@ -44,7 +42,7 @@ public class BasicAuthenticationTest {
 	
 	//Test login customer
 	@Test
-	public void testLogin_Customer() {
+	public void testLoginCustomer() {
 		Customer customerTest = new Customer("cust","custUser","custPass","custStreet","cust@email.com","3215321");
 		when(customerRepository.findByUsernameAndPassword(customerTest.getUsername(), customerTest.getPassword())).thenReturn(customerTest);
 		when(workerRepository.findByUsernameAndPassword(customerTest.getUsername(), customerTest.getPassword())).thenReturn(null);
@@ -55,7 +53,7 @@ public class BasicAuthenticationTest {
 	
 	//Test login worker
 	@Test
-	public void testLogin_Worker() {
+	public void testLoginWorker() {
 		Worker workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
 		when(workerRepository.findByUsernameAndPassword(workerTest.getUsername(), workerTest.getPassword())).thenReturn(workerTest);
 		when(customerRepository.findByUsernameAndPassword(workerTest.getUsername(), workerTest.getPassword())).thenReturn(null);
@@ -66,26 +64,13 @@ public class BasicAuthenticationTest {
 	
 	//Test login admin
 	@Test
-	public void testLogin_Admin() {
+	public void testLoginAdmin() {
 		Admin adminTest = new Admin("Admin", "adminUser", "adminPass");
 		when(adminRepository.findByUsernameAndPassword(adminTest.getUsername(), adminTest.getPassword())).thenReturn(adminTest);
 		when(customerRepository.findByUsernameAndPassword(adminTest.getUsername(), adminTest.getPassword())).thenReturn(null);
 		when(workerRepository.findByUsernameAndPassword(adminTest.getUsername(), adminTest.getPassword())).thenReturn(null);
 		AuthenticationBean result = basicAuthenticationController.authenticate(adminTest.getUsername(), adminTest.getPassword());
 		assertEquals(adminTest.getRole().name(),result.getRole());
+		
 	}
-	
-	//Test user not in the system
-	@Test
-	public void testLogin_FakeUser() {
-		Customer customerTest = new Customer("Victor Lustig","magician","rumanianBox","somewhere","realCoin@gouvernement.fr","1418901947");
-		when(customerRepository.findByUsernameAndPassword(customerTest.getUsername(), customerTest.getPassword())).thenReturn(null);
-		when(workerRepository.findByUsernameAndPassword(customerTest.getUsername(), customerTest.getPassword())).thenReturn(null);
-		when(adminRepository.findByUsernameAndPassword(customerTest.getUsername(), customerTest.getPassword())).thenReturn(null);
-		Assertions.assertThrows(UsernameNotFoundException.class, () -> {
-			basicAuthenticationController.authenticate(customerTest.getUsername(), customerTest.getPassword());
-		});
-	}
-	
-	
 }

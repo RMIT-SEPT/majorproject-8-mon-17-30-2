@@ -1,4 +1,3 @@
-# I am still working on it. The method is not yet working
 # RMIT SEPT 2020 Major Project
 
 # Release 1.1.0

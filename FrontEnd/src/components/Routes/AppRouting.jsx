@@ -20,6 +20,7 @@ import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
 import WorkerProfile from "../ManageEmployees/WorkerProfile";
 import EditEmployeePage from "../ManageEmployees/EditEmployeePage";
 import AddEmployeePage from "../ManageEmployees/AddEmployeePage";
+import AboutAndContact from "../HomePage/AboutAndContact";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
 
@@ -36,6 +37,7 @@ function AppRouting() {
         {/* GENERAL ROUTES */}
         <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
         <Route path="/register" exact component={Register} />
+        <Route path="/about" exact component={AboutAndContact} />
         {/* CUSTOMER ROUTES
          <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 
         */}

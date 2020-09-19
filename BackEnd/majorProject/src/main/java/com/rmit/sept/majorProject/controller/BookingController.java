@@ -43,6 +43,17 @@ public class BookingController {
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
 	}
 
+	@DeleteMapping("/api/booking/{bookingId}")
+    public ResponseEntity<?> removeBooking(@PathVariable("bookingId") Long id){
+    	// if(result.hasErrors()){
+    	// 	return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
+    	// }
+		
+		// Booking booking1 = this.bookingService.removeExistingBooking(id);
+		this.bookingService.removeExistingBooking(id);
+    	return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 	//---------------------CUSTOMER BOOKING API----------------------
 
 	@GetMapping("/api/customer/{customerId}/bookings/past")
@@ -91,6 +102,13 @@ public class BookingController {
 	{
 		Iterable<Booking> bookings = bookingService.getAvailableBookingsByDay(day);
 		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/api/newest/{number}/bookings")
+	public ResponseEntity<?> getNewestBookings(@PathVariable("number") int number)
+	{
+		Iterable<BookingSummary> bookings = bookingService.getNewestBookings(number);
+		return new ResponseEntity<>(bookings,bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
 //	@PostMapping("/api/booking/customer")

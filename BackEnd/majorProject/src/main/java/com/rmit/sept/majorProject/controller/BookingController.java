@@ -43,15 +43,15 @@ public class BookingController {
     	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/api/booking/{id}")
-    public ResponseEntity<?> removeBooking(@Valid @RequestBody Long id, Booking booking){
+	@DeleteMapping("/api/booking/{bookingId}")
+    public ResponseEntity<?> removeBooking(@PathVariable("bookingId") Long id){
     	// if(result.hasErrors()){
     	// 	return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
     	// }
 		
 		// Booking booking1 = this.bookingService.removeExistingBooking(id);
 		this.bookingService.removeExistingBooking(id);
-    	return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
+    	return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	//---------------------CUSTOMER BOOKING API----------------------

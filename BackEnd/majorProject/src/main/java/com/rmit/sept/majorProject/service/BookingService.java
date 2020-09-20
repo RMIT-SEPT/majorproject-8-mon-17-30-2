@@ -82,18 +82,6 @@ public class BookingService{
 		}
 		return false;
 	}
-
-	public void removeExistingBooking(Long id){
-		
-		ArrayList<Booking> removeBooking = new ArrayList<Booking>();
-		for(Booking booking : getAllBookings()){
-			if(id == booking.getBookingId()){
-				repository.delete(booking);
-				// removeBooking.remove(booking.getBookingId());
-			}
-			
-        }
-	}
 	
 	public Iterable<Booking> getAllBookings(){
 		return repository.findAll();

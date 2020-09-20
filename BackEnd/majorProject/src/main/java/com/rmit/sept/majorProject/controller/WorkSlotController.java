@@ -29,6 +29,13 @@ public class WorkSlotController {
         Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByWorkerIdDTO(workerId);
 		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/api/worker/{workerId}/work-slots/{date}")
+    public ResponseEntity<?> getWorkSlotsByWorkerIdAndDate(@PathVariable Long workerId, @PathVariable String date){
+        Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByWorkerIdAndDateDTO(workerId, date);
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
 }

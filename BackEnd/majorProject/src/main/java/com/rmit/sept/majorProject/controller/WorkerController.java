@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Worker;
+import com.rmit.sept.majorProject.service.WorkSlotService;
 import com.rmit.sept.majorProject.service.WorkerService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,9 +22,7 @@ public class WorkerController{
 
 	public Iterable<Worker> getAllWorkers() {
 		return workerService.findAll();
-	}
-
-	
+	}	
 	
     @GetMapping("/api/worker")
 	public Iterable<WorkerSummary> getAllWorkerDtos() {

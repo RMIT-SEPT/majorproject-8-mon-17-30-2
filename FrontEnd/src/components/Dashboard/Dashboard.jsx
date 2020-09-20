@@ -4,8 +4,7 @@ import "../../css/Dashboard.css";
 import Profile from "./Profile";
 import AuthenticationService from "../../services/AuthenticationService";
 import {WORKER} from "../../Utils/utils";
-import WorkerScheduleTable from "./WorkerScheduleTable";
-
+import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
 
 function Dashboard(props) {
 
@@ -20,17 +19,18 @@ function Dashboard(props) {
           <Profile apiUrl={props.apiUrl}/>
           {AuthenticationService.getRole() !== WORKER ?  
             
+          //if not a worker display buttons
           <div className="card-deck dashboard-card-deck" >
             {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} link={details.link} />)}
           </div>
           :
-            <WorkerScheduleTable/>
-        }
-         
-      </div>
+          //otherwise display today's work schedule
+          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()}/>         
+          }  
+
+        </div>
+      </div>      
     </div>
-      
-  </div>
 
 );
 }

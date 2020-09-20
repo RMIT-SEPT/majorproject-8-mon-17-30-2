@@ -1,6 +1,7 @@
 package com.rmit.sept.majorProject.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
@@ -36,6 +37,17 @@ public class WorkSlotService{
         ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
         for(WorkSlot workSlot : findByWorkerId(workerId)){
             workSlotDtos.add(new WorkSlotSummary(workSlot));
+        }
+        return workSlotDtos;
+    }
+
+    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString){
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
+        for(WorkSlot workSlot : findByWorkerId(workerId)){
+            if(workSlot.getDate().equals(date)){
+                workSlotDtos.add(new WorkSlotSummary(workSlot));
+            }            
         }
         return workSlotDtos;
     }

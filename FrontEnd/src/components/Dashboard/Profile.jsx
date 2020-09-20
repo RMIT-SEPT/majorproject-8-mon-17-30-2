@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
 import AuthenticationService from "../../services/AuthenticationService"
 import GetRequestService from "../../services/GetRequestService";
-import {CUSTOMER, WORKER, ADMIN} from "../../Utils/utils";
+import {CUSTOMER, WORKER, ADMIN, BUSINESS_ID_SESSION_ATTRIBUTE} from "../../Utils/utils";
 
 function Profile(props){
     const authenticatedUser = AuthenticationService.getLoggedInUserName();
@@ -15,7 +15,10 @@ function Profile(props){
         GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)
         .then((response) => {        
             setUserDetails(response.data);
-            setServices(response.data.services);          
+            setServices(response.data.services);   
+            if(response.data.businessId){
+                sessionStorage.setItem(BUSINESS_ID_SESSION_ATTRIBUTE, response.data.businessId);
+            }  
         })
         .catch(() => {
             console.log("ERROR USER CANNOT BE FOUND");

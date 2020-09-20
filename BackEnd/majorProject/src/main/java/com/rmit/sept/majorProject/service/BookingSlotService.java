@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.model.Service;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -20,17 +20,19 @@ function Navbar(props){
         <a className = "navbar-brand nav-text" href= "/">AGME</a>}
             <div className="navbar-collapse" id="navbarNav">
             <ul className = "navbar-nav">
+            {props.isLoggedIn ? <Link to = {"/"+ AuthenticationService.getRole().toLowerCase()} className = "nav-link"> <li className = "nav-item">Home</li> </Link> :
                 <Link to = "/" className = "nav-link">
                     <li className = "nav-item">Home</li>   
                 </Link>
+    }
 
                 <Link to = "/about" className = "nav-link">
-                    <li className = "nav-item">About</li>
+                    <li className = "nav-item">About & Contact</li>
                 </Link>
 
-                <Link to = "/contact" className = "nav-link">
+                {/* <Link to = "/contact" className = "nav-link">
                     <li className = "nav-item">Contact</li>
-                </Link>
+                </Link> */}
             </ul>
           
            
@@ -38,7 +40,7 @@ function Navbar(props){
             {props.isLoggedIn ? 
                 <ul className="navbar-nav ml-auto">
                     <span className = "navbar-text">{AuthenticationService.getLoggedInUserName()}</span>
-                    <Link to = "/login" className = "nav-link">
+                    <Link to = "/" className = "nav-link">
                         <li onClick={handleClick} className = "nav-item">Logout</li>
                     </Link>
                     </ul>
@@ -46,7 +48,7 @@ function Navbar(props){
                 : 
 
                 <ul className="navbar-nav ml-auto">
-                    <Link to = "/login" className = "nav-link">
+                    <Link to = "/" className = "nav-link">
                         <li className = "nav-item">Login</li>
                     </Link>
                     <Link to = "/register" className = "nav-link">

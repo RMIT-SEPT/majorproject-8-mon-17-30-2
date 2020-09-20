@@ -1,7 +1,9 @@
 package com.rmit.sept.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -9,14 +11,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.stubbing.OngoingStubbing;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.rmit.sept.majorProject.dto.BookingBlueprint;
@@ -74,10 +80,9 @@ public class BookingServiceTest {
 		serviceList.add(serviceTest);
 	}
 	
-	//Test add booking
+	//Test add booking - with correct details
 	@Test
-	public void testAddBooking() {
-		when(this.bookingRepository.findByCustomerUsername(bookingTest.getCustomer().getUsername())).thenReturn(new ArrayList<Booking>());
+	public void testAddBooking_WithCorrectDetails() {
 		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
 		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
 		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
@@ -89,14 +94,54 @@ public class BookingServiceTest {
 		assertEquals(new BookingSummary(bookingTest), result);
 	}
 	
-	//Test get all bookings
+	//Test add bookings- with non existent Service
 	@Test
-	public void testGetAllBookings() {
+	public void testAddBooking_WithFakeService() {
+		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
+		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
+		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(null);
+		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
+		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
+			bookingService.createNewBooking(bookingTestBlueprint);
+		  });
+	}
+	
+	//Test add bookings- with a duplicate booking
+	@Test
+	public void testAddBooking_WithDuplicateBooking() {
+		BookingService bookingSpy = spy(bookingService);
+		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
+		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
+		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
+		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
+		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
+		doReturn(true).when(bookingSpy).duplicateBooking(Mockito.isNotNull());
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		Assertions.assertThrows(DuplicateKeyException.class, () -> {
+			bookingSpy.createNewBooking(bookingTestBlueprint);
+		  });
+	}
+	
+	//Test get all bookings with some bookings in the system
+	@Test
+	public void testGetAllBookings_WithSomeBookings() {
 		ArrayList<Booking> bookingList = new ArrayList<Booking>();
 		bookingList.add(bookingTest);
 		
 		when(this.bookingRepository.findAll()).thenReturn(bookingList);
 		
+		ArrayList<Booking> result = (ArrayList<Booking>) bookingService.getAllBookings();
+		assertEquals(bookingList, result);
+	}
+	
+	//Test get all bookings with no bookings in the system
+	@Test
+	public void testGetAllBookings_WithNoBookings() {
+		ArrayList<Booking> bookingList = new ArrayList<Booking>();
+		when(this.bookingRepository.findAll()).thenReturn(bookingList);
+
 		ArrayList<Booking> result = (ArrayList<Booking>) bookingService.getAllBookings();
 		assertEquals(bookingList, result);
 	}

@@ -17,6 +17,10 @@ class WorkerService {
         return axios.get(WORKER_API_BASE_URL + '/' + workerUsename);
     }
 
+    getWorkSlotByDateAndWorkerId(workerId, date){
+        return axios.get(WORKER_API_BASE_URL + '/' + workerId + '/work-slots/' + date);
+    }
+    
     getWorkersByBusiness(businessId){
         return axios.get(WORKER_API_BASE_URL + '/business/' + businessId);
     }

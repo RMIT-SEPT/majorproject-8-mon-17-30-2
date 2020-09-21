@@ -29,17 +29,19 @@ jobs:
   build-test-frontend:
     working_directory: ~/majorproject-8-mon-17-30-2/FrontEnd
     docker:
-      - image: circleci/node:12.18.3 
+      - image: circleci/node:12.18.3
     steps:
       - checkout:
           path: ~/majorproject-8-mon-17-30-2
       - restore_cache:
-            key: frontend-dependencies-{{ checksum "package.json" }}
+            key: dependencies-frontend-{{ checksum "package.json" }}
       - run: npm install
       - save_cache:
           paths:
-            - ~/.m2
-          key: circleci-demo-java-spring-{{ checksum "package.json" }}
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: dependencies-frontend-{{ checksum "package.json" }}
       - run: npm test
 
 workflows:

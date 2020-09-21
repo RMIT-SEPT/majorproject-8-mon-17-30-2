@@ -1,7 +1,5 @@
 package com.rmit.sept.majorProject.model;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 
 @Entity

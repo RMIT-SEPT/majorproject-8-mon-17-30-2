@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
-import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.query.SearchRequest;
 import com.rmit.sept.majorProject.service.BookingSlotService;
 

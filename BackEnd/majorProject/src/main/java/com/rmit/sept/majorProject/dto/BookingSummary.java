@@ -80,6 +80,10 @@ public class BookingSummary {
         return date;
     }
 
+    public Long getBusinessId(){
+        return this.businessId;
+    }
+
     public String getBusinessName() {
         return businessName;
     }

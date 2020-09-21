@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
@@ -32,15 +33,15 @@ public class BookingController {
 	}
 
 	@PostMapping("/api/booking")
-    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking){
-		BookingSummary booking1;
+    public ResponseEntity<?> addBooking(@Valid @RequestBody BookingBlueprint blueprint){
+		BookingSummary booking;
     	try {
-    		booking1 = this.bookingService.createNewBooking(booking);
+    		booking = this.bookingService.createNewBooking(blueprint);
     	}
     	catch (DuplicateKeyException dkEx) {
     		return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
+    	return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/api/booking/{bookingId}")

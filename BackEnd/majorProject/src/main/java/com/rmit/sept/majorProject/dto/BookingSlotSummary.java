@@ -12,6 +12,7 @@ public class BookingSlotSummary{
 
     private Long id;
     private String businessName;
+    private Long businessId;
     private Long workerId;
     private String workerName;
     private LocalDate date;
@@ -27,6 +28,7 @@ public class BookingSlotSummary{
     public BookingSlotSummary(BookingSlot bookingSlot){
         this.id = bookingSlot.getId();
         this.businessName = bookingSlot.getWorkSlot().getWorker().getBusiness().getBusinessName();
+        this.businessId = bookingSlot.getWorkSlot().getWorker().getBusiness().getId();
         this.workerId = bookingSlot.getWorkSlot().getWorker().getId();
         this.workerName = bookingSlot.getWorkSlot().getWorker().getName();
         this.date = bookingSlot.getDate();
@@ -90,8 +92,13 @@ public class BookingSlotSummary{
         return businessName;
     }
 
+
+    public Long getBusinessId(){
+        return businessId;
+    }
     public Iterable<BookingSummary> getBookings() { 
         return this.bookings;
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.service;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,59 +13,71 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
+import com.rmit.sept.majorProject.repository.CustomerRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 
 @org.springframework.stereotype.Service
 public class BookingService{
 
+	// repositories
 	@Autowired
 	private BookingRepository repository;
-	@Autowired
-	private WorkerService workerService;
-	@Autowired
-	private CustomerService custSevice;
 	@Autowired
 	private ServiceRepository servRepository;
 	@Autowired
 	private BusinessRepository busiRepository;
 	@Autowired
 	private BookingSlotRepository bookingSlotRepository;
+
+	// services
+	@Autowired
+	private WorkerService workerService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private ServiceService serviceService;
+	@Autowired
+	private BookingSlotService bookingSlotService;
 	
 	
-	public BookingSummary createNewBooking(Booking booking)
-	{
-		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null) {
-			 throw new UsernameNotFoundException("worker not found");
-			
+	public BookingSummary createNewBooking(BookingBlueprint blueprint){
+
+		Customer customer = customerService.findById(blueprint.getCustomerId()).get();;
+		Worker worker = workerService.findById(blueprint.getWorkerId()).get();
+		Business business = businessService.findById(blueprint.getBusinessId());
+		Service service = serviceService.findById(blueprint.getServiceId());
+		BookingSlot bookingSlot = bookingSlotService.findById(blueprint.getBookingSlotId());
+
+		if(worker == null) {
+			throw new DataRetrievalFailureException("Worker not found");			
 		}
-		else if(this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null) {
-			throw new UsernameNotFoundException("customer not found");
+		if(customer == null) {
+			throw new DataRetrievalFailureException("Customer not found");
 		}
-		else if(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()) == null) {
+		if(business == null) {
 			throw new DataRetrievalFailureException("Business not found");
 		}
-		else if(this.servRepository.findByTitle(booking.getService().getTitle()) == null) {
+		if(service == null) {
 			throw new DataRetrievalFailureException("Service not found");
 		}
-		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
-		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
-		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
-		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-		booking.setBookingSlot((this.bookingSlotRepository.findById(booking.getBookingSlot().getId())).get());
-		booking.getBookingSlot().setBookedService(booking.getService());
-		
-//			System.out.println(booking.getBookingSlot().getId());
-		if(duplicateBooking(booking))
-		{
+		if(bookingSlot.fullyBooked()){
+			throw new DataIntegrityViolationException("Service is fully booked");
+		}
+
+		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
+
+		if(duplicateBooking(booking)){
 			throw new DuplicateKeyException("This booking already exists");
 		}
-		this.bookingSlotRepository.save(booking.getBookingSlot());
-		booking = this.repository.save(booking);
-		return new BookingSummary(booking);
+
+		return new BookingSummary(this.repository.save(booking));
 	}
 	
 	public boolean duplicateBooking(Booking booking){

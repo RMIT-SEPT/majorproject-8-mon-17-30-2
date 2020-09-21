@@ -134,6 +134,8 @@ public class MajorProjectApplication {
 			johnServices.add(haircut);
 			johnServices.add(beardtrim);
 			john.setServices(johnServices);
+			barber.addService(haircut);
+			barber.addService(beardtrim);
 			
 			List<Service> tomServices = new ArrayList<Service>();
 			tomServices.add(reserveTable);
@@ -220,8 +222,20 @@ public class MajorProjectApplication {
 			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
 			oldShift.addBookingSlot(oldSlot);
-
-			// //upcoming bookings
+	
+			// vacant upcoming bookingSlots
+			LocalDate newDay1 = day.plusDays(1);
+			LocalDate newDay2 = day.plusDays(2);
+			WorkSlot newShift1 = new WorkSlot(newDay1, shiftStartTime, shiftEndTime, john);
+			WorkSlot newShift2 = new WorkSlot(newDay2, shiftStartTime, shiftEndTime, john);
+			List<Service> newService = new ArrayList<Service>();
+			List<Service> newService2 = new ArrayList<Service>();
+			newService.add(beardtrim);
+			newService2.add(haircut);
+			BookingSlot newSlot1 = new BookingSlot(newDay1, bookingStartTime, bookingEndTime, newService);
+			BookingSlot newSlot2 = new BookingSlot(newDay2, bookingStartTime, bookingEndTime, newService2);
+			newShift1.addBookingSlot(newSlot1);
+			newShift2.addBookingSlot(newSlot2);
 			Booking austinBooking = new Booking(austin, john, barber, haircut, johnSlot);	
 			Booking lukeBooking0 = new Booking(luke, scott, restaurant, birthday, scottSlot0);
 			lukeBooking0.getBookingSlot().setBookedService(birthday);
@@ -279,6 +293,12 @@ public class MajorProjectApplication {
 			
 			workSlotRepository.save(johnShift);
 			workSlotRepository.save(oldShift);
+			workSlotRepository.save(newShift1);
+			workSlotRepository.save(newShift2);
+			bookingSlotRepository.save(johnSlot);
+			bookingSlotRepository.save(oldSlot);
+			bookingSlotRepository.save(newSlot1);
+			bookingSlotRepository.save(newSlot2);			
 			workSlotRepository.save(tomShift0);
 			workSlotRepository.save(tomShift1);
 			workSlotRepository.save(scottShift0);

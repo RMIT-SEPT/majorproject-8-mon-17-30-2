@@ -25,6 +25,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
@@ -72,6 +73,7 @@ public class BookingServiceTest {
 	static ArrayList<Service> serviceList = new ArrayList<Service>();
 	BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
 	Booking bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
+	BookingBlueprint bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), serviceTest.getId(), bookingSlotTest.getId());
 	
 	@BeforeAll
 	public static void init() {
@@ -88,50 +90,8 @@ public class BookingServiceTest {
 		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		
-		BookingSummary result = bookingService.createNewBooking(bookingTest);
-		assertEquals(new BookingSummary(bookingTest).getId(), result.getId());
-	}
-	
-	//Test add bookings- with non existent worker
-	@Test
-	public void testAddBooking_WithFakeWorker() {
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(null);
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
-		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		Assertions.assertThrows(UsernameNotFoundException.class, () -> {
-			bookingService.createNewBooking(bookingTest);
-		  });
-	}
-	
-	//Test add bookings- with non existent customer
-	@Test
-	public void testAddBooking_WithFakeCustomer() {
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(null);
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
-		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		Assertions.assertThrows(UsernameNotFoundException.class, () -> {
-			bookingService.createNewBooking(bookingTest);
-		  });
-	}
-	
-	//Test add bookings- with non existent business
-	@Test
-	public void testAddBooking_WithFakeBusiness() {
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(null);
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
-		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
-			bookingService.createNewBooking(bookingTest);
-		  });
+		BookingSummary result = bookingService.createNewBooking(bookingTestBlueprint);
+		assertEquals(new BookingSummary(bookingTest), result);
 	}
 	
 	//Test add bookings- with non existent Service
@@ -144,7 +104,7 @@ public class BookingServiceTest {
 		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
-			bookingService.createNewBooking(bookingTest);
+			bookingService.createNewBooking(bookingTestBlueprint);
 		  });
 	}
 	
@@ -160,7 +120,7 @@ public class BookingServiceTest {
 		doReturn(true).when(bookingSpy).duplicateBooking(Mockito.isNotNull());
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
-			bookingSpy.createNewBooking(bookingTest);
+			bookingSpy.createNewBooking(bookingTestBlueprint);
 		  });
 	}
 	

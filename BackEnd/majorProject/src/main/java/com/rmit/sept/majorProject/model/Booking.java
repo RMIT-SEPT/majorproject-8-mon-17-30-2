@@ -23,7 +23,6 @@ public class Booking {
     @ManyToOne
     private Service     service;
 
-
     @ManyToOne
     private BookingSlot bookingSlot;
 

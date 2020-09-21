@@ -32,7 +32,6 @@ class BookingService {
     }
 
     deleteCustomerBooking(bookingId){
-        console.log("Hello");
         return axios.delete(BOOKING_API_BASE_URL  + '/' + bookingId);
     }
 

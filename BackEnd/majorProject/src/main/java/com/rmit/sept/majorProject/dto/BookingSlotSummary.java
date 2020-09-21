@@ -2,6 +2,9 @@ package com.rmit.sept.majorProject.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+
+import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Service;
 
@@ -20,6 +23,7 @@ public class BookingSlotSummary{
     private Service bookedService;
     private Iterable<Service> availableServices;
     private boolean fullyBooked;
+    private ArrayList<BookingSummary> bookings = new ArrayList<BookingSummary>();
 
     public BookingSlotSummary(BookingSlot bookingSlot){
         this.id = bookingSlot.getId();
@@ -35,6 +39,9 @@ public class BookingSlotSummary{
         this.bookedService = bookingSlot.getBookedService();
         this.availableServices = bookingSlot.getAvailableServices();
         this.fullyBooked = bookingSlot.fullyBooked();
+        for(Booking booking : bookingSlot.getBookings()){
+            this.bookings.add(new BookingSummary(booking));
+        }
     }
 
     public Long getId() {
@@ -85,8 +92,13 @@ public class BookingSlotSummary{
         return businessName;
     }
 
+
     public Long getBusinessId(){
         return businessId;
+    }
+    public Iterable<BookingSummary> getBookings() { 
+        return this.bookings;
+
     }
 
 }

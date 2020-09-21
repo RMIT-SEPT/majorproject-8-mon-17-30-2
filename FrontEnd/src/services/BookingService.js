@@ -31,6 +31,10 @@ class BookingService {
         return axios.get(API_HOST + '/api/booking-slot/' + bookingSlotId);
     }
 
+    deleteCustomerBooking(bookingId){
+        return axios.delete(BOOKING_API_BASE_URL  + '/' + bookingId);
+    }
+
 }
 
 export default new BookingService()

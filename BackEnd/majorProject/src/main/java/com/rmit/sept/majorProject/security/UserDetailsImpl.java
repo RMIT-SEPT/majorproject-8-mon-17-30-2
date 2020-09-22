@@ -12,7 +12,9 @@ import java.util.List;
     assign properties to them so that spring security can use them
     Is used by UserDetailsServiceImpl to load the appropriate user
  */
+@SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails {
+
     private String username;
     private String password;
     private SimpleGrantedAuthority role;

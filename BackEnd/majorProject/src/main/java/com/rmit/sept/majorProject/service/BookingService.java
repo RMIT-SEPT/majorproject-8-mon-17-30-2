@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,10 +15,6 @@ import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
-import com.rmit.sept.majorProject.repository.BookingSlotRepository;
-import com.rmit.sept.majorProject.repository.BusinessRepository;
-import com.rmit.sept.majorProject.repository.CustomerRepository;
-import com.rmit.sept.majorProject.repository.ServiceRepository;
 
 @org.springframework.stereotype.Service
 public class BookingService{
@@ -27,12 +22,6 @@ public class BookingService{
 	// repositories
 	@Autowired
 	private BookingRepository repository;
-	@Autowired
-	private ServiceRepository servRepository;
-	@Autowired
-	private BusinessRepository busiRepository;
-	@Autowired
-	private BookingSlotRepository bookingSlotRepository;
 
 	// services
 	@Autowired
@@ -67,10 +56,12 @@ public class BookingService{
 		if(service == null) {
 			throw new DataRetrievalFailureException("Service not found");
 		}
+		if(bookingSlot == null) {
+			throw new DataRetrievalFailureException("Booking Slot not found");
+		}
 		if(bookingSlot.fullyBooked()){
 			throw new DataIntegrityViolationException("Service is fully booked");
 		}
-
 		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
 
 		if(duplicateBooking(booking)){

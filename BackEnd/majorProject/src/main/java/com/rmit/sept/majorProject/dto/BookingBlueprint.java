@@ -1,7 +1,5 @@
 package com.rmit.sept.majorProject.dto;
 
-import java.time.LocalDate;
-
 public class BookingBlueprint {
 
     private Long customerId;

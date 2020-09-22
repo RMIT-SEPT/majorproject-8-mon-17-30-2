@@ -1,11 +1,7 @@
 package com.rmit.sept.majorProject.query;
 
 import java.time.LocalDate;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Service;
-import com.rmit.sept.majorProject.model.Worker;
 
 /*
  * This class is solely for the search feature in the BookingSlotController

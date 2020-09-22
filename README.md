@@ -1,5 +1,7 @@
 # RMIT SEPT 2020 Major Project
 
+http://bit.ly/AGMEMonday2
+
 # Release 1.1.0
 ## Changelog
 + Customer Registration + Login

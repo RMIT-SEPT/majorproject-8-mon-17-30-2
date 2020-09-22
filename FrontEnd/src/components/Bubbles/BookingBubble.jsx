@@ -6,7 +6,7 @@ import "../../css/BookingHistory.css";
 function BookingBubble(props) {
     return (
         <div>
-        <Card className='bookingbubble' bg="light">
+        <Card data-testid="bubblecard" className='bookingbubble' bg="light">
             <Card.Body>
               <Card.Header className="text-muted">Booking #{props.booking.id}</Card.Header>
               <Card.Title className="cardtitle">{props.booking.businessName}</Card.Title>

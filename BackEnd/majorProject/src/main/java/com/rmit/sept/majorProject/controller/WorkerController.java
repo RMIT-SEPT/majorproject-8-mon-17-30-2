@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
-
+//@CrossOrigin(origins = "http://localhost:3000")
 @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
 @RestController
 public class WorkerController{

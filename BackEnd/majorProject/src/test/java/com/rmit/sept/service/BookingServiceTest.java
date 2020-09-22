@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -91,6 +93,7 @@ public class BookingServiceTest {
 		workerTest.setId(1L);
 		bookingSlotTest.setId(1L);
 		businessTest.setId(1L);
+		serviceTest.setId(1L);
 		bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), bookingSlotTest.getId(), serviceTest.getId());
 		bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
 		bookingTest.setBookingId(1L);
@@ -108,6 +111,66 @@ public class BookingServiceTest {
 		
 		BookingSummary result = bookingService.createNewBooking(bookingTestBlueprint);
 		assertEquals(new BookingSummary(bookingTest), result);
+	}
+	
+	//Test add bookings- with non existent Customer
+	@Test
+	public void testAddBooking_WithFakeCustomer() {
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.ofNullable(null));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		Assertions.assertThrows(NoSuchElementException.class, () -> {
+			bookingService.createNewBooking(bookingTestBlueprint);
+		  });
+	}
+	
+	//Test add bookings- with non existent Worker
+	@Test
+	public void testAddBooking_WithFakeWorker() {
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.ofNullable(null));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		Assertions.assertThrows(NoSuchElementException.class, () -> {
+			bookingService.createNewBooking(bookingTestBlueprint);
+		  });
+	}
+	
+	//Test add bookings- with non existent Business
+	@Test
+	public void testAddBooking_WithFakeBusiness() {
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(null);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
+			bookingService.createNewBooking(bookingTestBlueprint);
+		  });
+	}
+	
+	//Test add bookings- with non existent Booking slot
+	@Test
+	public void testAddBooking_WithFakeBookingSlot() {
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(null);
+		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
+			bookingService.createNewBooking(bookingTestBlueprint);
+		  });
 	}
 	
 	//Test add bookings- with non existent Service

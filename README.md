@@ -2,7 +2,7 @@
 
 http://bit.ly/AGMEMonday2
 
-# Release 1.1.0
+# Release 2.0.0
 ## Changelog
 + Customer Registration + Login
 + Booking Creation
@@ -13,6 +13,8 @@ http://bit.ly/AGMEMonday2
 + Frontend/Backend integration
 + More APIs
 + Frontend Routing
++ Deployed on AWS
++ CircleCI configured
 
 
 # Group 02

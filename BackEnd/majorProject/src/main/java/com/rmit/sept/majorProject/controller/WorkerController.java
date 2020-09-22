@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
+
+import javax.validation.Valid;
+
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;

@@ -17,12 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.rmit.sept.majorProject.dto.BookingBlueprint;
@@ -38,9 +39,11 @@ import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
 import com.rmit.sept.majorProject.service.BookingService;
+import com.rmit.sept.majorProject.service.BookingSlotService;
+import com.rmit.sept.majorProject.service.BusinessService;
 import com.rmit.sept.majorProject.service.CustomerService;
+import com.rmit.sept.majorProject.service.ServiceService;
 import com.rmit.sept.majorProject.service.WorkerService;
-
 @ExtendWith(SpringExtension.class)
 public class BookingServiceTest {
 
@@ -58,7 +61,13 @@ public class BookingServiceTest {
 	@MockBean
 	private WorkerService workerService;
 	@MockBean
+	private BusinessService businessService;
+	@MockBean
 	private CustomerService custSevice;
+	@MockBean
+	private ServiceService serviceService;
+	@MockBean
+	private BookingSlotService bookingSlotService;
 	@MockBean
 	private ServiceRepository servRepository;
 	@MockBean
@@ -66,28 +75,35 @@ public class BookingServiceTest {
 	@MockBean
 	private BookingSlotRepository bookingSlotRepository;
 	
-	Customer customerTest = new Customer("cust","custUser","custPass","custStreet","cust@email.com","3215321");
-	Worker workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
-	Business businessTest = new Business("Busi Business");
+	static Customer customerTest = new Customer("cust","custUser","custPass","custStreet","cust@email.com","3215321");
+	static Worker workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
+	static Business businessTest = new Business("Busi Business");
 	static Service serviceTest = new Service("Deliver Packages", "We deliver those packages", 3);
 	static ArrayList<Service> serviceList = new ArrayList<Service>();
-	BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
-	Booking bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
-	BookingBlueprint bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), serviceTest.getId(), bookingSlotTest.getId());
+	static BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
+	static Booking bookingTest;
+	static BookingBlueprint bookingTestBlueprint;
 	
 	@BeforeAll
 	public static void init() {
 		serviceList.add(serviceTest);
+		customerTest.setId(1L);
+		workerTest.setId(1L);
+		bookingSlotTest.setId(1L);
+		businessTest.setId(1L);
+		bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), bookingSlotTest.getId(), serviceTest.getId());
+		bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
+		bookingTest.setBookingId(1L);
 	}
-	
+
 	//Test add booking - with correct details
 	@Test
 	public void testAddBooking_WithCorrectDetails() {
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		
 		BookingSummary result = bookingService.createNewBooking(bookingTestBlueprint);
@@ -97,12 +113,13 @@ public class BookingServiceTest {
 	//Test add bookings- with non existent Service
 	@Test
 	public void testAddBooking_WithFakeService() {
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(null);
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(null);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
 		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
 			bookingService.createNewBooking(bookingTestBlueprint);
 		  });
@@ -112,13 +129,14 @@ public class BookingServiceTest {
 	@Test
 	public void testAddBooking_WithDuplicateBooking() {
 		BookingService bookingSpy = spy(bookingService);
-		when(this.workerService.findByUsername(bookingTest.getWorker().getUsername())).thenReturn(bookingTest.getWorker());
-		when(this.custSevice.findByUsername(bookingTest.getCustomer().getUsername())).thenReturn(bookingTest.getCustomer());
-		when(this.servRepository.findByTitle(bookingTest.getService().getTitle())).thenReturn(bookingTest.getService());
-		when(this.busiRepository.findByBusinessName(bookingTest.getBusiness().getBusinessName())).thenReturn(bookingTest.getBusiness());
-		when(this.bookingSlotRepository.findById(bookingTest.getBookingSlot().getId())).thenReturn(Optional.of(bookingTest.getBookingSlot()));
+		when(this.workerService.findById(bookingTestBlueprint.getWorkerId())).thenReturn(Optional.of(workerTest));
+		when(this.custSevice.findById(bookingTestBlueprint.getCustomerId())).thenReturn(Optional.of(customerTest));
+		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
+		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
+		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		doReturn(true).when(bookingSpy).duplicateBooking(Mockito.isNotNull());
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
+		//Asserts if createNewBoooking throws the DataRetrievalFailureException
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
 			bookingSpy.createNewBooking(bookingTestBlueprint);
 		  });
@@ -144,12 +162,6 @@ public class BookingServiceTest {
 
 		ArrayList<Booking> result = (ArrayList<Booking>) bookingService.getAllBookings();
 		assertEquals(bookingList, result);
-	}
-	
-	//Test delete a booking
-	@Test
-	public void testDeleteBooking() {
-		
 	}
 	
 }

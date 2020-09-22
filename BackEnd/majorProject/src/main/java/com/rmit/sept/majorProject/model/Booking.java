@@ -42,6 +42,9 @@ public class Booking {
     public Long getBookingId(){
     	return this.id;
     }
+    public void setBookingId(Long id) {
+    	this.id = id;
+    }
     public Customer getCustomer(){
         return this.customer;
     }

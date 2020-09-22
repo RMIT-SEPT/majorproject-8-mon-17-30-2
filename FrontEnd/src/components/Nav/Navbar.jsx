@@ -27,12 +27,12 @@ function Navbar(props){
     }
 
                 <Link to = "/about" className = "nav-link">
-                    <li className = "nav-item">About</li>
+                    <li className = "nav-item">About & Contact</li>
                 </Link>
 
-                <Link to = "/contact" className = "nav-link">
+                {/* <Link to = "/contact" className = "nav-link">
                     <li className = "nav-item">Contact</li>
-                </Link>
+                </Link> */}
             </ul>
           
            

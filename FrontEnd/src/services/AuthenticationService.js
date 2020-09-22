@@ -1,5 +1,5 @@
 import axios from "axios";
-import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE} from "../Utils/utils";
+import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE, BUSINESS_ID_SESSION_ATTRIBUTE} from "../Utils/utils";
 
 // Service class that stores the authenticated user variables
 class AuthenticationService {
@@ -70,11 +70,21 @@ class AuthenticationService {
         }
         return retVal;
     }
+    
+    getBusinessId() {
+        let retVal = ''
+        let businessId = sessionStorage.getItem(BUSINESS_ID_SESSION_ATTRIBUTE)
+        if (businessId !== null){
+            retVal = businessId;
+        }
+        return retVal;
+    }
 
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
         sessionStorage.removeItem(ROLE_SESSION_ATTRIBUTE);
         sessionStorage.removeItem(ID_SESSION_ATTRIBUTE);
+        sessionStorage.removeItem(BUSINESS_ID_SESSION_ATTRIBUTE)
     }
 }
 

@@ -10,17 +10,17 @@ import BusinessService from "../../services/BusinessService";
 */
 function SelectBusinessPage(){
 
-    const [businesses, setBussiness] = useState([]);
+    const [businesses, setBusiness] = useState([]);
     useEffect(() => {
         
         BusinessService.getAllBusinesses()
         .then((response) =>{
           
-            setBussiness(response.data);
+            setBusiness(response.data);
         })
         .catch(() => {
             console.log("Error in getting businesses");
-            setBussiness([]);
+            setBusiness([]);
         })
 
 

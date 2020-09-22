@@ -1,0 +1,21 @@
+
+
+.about-header{
+    padding: 20px;
+    font-weight: 450;
+
+  }
+
+.about-section {
+    padding: 70px;
+    text-align: center;
+    background-color: #353a46;
+    color: white;
+    font-weight: 300;
+  }
+.about-page{
+    text-align: center;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+

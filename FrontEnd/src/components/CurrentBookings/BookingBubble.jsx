@@ -2,9 +2,20 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import "../../css/BookingHistory.css";
 import Button from 'react-bootstrap/Button';
+import BookingService from "../../services/BookingService"
 
 //this component is going to be a single grey bubble displaying the data of a single booking
 function BookingBubble(props) {
+
+  function deleteBooking(){
+    BookingService.deleteCustomerBooking(props.booking.id)
+    .then(response =>{
+      if(response.data != null){
+        alert("Booking deleted sucessfully");
+      }
+    })
+  }
+
     return (
         <div>
         <Card className='bookingbubble' bg="light">
@@ -39,7 +50,7 @@ function BookingBubble(props) {
                 </span>
               </Card.Text>
               <Card.Footer className="text-right text-muted">
-                <Button variant='danger'>CANCEL</Button>
+                <Button variant='danger' onClick={deleteBooking}>CANCEL</Button>
               </Card.Footer>
             </Card.Body>
           </Card>

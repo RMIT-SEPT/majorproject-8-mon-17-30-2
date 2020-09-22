@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import BookingBubble from "./BookingBubble.jsx";
+import BookingBubble from "../Bubbles/BookingBubble.jsx";
 import CustomerService from "../../services/CustomerService";
 import AuthenticationService from "../../services/AuthenticationService";
 

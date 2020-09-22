@@ -1,4 +1,5 @@
-const API_HOST = 'http://localhost:8080'
+//const API_HOST = 'http://localhost:8080'
+const API_HOST = 'http://milestone2application-env.eba-zp9wdxdp.us-east-1.elasticbeanstalk.com'
 const GET_CUSTOMER_URL = '/api/customer/';
 const POST_CUSTOMER_URL= "/api/customer/register/";
 
@@ -25,10 +26,11 @@ const ADMIN_BUTTON_DETAILS = [
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 const ROLE_SESSION_ATTRIBUTE = "Role"
 const ID_SESSION_ATTRIBUTE   = "Id"
+const BUSINESS_ID_SESSION_ATTRIBUTE = "businessId"
 
 const BUSINESS_CARD_LINK = "/bookings/create/";
 
 export default API_HOST;
 export {GET_CUSTOMER_URL, GET_ADMIN_URL, POST_CUSTOMER_URL, CUSTOMER, ADMIN, WORKER};
 export {CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, USER_NAME_SESSION_ATTRIBUTE_NAME};
-export {ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE, GET_WORKER_URL, BUSINESS_CARD_LINK};
+export {ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE, GET_WORKER_URL, BUSINESS_CARD_LINK, BUSINESS_ID_SESSION_ATTRIBUTE};

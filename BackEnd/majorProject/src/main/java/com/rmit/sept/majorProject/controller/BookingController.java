@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.BookingService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
 @RestController
 public class BookingController {
 
@@ -32,15 +34,26 @@ public class BookingController {
 	}
 
 	@PostMapping("/api/booking")
-    public ResponseEntity<?> addBooking(@Valid @RequestBody Booking booking){
-		BookingSummary booking1;
+    public ResponseEntity<?> addBooking(@Valid @RequestBody BookingBlueprint blueprint){
+		BookingSummary booking;
     	try {
-    		booking1 = this.bookingService.createNewBooking(booking);
+    		booking = this.bookingService.createNewBooking(blueprint);
     	}
     	catch (DuplicateKeyException dkEx) {
     		return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<>(booking1, HttpStatus.CREATED);
+    	return new ResponseEntity<>(booking, HttpStatus.CREATED);
+	}
+
+	@DeleteMapping("/api/booking/{bookingId}")
+    public ResponseEntity<?> removeBooking(@PathVariable("bookingId") Long id){
+    	// if(result.hasErrors()){
+    	// 	return new ResponseEntity<>("Invalid Booking Object", HttpStatus.BAD_REQUEST);
+    	// }
+		
+		// Booking booking1 = this.bookingService.removeExistingBooking(id);
+		this.bookingService.removeExistingBooking(id);
+    	return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	//---------------------CUSTOMER BOOKING API----------------------
@@ -91,6 +104,13 @@ public class BookingController {
 	{
 		Iterable<Booking> bookings = bookingService.getAvailableBookingsByDay(day);
 		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/api/newest/{number}/bookings")
+	public ResponseEntity<?> getNewestBookings(@PathVariable("number") int number)
+	{
+		Iterable<BookingSummary> bookings = bookingService.getNewestBookings(number);
+		return new ResponseEntity<>(bookings,bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
 //	@PostMapping("/api/booking/customer")

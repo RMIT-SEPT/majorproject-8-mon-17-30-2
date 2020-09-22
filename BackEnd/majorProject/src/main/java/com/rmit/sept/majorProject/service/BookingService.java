@@ -1,91 +1,73 @@
 package com.rmit.sept.majorProject.service;
 
+import com.rmit.sept.majorProject.dto.BookingBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
-import com.rmit.sept.majorProject.repository.BookingSlotRepository;
-import com.rmit.sept.majorProject.repository.BusinessRepository;
-import com.rmit.sept.majorProject.repository.ServiceRepository;
 
 @org.springframework.stereotype.Service
 public class BookingService{
 
+	// repositories
 	@Autowired
 	private BookingRepository repository;
+
+	// services
 	@Autowired
 	private WorkerService workerService;
 	@Autowired
-	private CustomerService custSevice;
+	private CustomerService customerService;
 	@Autowired
-	private ServiceRepository servRepository;
+	private BusinessService businessService;
 	@Autowired
-	private BusinessRepository busiRepository;
+	private ServiceService serviceService;
 	@Autowired
-	private BookingSlotRepository bookingSlotRepository;
+	private BookingSlotService bookingSlotService;
 	
 	
-	public BookingSummary createNewBooking(Booking booking)
-	{
-		if(this.workerService.findByUsername(booking.getWorker().getUsername()) == null) {
-			 throw new UsernameNotFoundException("worker not found");
-			
+	public BookingSummary createNewBooking(BookingBlueprint blueprint){
+
+		Customer customer = customerService.findById(blueprint.getCustomerId()).get();;
+		Worker worker = workerService.findById(blueprint.getWorkerId()).get();
+		Business business = businessService.findById(blueprint.getBusinessId());
+		Service service = serviceService.findById(blueprint.getServiceId());
+		BookingSlot bookingSlot = bookingSlotService.findById(blueprint.getBookingSlotId());
+
+		if(worker == null) {
+			throw new DataRetrievalFailureException("Worker not found");			
 		}
-		else if(this.custSevice.findByUsername(booking.getCustomer().getUsername()) == null) {
-			throw new UsernameNotFoundException("customer not found");
+		if(customer == null) {
+			throw new DataRetrievalFailureException("Customer not found");
 		}
-		else if(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()) == null) {
+		if(business == null) {
 			throw new DataRetrievalFailureException("Business not found");
 		}
-		else if(this.servRepository.findByTitle(booking.getService().getTitle()) == null) {
+		if(service == null) {
 			throw new DataRetrievalFailureException("Service not found");
 		}
-		booking.setWorker(this.workerService.findByUsername(booking.getWorker().getUsername()));
-		booking.setCustomer(this.custSevice.findByUsername(booking.getCustomer().getUsername()));
-		booking.setService(this.servRepository.findByTitle(booking.getService().getTitle()));
-		booking.setBusiness(this.busiRepository.findByBusinessName(booking.getBusiness().getBusinessName()));
-//		Service tempService = null;
-		try {
-			for(BookingSlot bookingSlots: bookingSlotRepository.findAll())
-			{
-				if(bookingSlots.getDate().isEqual(booking.getBookingSlot().getDate()) &&
-						bookingSlots.getStartTime().equals(booking.getBookingSlot().getStartTime()) &&
-						bookingSlots.getEndTime().equals(booking.getBookingSlot().getEndTime()))
-				{
-					for(Service service: bookingSlots.getAvailableServices())
-					{
-						if(booking.getService() == service && !bookingSlots.fullyBooked())
-						{
-//							booking.setBookingSlot(bookingSlots);		//If booking slot is not passing the actual object, uncomment this
-//							tempService = bookingSlots.getBookedService();
-							booking.getBookingSlot().setBookedService(service);
-							break;
-						}
-						else if(bookingSlots.fullyBooked())
-						{
-							throw new DataIntegrityViolationException("Service is fully booked");
-						}
-					}
-				}
-			}
+		if(bookingSlot == null) {
+			throw new DataRetrievalFailureException("Booking Slot not found");
 		}
-		catch(NullPointerException e) {}
-		
-		if(duplicateBooking(booking))
-		{
-//			booking.getBookingSlot().setBookedService(tempService);
+		if(bookingSlot.fullyBooked()){
+			throw new DataIntegrityViolationException("Service is fully booked");
+		}
+		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
+
+		if(duplicateBooking(booking)){
 			throw new DuplicateKeyException("This booking already exists");
 		}
+
 		return new BookingSummary(this.repository.save(booking));
 	}
 	
@@ -103,6 +85,18 @@ public class BookingService{
 			
 		}
 		return false;
+	}
+
+	public void removeExistingBooking(Long id){
+		
+		ArrayList<Booking> removeBooking = new ArrayList<Booking>();
+		for(Booking booking : getAllBookings()){
+			if(id == booking.getBookingId()){
+				repository.delete(booking);
+				// removeBooking.remove(booking.getBookingId());
+			}
+			
+        }
 	}
 	
 	public Iterable<Booking> getAllBookings(){
@@ -210,5 +204,15 @@ public class BookingService{
 			}
 		}
 		return dayBooking;
+	}
+	
+	public Iterable<BookingSummary> getNewestBookings(int noBookings){
+		Iterable<Booking> temp =  this.repository.getNewestParameterised(noBookings);
+		ArrayList<BookingSummary> newList = new ArrayList<BookingSummary>();
+		for(Booking bookings:temp)
+		{
+			newList.add(new BookingSummary(bookings));
+		}
+		return newList;
 	}
 }

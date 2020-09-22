@@ -20,6 +20,8 @@ public class Worker extends Person {
     @Email
     private String email;
 
+    String jank;
+
     @NotNull
     @NotEmpty
     private String address;

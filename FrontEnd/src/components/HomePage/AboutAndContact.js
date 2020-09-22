@@ -35,9 +35,9 @@ function AboutUs() {
                     <Col>
                         <div className="card">
                             <h3>Joshua</h3>
-                            <p>Insert Title</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
+                            <p>Development Team</p>
+                            <p>A Cool Guy</p>
+                            <p>s3687337@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>

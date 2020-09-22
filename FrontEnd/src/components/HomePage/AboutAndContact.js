@@ -26,10 +26,10 @@ function AboutUs() {
                 <Row>
                     <Col>
                         <div className="card">
-                            <h3>Austin</h3>
-                            <p>Insert Title</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
+                            <h3>Austin Lay</h3>
+                            <p>Development Team</p>
+                            <p>Studying @ RMIT: Bachelor of Software Engineering (2nd Year)</p>
+                            <p>s3779726@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>

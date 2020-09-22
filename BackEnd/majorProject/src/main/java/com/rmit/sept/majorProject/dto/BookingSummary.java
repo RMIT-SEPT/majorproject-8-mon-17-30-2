@@ -87,9 +87,6 @@ public class BookingSummary {
     public String getBusinessName() {
         return businessName;
     }
-    public Long getBusinessId() {
-    	return businessId;
-    }
     
     public boolean equals(BookingSummary summary)
     {

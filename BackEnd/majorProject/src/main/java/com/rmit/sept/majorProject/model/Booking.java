@@ -40,6 +40,9 @@ public class Booking {
     public Long getBookingId(){
     	return this.id;
     }
+    public void setBookingId(Long id) {
+    	this.id = id;
+    }
     public Customer getCustomer(){
         return this.customer;
     }
@@ -89,6 +92,24 @@ public class Booking {
     public boolean setBookingSlot(BookingSlot bookingSlot){
         this.bookingSlot = bookingSlot;
     	return false;
+    }
+    
+    public boolean equals(Booking booking)
+    {
+    	if(this.getCustomer().getId() == booking.getCustomer().getId()
+    			&& this.getBusiness().getId() == booking.getBusiness().getId()
+    			&& this.getBookingSlot().getId() == booking.getBookingSlot().getId()
+    			&& this.getWorker().getId() == booking.getWorker().getId()
+    			&& this.getService().getId() == booking.getService().getId())
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+    	return equals((Booking) o);
     }
 
     @Override

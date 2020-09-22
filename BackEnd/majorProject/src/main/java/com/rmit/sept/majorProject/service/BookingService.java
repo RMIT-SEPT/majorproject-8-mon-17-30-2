@@ -56,10 +56,12 @@ public class BookingService{
 		if(service == null) {
 			throw new DataRetrievalFailureException("Service not found");
 		}
+		if(bookingSlot == null) {
+			throw new DataRetrievalFailureException("Booking Slot not found");
+		}
 		if(bookingSlot.fullyBooked()){
 			throw new DataIntegrityViolationException("Service is fully booked");
 		}
-
 		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
 
 		if(duplicateBooking(booking)){

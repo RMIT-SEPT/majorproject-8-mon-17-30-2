@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.service.WorkSlotService;
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
 @RestController
 public class WorkSlotController {
 
@@ -43,6 +43,13 @@ public class WorkSlotController {
     public ResponseEntity<?> updateWorkSlot(@RequestBody WorkSlot newWorkSlot, @PathVariable Long workerId){
 		WorkSlotSummary exist = workSlotService.editWorkSlot(workerId ,newWorkSlot);
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
-    }
+	}
+	
+	@GetMapping("/api/business/{businessId}/work-slots/")
+    public ResponseEntity<?> getWorkSlotsByBusiness(@PathVariable Long businessId){
+        Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByBusinessIdDTO(businessId);
+		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
+		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
 
 }

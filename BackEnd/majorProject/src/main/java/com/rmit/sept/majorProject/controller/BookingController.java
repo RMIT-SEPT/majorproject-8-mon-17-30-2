@@ -20,8 +20,8 @@ import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.BookingService;
 
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
 @RestController
 public class BookingController {
 

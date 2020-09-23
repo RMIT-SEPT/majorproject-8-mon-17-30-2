@@ -7,6 +7,9 @@ import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import net.bytebuddy.asm.Advice.Local;
+
 import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 
 @Service
@@ -42,18 +45,37 @@ public class WorkSlotService {
         return workSlotDtos;
     }
 
-    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString){
+    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString) {
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
-        for(WorkSlot workSlot : findByWorkerId(workerId)){
-            if(workSlot.getDate().equals(date)){
+        for (WorkSlot workSlot : findByWorkerId(workerId)) {
+            if (workSlot.getDate().equals(date)) {
                 workSlotDtos.add(new WorkSlotSummary(workSlot));
-            }            
+            }
         }
         return workSlotDtos;
     }
 
-    public Iterable<WorkSlot> findByDate(LocalDate date){
+    // Return Workslots Base on Business ID
+    public Iterable<WorkSlot> findByBusinessId(Long businessId) {
+        return repository.findByBusinessId(businessId);
+    }
+
+    // Returns WorkSlot DTO for the next 7 days
+    public Iterable<WorkSlotSummary> findByBusinessIdDTO(Long businessId) {
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = LocalDate.now().plusDays(7);
+        ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
+        for (WorkSlot workSlot : findByBusinessId(businessId)) {
+            if (workSlot.getDate().compareTo(today) >= 0 && workSlot.getDate().compareTo(nextWeek) <= 0) {
+                workSlotDtos.add(new WorkSlotSummary(workSlot));
+            }
+
+        }
+        return workSlotDtos;
+    }
+
+    public Iterable<WorkSlot> findByDate(LocalDate date) {
         return repository.findByDate(date);
     }
 
@@ -85,7 +107,8 @@ public class WorkSlotService {
 
         return summary;
 
-        // Different working way, but doesnt check base off given worker ID, top version should be better..
+        // Different working way, but doesnt check base off given worker ID, top version
+        // should be better..
 
         // Optional<WorkSlot> workSlotOptional =
         // repository.findById(newWorkSlot.getId());

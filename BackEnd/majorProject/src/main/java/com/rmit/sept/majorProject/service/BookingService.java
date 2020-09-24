@@ -8,6 +8,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
@@ -15,6 +16,7 @@ import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 
 @org.springframework.stereotype.Service
 public class BookingService{
@@ -22,6 +24,7 @@ public class BookingService{
 	// repositories
 	@Autowired
 	private BookingRepository repository;
+	private BookingSlotRepository bookingSlotRepository;
 
 	// services
 	@Autowired
@@ -62,6 +65,8 @@ public class BookingService{
 		if(bookingSlot.fullyBooked()){
 			throw new DataIntegrityViolationException("Service is fully booked");
 		}
+		bookingSlot.setBookedService(service);
+		bookingSlotRepository.save(bookingSlot);
 		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
 
 		if(duplicateBooking(booking)){
@@ -87,16 +92,22 @@ public class BookingService{
 		return false;
 	}
 
-	public void removeExistingBooking(Long id){
+	public boolean removeExistingBooking(Long id){
 		
-		ArrayList<Booking> removeBooking = new ArrayList<Booking>();
 		for(Booking booking : getAllBookings()){
 			if(id == booking.getBookingId()){
-				repository.delete(booking);
-				// removeBooking.remove(booking.getBookingId());
+				if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
+				{
+					booking.unsetStatus();
+					booking.getBookingSlot().removeBookedService();
+					bookingSlotRepository.save(booking.getBookingSlot());
+					repository.save(booking);
+					return true;
+				}
+				throw new DataIntegrityViolationException("Exceeded booking cancellation time of 48 hours");
 			}
-			
         }
+		return false;
 	}
 	
 	public Iterable<Booking> getAllBookings(){

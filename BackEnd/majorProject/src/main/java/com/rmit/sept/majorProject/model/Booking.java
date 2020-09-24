@@ -24,16 +24,26 @@ public class Booking {
     @ManyToOne
     private BookingSlot bookingSlot;
 
+    public enum Status{
+    	BOOKED,
+    	CANCELLED
+    }
+    
+    public Status status;
+    
     public Booking(Customer customer, Worker worker, Business business,
                    Service service, BookingSlot bookingSlot){
         this.customer = customer;
         this.worker = worker;
         this.business = business;
         this.service = service;    
-        this.bookingSlot = bookingSlot;               
+        this.bookingSlot = bookingSlot;       
+        this.status = Status.BOOKED;
     }
 
-    public Booking(){}
+    public Booking(){
+    	this.status = Status.BOOKED;
+    }
 
     //--------------GETTERS AND SETTERS---------------
     
@@ -105,6 +115,14 @@ public class Booking {
     		return true;
     	}
     	return false;
+    }
+    
+    public void unsetStatus() {
+    	this.status = Status.CANCELLED;
+    }
+    
+    public Status getStatus() {
+    	return this.status;
     }
     
     @Override

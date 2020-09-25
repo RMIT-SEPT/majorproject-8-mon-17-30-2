@@ -1,9 +1,11 @@
 package com.rmit.sept.majorProject.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.*;
 
 @Entity
-public class Booking {
+public class Booking implements Comparable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,16 +26,27 @@ public class Booking {
     @ManyToOne
     private BookingSlot bookingSlot;
 
+    public enum Status{
+    	BOOKED,
+    	CANCELLED,
+    	COMPLETED
+    }
+    
+    public Status status;
+    
     public Booking(Customer customer, Worker worker, Business business,
                    Service service, BookingSlot bookingSlot){
         this.customer = customer;
         this.worker = worker;
         this.business = business;
         this.service = service;    
-        this.bookingSlot = bookingSlot;               
+        this.bookingSlot = bookingSlot;       
+        this.status = Status.BOOKED;
     }
 
-    public Booking(){}
+    public Booking(){
+    	this.status = Status.BOOKED;
+    }
 
     //--------------GETTERS AND SETTERS---------------
     
@@ -107,9 +120,41 @@ public class Booking {
     	return false;
     }
     
+    public void setStatusCompleted() {
+    	if(this.bookingSlot.getDate().compareTo(LocalDate.now()) < 0) {
+    		this.status = Status.COMPLETED;
+    	}
+    }
+    
+    public void setStatusCancelled() {
+    	this.status = Status.CANCELLED;
+    }
+    
+    public Status getStatus() {
+    	return this.status;
+    }
+    
     @Override
     public boolean equals(Object o) {
     	return equals((Booking) o);
+    }
+    
+    @Override
+    public int compareTo(Object o)
+    {
+    	return compareTo((Booking) o);
+    }
+
+    public int compareTo(Booking booking) {
+    	if(this.id < booking.getBookingId())
+    	{
+    		return -1;
+    	}
+    	else if(this.id > booking.getBookingId())
+    	{
+    		return 1;
+    	}
+    	return 0;
     }
 
     @Override

@@ -218,6 +218,10 @@ public class MajorProjectApplication {
 			BookingSlot isabeauSlot0 = new BookingSlot(LocalDate.of(2021, 11, 7), LocalTime.of(12, 00), LocalTime.of(17, 00), isabeauServices);
 			isabeauShift0.addBookingSlot(isabeauSlot0);
 			
+			WorkSlot isabeauShift1 = new WorkSlot(LocalDate.of(2020, 9, 26), LocalTime.of(12, 00), LocalTime.of(14, 00), isabeau);
+			BookingSlot isabeauSlot1 = new BookingSlot(LocalDate.of(2020, 9, 26), LocalTime.of(12, 00), LocalTime.of(14, 00), isabeauServices);
+			isabeauShift1.addBookingSlot(isabeauSlot1);
+			
 			// // //old shift and bookingslot for past booking/booking history testing
 			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
@@ -242,11 +246,17 @@ public class MajorProjectApplication {
 			
 			Booking hershelBooking0 = new Booking(hershel, tom, restaurant, reserveTable, tomSlot0);
 			hershelBooking0.getBookingSlot().setBookedService(reserveTable);
+			
+			Booking hershelBooking1 = new Booking(hershel, isabeau, exterminator, animal, isabeauSlot1);
+			hershelBooking1.getBookingSlot().setBookedService(animal);
 
 			// //old bookings
 			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
+			oldBooking.setStatusCompleted();
 			Booking oldBooking1 = new Booking(austin, john, barber, beardtrim, oldSlot);
+			oldBooking1.setStatusCompleted();
 			Booking oldBooking2 = new Booking(austin, john, barber, beardtrim, oldSlot);
+			oldBooking2.setStatusCompleted();
 
 			//save everything to repos (do this at the end to avoid detach errors)
 			businessRepository.save(barber);
@@ -308,6 +318,7 @@ public class MajorProjectApplication {
 			workSlotRepository.save(paulShift0);
 			workSlotRepository.save(walterShift0);
 			workSlotRepository.save(isabeauShift0);
+			workSlotRepository.save(isabeauShift1);
 			
 			bookingSlotRepository.save(johnSlot);
 			bookingSlotRepository.save(oldSlot);	
@@ -320,13 +331,15 @@ public class MajorProjectApplication {
 			bookingSlotRepository.save(paulSlot0);
 			bookingSlotRepository.save(walterSlot0);
 			bookingSlotRepository.save(isabeauSlot0);
-			
-			bookingRepository.save(austinBooking);
-			bookingRepository.save(lukeBooking0);
-			bookingRepository.save(hershelBooking0);
+			bookingSlotRepository.save(isabeauSlot1);
+
 			bookingRepository.save(oldBooking);
 			bookingRepository.save(oldBooking1);
 			bookingRepository.save(oldBooking2);
+			bookingRepository.save(austinBooking);
+			bookingRepository.save(lukeBooking0);
+			bookingRepository.save(hershelBooking0);
+			bookingRepository.save(hershelBooking1);
 			
 		};
 	}

@@ -12,8 +12,9 @@ import com.rmit.sept.majorProject.model.Worker;
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, Long>{
 	
-    @Query(value = "SELECT TOP ?1 * FROM booking ORDER BY id DESC", nativeQuery = true)
-    public Iterable<Booking> getNewestParameterised(Integer noBookings);
+	//	native sql query method (enable if the database allows it)
+//    @Query(value = "SELECT TOP ?1 * FROM booking ORDER BY id DESC", nativeQuery = true)
+//    public Iterable<Booking> getNewestParameterised(Integer noBookings);
 	
 	public Iterable<Booking> findByCustomerUsername(String customerUsername);
 

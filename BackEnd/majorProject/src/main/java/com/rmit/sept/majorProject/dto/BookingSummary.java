@@ -3,6 +3,7 @@ package com.rmit.sept.majorProject.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Booking.Status;
 
 public class BookingSummary {
 
@@ -19,6 +20,8 @@ public class BookingSummary {
     private Long bookingSlotId;
     private Long serviceId;
     private String serviceTitle;
+    private Status status;
+    
 
     public BookingSummary(Booking booking){
         this.id = booking.getBookingId();
@@ -34,6 +37,7 @@ public class BookingSummary {
         this.bookingSlotId = booking.getBookingSlot().getId();
         this.serviceId = booking.getService().getId();
         this.serviceTitle = booking.getService().getTitle();
+        this.status = booking.getStatus();
     }
 
     public Long getId() {
@@ -86,6 +90,10 @@ public class BookingSummary {
 
     public String getBusinessName() {
         return businessName;
+    }
+    
+    public Status getStatus() {
+    	return this.status;
     }
     
     public boolean equals(BookingSummary summary)

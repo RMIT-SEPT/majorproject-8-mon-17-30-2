@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.service.CustomerService;
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+import com.rmit.sept.majorProject.Util;
+
+@CrossOrigin(origins = Util.API_HOST)
 @RestController
 public class CustomerController {
 

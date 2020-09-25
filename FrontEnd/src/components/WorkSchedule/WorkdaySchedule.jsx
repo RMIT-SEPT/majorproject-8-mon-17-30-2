@@ -20,7 +20,7 @@ function WorkdaySchedule(props){
   return (slots.length ? (
   // if there are >0 slots:
     <>
-    <h1 class="blockquote text-center">Assigned Working Hours<br/>Today - {props.date}</h1>
+    <h1 class="blockquote text-center">Assigned Working Hours<br/>{props.date}</h1>
     {slots.map((workSlot) => 
       <>
       <Card className='workday'
@@ -42,7 +42,7 @@ function WorkdaySchedule(props){
     </>
   ) :
   // if there are 0 slots:
-  <><h1 class="blockquote text-center">No Assigned Working Hours<br/>Today ({props.date})</h1></>)
+  <><h1 class="blockquote text-center">No Assigned Working Hours<br/>({props.date})</h1></>)
 
 }
 

@@ -10,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 @Transactional
 public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long> {
     
-    //testing purposes
+    //Get newest bookings 
     @Query(value = "SELECT TOP 1 * FROM booking_slot ORDER BY id ASC", nativeQuery = true)
     public BookingSlot getNewest();
 

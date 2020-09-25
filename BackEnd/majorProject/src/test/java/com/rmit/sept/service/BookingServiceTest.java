@@ -35,6 +35,7 @@ import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Service;
+import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
@@ -82,6 +83,7 @@ public class BookingServiceTest {
 	static Business businessTest = new Business("Busi Business");
 	static Service serviceTest = new Service("Deliver Packages", "We deliver those packages", 3);
 	static ArrayList<Service> serviceList = new ArrayList<Service>();
+	static WorkSlot workSlotTest = new WorkSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), workerTest);
 	static BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
 	static Booking bookingTest;
 	static BookingBlueprint bookingTestBlueprint;
@@ -91,12 +93,14 @@ public class BookingServiceTest {
 		serviceList.add(serviceTest);
 		customerTest.setId(1L);
 		workerTest.setId(1L);
+		workerTest.setBusiness(businessTest);
 		bookingSlotTest.setId(1L);
 		businessTest.setId(1L);
 		serviceTest.setId(1L);
 		bookingTestBlueprint = new BookingBlueprint(customerTest.getId(), workerTest.getId(), businessTest.getId(), bookingSlotTest.getId(), serviceTest.getId());
 		bookingTest = new Booking(customerTest, workerTest, businessTest, serviceTest, bookingSlotTest);
 		bookingTest.setBookingId(1L);
+		workSlotTest.addBookingSlot(bookingSlotTest);
 	}
 
 	//Test add booking - with correct details
@@ -107,6 +111,9 @@ public class BookingServiceTest {
 		when(this.serviceService.findById(bookingTestBlueprint.getServiceId())).thenReturn(serviceTest);
 		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
 		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
+		
+		when(this.bookingSlotRepository.save(bookingSlotTest)).thenReturn(bookingSlotTest);
+		
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
 		
 		BookingSummary result = bookingService.createNewBooking(bookingTestBlueprint);

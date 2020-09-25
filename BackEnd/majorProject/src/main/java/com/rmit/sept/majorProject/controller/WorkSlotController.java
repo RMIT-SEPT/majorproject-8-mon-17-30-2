@@ -44,5 +44,10 @@ public class WorkSlotController {
 		WorkSlotSummary exist = workSlotService.editWorkSlot(workerId ,newWorkSlot);
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
+	
+	@PostMapping("/api/work-slot/addWorkSlot")
+	public ResponseEntity<?> addWorkSlot(@RequestBody WorkSlot booking){
+		return null;
+	}
 
 }

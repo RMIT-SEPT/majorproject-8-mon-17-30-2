@@ -3,18 +3,50 @@ package com.rmit.sept.majorProject.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
+import com.rmit.sept.majorProject.model.BookingSlot;
+import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.WorkSlot;
+import com.rmit.sept.majorProject.model.Worker;
+import com.rmit.sept.majorProject.model.Service;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 
-@Service
+@org.springframework.stereotype.Service
 public class WorkSlotService {
 
+	//Services
+    @Autowired
+    private WorkerService workerService;
+    @Autowired
+    private BusinessService businessService;
+	
+    //Repositories
     @Autowired
     private WorkSlotRepository repository;
-
+    @Autowired
+    private BookingSlotRepository bookingSlotRepository;
+    
+    
+    public WorkSlotSummary addWorkSlot(WorkSlotBlueprint booking) {
+    	Worker worker = workerService.findById(booking.getWorkerId()).get();
+    	WorkSlot workSlot = new WorkSlot(booking.getDate(), booking.getStartTime(), booking.getEndTime(), worker);
+    	
+    	BookingSlot bookingSlot = new BookingSlot(booking.getDate(), booking.getStartTime(), booking.getEndTime(), (List<Service>) worker.getServices());
+    	workSlot.addBookingSlot(bookingSlot);
+    	
+    	bookingSlotRepository.save(bookingSlot);
+    	
+    	return new WorkSlotSummary(repository.save(workSlot));
+    }
+    
+    
     // return a list of all booking slot objects, whether or not they contain a
     // booking
     public Iterable<WorkSlot> getAllWorkSlots() {

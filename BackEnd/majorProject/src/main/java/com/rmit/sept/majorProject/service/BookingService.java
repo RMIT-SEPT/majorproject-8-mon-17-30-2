@@ -75,8 +75,12 @@ public class BookingService{
 		if(duplicateBooking(booking)){
 			throw new DuplicateKeyException("This booking already exists");
 		}
+		
+		booking = this.repository.save(booking);
 
-		return new BookingSummary(this.repository.save(booking));
+		bookingSlot.addBooking(booking);
+		bookingSlotRepository.save(bookingSlot);
+		return new BookingSummary(booking);
 	}
 	
 	public boolean duplicateBooking(Booking booking){

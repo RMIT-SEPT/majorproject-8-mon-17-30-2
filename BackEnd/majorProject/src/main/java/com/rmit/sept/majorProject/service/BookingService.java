@@ -10,6 +10,8 @@ import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
@@ -24,6 +26,7 @@ public class BookingService{
 	// repositories
 	@Autowired
 	private BookingRepository repository;
+	@Autowired
 	private BookingSlotRepository bookingSlotRepository;
 
 	// services
@@ -92,13 +95,13 @@ public class BookingService{
 		return false;
 	}
 
-	public boolean removeExistingBooking(Long id){
+	public boolean cancelBooking(Long id){
 		
 		for(Booking booking : getAllBookings()){
 			if(id == booking.getBookingId()){
 				if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
 				{
-					booking.unsetStatus();
+					booking.setStatusCancelled();
 					booking.getBookingSlot().removeBookedService();
 					bookingSlotRepository.save(booking.getBookingSlot());
 					repository.save(booking);
@@ -218,11 +221,16 @@ public class BookingService{
 	}
 	
 	public Iterable<BookingSummary> getNewestBookings(int noBookings){
-		Iterable<Booking> temp =  this.repository.getNewestParameterised(noBookings);
-		ArrayList<BookingSummary> newList = new ArrayList<BookingSummary>();
-		for(Booking bookings:temp)
+		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findAll();
+		Collections.sort(bookingList, Collections.reverseOrder());
+		if(noBookings > bookingList.size())
 		{
-			newList.add(new BookingSummary(bookings));
+			noBookings = bookingList.size();
+		}
+		ArrayList<BookingSummary> newList = new ArrayList<BookingSummary>();
+		for(int i = 0; i<noBookings;i++)
+		{
+			newList.add(new BookingSummary(bookingList.get(i)));
 		}
 		return newList;
 	}

@@ -11,14 +11,9 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.dto.ServiceSummary;
 import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.service.ServiceService;
-<<<<<<< HEAD
-@CrossOrigin(origins = "http://localhost:3000")
-// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
-=======
 import com.rmit.sept.majorProject.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
->>>>>>> develop
 @RestController
 public class ServiceController{
 	

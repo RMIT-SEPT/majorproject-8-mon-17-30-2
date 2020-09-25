@@ -7,14 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.service.WorkSlotService;
-<<<<<<< HEAD
-@CrossOrigin(origins = "http://localhost:3000")
-// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
-=======
 import com.rmit.sept.majorProject.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
->>>>>>> develop
 @RestController
 public class WorkSlotController {
 

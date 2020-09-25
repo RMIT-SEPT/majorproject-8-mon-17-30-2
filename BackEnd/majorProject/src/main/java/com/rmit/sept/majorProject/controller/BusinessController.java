@@ -9,14 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.rmit.sept.majorProject.service.BusinessService;
-<<<<<<< HEAD
-@CrossOrigin(origins = "http://localhost:3000")
-// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
-=======
 import com.rmit.sept.majorProject.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
->>>>>>> develop
 @RestController
 public class BusinessController {
 	

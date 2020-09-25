@@ -1,9 +1,5 @@
 const API_HOST = 'http://localhost:8080'
 // const API_HOST = 'http://milestone2application-env.eba-zp9wdxdp.us-east-1.elasticbeanstalk.com'
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
 const GET_CUSTOMER_URL = '/api/customer/';
 const POST_CUSTOMER_URL= "/api/customer/register/";
 

@@ -15,14 +15,9 @@ import javax.validation.Valid;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
-<<<<<<< HEAD
-@CrossOrigin(origins = "http://localhost:3000")
-// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
-=======
 import com.rmit.sept.majorProject.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
->>>>>>> develop
 @RestController
 public class WorkerController{
 	

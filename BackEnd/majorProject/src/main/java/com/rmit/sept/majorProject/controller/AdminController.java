@@ -12,12 +12,7 @@ import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.service.AdminService;
 import com.rmit.sept.majorProject.Util;
 
-<<<<<<< HEAD
-@CrossOrigin(origins = "http://localhost:3000")
-// @CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
-=======
 @CrossOrigin(origins = Util.API_HOST)
->>>>>>> develop
 @RestController
 public class AdminController {
 	

@@ -12,8 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins="http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+import com.rmit.sept.majorProject.Util;
+
+@CrossOrigin(origins = Util.API_HOST)
 @RestController
 @RequestMapping("api/")
 public class RegistrationController {

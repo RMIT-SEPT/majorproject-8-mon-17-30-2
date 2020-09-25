@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.query.SearchRequest;
 import com.rmit.sept.majorProject.service.BookingSlotService;
+import com.rmit.sept.majorProject.Util;
 
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+@CrossOrigin(origins = Util.API_HOST)
 @RestController
 public class BookingSlotController {
 

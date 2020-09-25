@@ -3,28 +3,24 @@ import WorkerBookingSlot from "./WorkerBookingSlot";
 import "../../css/WorkerSchedule.css";
 import { Card } from 'react-bootstrap';
 import WorkerService from "../../services/WorkerService";
-import moment from 'moment';
 
-function WorkdaySchedule(workerId){
+//props: workerId, date (string in the format YYYY-MM-DD)
+function WorkdaySchedule(props){
 
-  // "dummydate" is a fixed date for testing, "date" uses the current day
-  // change the parameter in useeffect/getWorkSlotByDate... to use real data
-  var date = moment().format('yyyy-MM-DD').toString();
-  var dummyDate = "2007-09-25";
+  // var date = "2007-09-25";
 
   const [slots, setSlots] = useState([]);  
 
   useEffect(() =>{
-    WorkerService.getWorkSlotByDateAndWorkerId(workerId.workerId, dummyDate).then((response) =>{
+    WorkerService.getWorkSlotByDateAndWorkerId(props.workerId, props.date).then((response) =>{
       setSlots(response.data.length ? response.data : []);
     });
   },[]);
 
-  console.log(slots);
-
   return (slots.length ? (
+  // if there are >0 slots:
     <>
-    <h1 class="display-4 text-center">Assigned Working Hours<br/>Today - {date}</h1>
+    <h1 class="blockquote text-center">Assigned Working Hours<br/>Today - {props.date}</h1>
     {slots.map((workSlot) => 
       <>
       <Card className='workday'
@@ -45,7 +41,8 @@ function WorkdaySchedule(workerId){
 
     </>
   ) :
-  <><h1 class="display-4 text-center">No Assigned Working Hours<br/>Today ({date})</h1></>)
+  // if there are 0 slots:
+  <><h1 class="blockquote text-center">No Assigned Working Hours<br/>Today ({props.date})</h1></>)
 
 }
 

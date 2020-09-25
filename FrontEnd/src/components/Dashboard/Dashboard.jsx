@@ -5,9 +5,12 @@ import Profile from "./Profile";
 import AuthenticationService from "../../services/AuthenticationService";
 import {WORKER} from "../../Utils/utils";
 import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
+import moment from 'moment';
 
 function Dashboard(props) {
 
+  const today = moment().format("yyyy-MM-DD").toString()
+  
   return (
     <div>
       <div className="card dashboard-card">
@@ -17,15 +20,14 @@ function Dashboard(props) {
         <div className="card-body">
         
           <Profile apiUrl={props.apiUrl}/>
-          {AuthenticationService.getRole() !== WORKER ?  
-            
+          {AuthenticationService.getRole() !== WORKER ?              
           //if not a worker display buttons
           <div className="card-deck dashboard-card-deck" >
             {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} link={details.link} />)}
           </div>
           :
           //otherwise display today's work schedule
-          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()}/>         
+          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()} date={today}/>
           }  
 
         </div>

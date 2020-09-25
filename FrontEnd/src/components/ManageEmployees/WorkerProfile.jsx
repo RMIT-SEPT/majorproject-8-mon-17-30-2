@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
 import GetRequestService from "../../services/GetRequestService";
-import WorkerScheduleTable from "../Dashboard/WorkerScheduleTable";
+import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
 import {Link} from "react-router-dom";
+import moment from 'moment';
 
 function WorkerProfile(props){
       // TO access business ID use props.match.params.workerId
@@ -54,7 +55,7 @@ function WorkerProfile(props){
                 
             
             </div>
-        <WorkerScheduleTable/>
+        <WorkdaySchedule workerId={props.match.params.workerId} date={moment().format('yyyy-MM-DD').toString()}/>
         </div>
        
 

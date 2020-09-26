@@ -9,7 +9,6 @@ function WorkerBookingSlot(bookingSlot) {
     const [services, setServices] = useState([]); 
 
     useEffect(() =>{
-        console.log("bookingslot:", bookingSlot);
         setBookings(bookingSlot.bookingSlot.bookings);
         setServices(bookingSlot.bookingSlot.availableServices);
     },[]);

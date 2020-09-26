@@ -1,4 +1,4 @@
-package com.rmit.sept.majorProject.query;
+package com.rmit.sept.majorProject.dto;
 
 import java.time.LocalDate;
 import com.rmit.sept.majorProject.model.Service;

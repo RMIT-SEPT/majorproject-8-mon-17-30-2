@@ -3,6 +3,7 @@ package com.rmit.sept.majorProject.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
@@ -38,12 +39,19 @@ public class WorkSlotService {
     	Worker worker = workerService.findById(booking.getWorkerId()).get();
     	WorkSlot workSlot = new WorkSlot(booking.getDate(), booking.getStartTime(), booking.getEndTime(), worker);
     	
-    	BookingSlot bookingSlot = new BookingSlot(booking.getDate(), booking.getStartTime(), booking.getEndTime(), (List<Service>) worker.getServices());
+    	/*Necessary to make a new collection else hibernate would think 
+    	 * you are reusing another collection in the database and refuse 
+    	 * to save the booking slot*/
+    	List<Service> workerServices = new ArrayList<Service>();
+    	workerServices.addAll((Collection<? extends Service>) worker.getServices());
+    	
+    	BookingSlot bookingSlot = new BookingSlot(booking.getDate(), booking.getStartTime(), booking.getEndTime(), workerServices);
     	workSlot.addBookingSlot(bookingSlot);
+    	WorkSlot workSlotSaved = repository.save(workSlot);
     	
     	bookingSlotRepository.save(bookingSlot);
     	
-    	return new WorkSlotSummary(repository.save(workSlot));
+    	return new WorkSlotSummary(workSlotSaved);
     }
     
     

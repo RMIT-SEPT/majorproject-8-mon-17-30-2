@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.service.WorkSlotService;
@@ -45,5 +47,11 @@ public class WorkSlotController {
 		WorkSlotSummary exist = workSlotService.editWorkSlot(workerId ,newWorkSlot);
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
+	
+	@PostMapping("/api/work-slot/addWorkSlot")
+	public ResponseEntity<?> addWorkSlot(@RequestBody WorkSlotBlueprint booking){
+		WorkSlotSummary workSlot = workSlotService.addWorkSlot(booking);
+		return new ResponseEntity<>(workSlot, workSlot != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+	}
 
 }

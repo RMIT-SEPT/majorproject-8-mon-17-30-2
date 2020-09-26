@@ -1,21 +1,39 @@
 package com.rmit.sept.majorProject.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
+import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
+import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.WorkSlot;
+import com.rmit.sept.majorProject.model.Worker;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.DuplicateKeyException;
+
 import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 
-@Service
+@org.springframework.stereotype.Service
 public class WorkSlotService {
 
     @Autowired
     private WorkSlotRepository repository;
+    @Autowired
+    private WorkerService workerService;
+    @Autowired
+    private BusinessService businessService;
+    @Autowired
+    private ServiceService serviceService;
 
-    // return a list of all booking slot objects, whether or not they contain a
+
+    // return a list of all work slot objects, whether or not they contain a
     // booking
     public Iterable<WorkSlot> getAllWorkSlots() {
         return repository.findAll();
@@ -50,6 +68,7 @@ public class WorkSlotService {
                 workSlotDtos.add(new WorkSlotSummary(workSlot));
             }            
         }
+        Collections.sort(workSlotDtos, Comparator.comparing(WorkSlotSummary::getStartTime));
         return workSlotDtos;
     }
 
@@ -59,6 +78,10 @@ public class WorkSlotService {
 
     public WorkSlot getNewest() {
         return repository.getNewest();
+    }
+
+    public WorkSlot findById(Long workSlotId){
+        return repository.findById(workSlotId).get();
     }
 
     public WorkSlotSummary editWorkSlot(Long workerId, WorkSlot newWorkSlot) {
@@ -78,6 +101,7 @@ public class WorkSlotService {
                 if (newWorkSlot.getEndTime() != null) {
                     workSlot.setEndTime(newWorkSlot.getEndTime());
                 }
+                
                 repository.save(workSlot);
                 summary = new WorkSlotSummary(workSlot);
             }
@@ -105,5 +129,43 @@ public class WorkSlotService {
         // repository.save(workSlotFound);
         // return new WorkSlotSummary(workSlotFound);
     }
+
+	public WorkSlotSummary createNewWorkSlot(WorkSlotBlueprint blueprint){
+
+		Worker worker = workerService.findById(blueprint.getWorkerId()).get();
+		Business business = businessService.findById(blueprint.getBusinessId());
+        LocalDate date = LocalDate.parse(blueprint.getDate());
+        LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
+        LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
+
+		if(worker == null) {
+			throw new DataRetrievalFailureException("Worker not found");			
+		}
+		if(business == null) {
+			throw new DataRetrievalFailureException("Business not found");
+		}
+
+		WorkSlot workslot = new WorkSlot(date, startTime, endTime, worker);
+
+		if(workSlotOverlap(workslot)){
+            throw new DuplicateKeyException("Workslot overlap on " + blueprint.getDate() + 
+            " between " + blueprint.getStartTime() + " and " + blueprint.getEndTime());
+		}
+
+		return new WorkSlotSummary(this.repository.save(workslot));
+    }
+    
+    public boolean workSlotOverlap(WorkSlot newSlot){
+		for(WorkSlot existingSlot:findByDate(newSlot.getDate())){
+			try {
+				if(existingSlot.getStartTime().isBefore(newSlot.getEndTime()) &&
+                    newSlot.getStartTime().isBefore(existingSlot.getEndTime())){
+					return true;
+				}
+			}
+			catch(NullPointerException e) {}			
+		}
+		return false;
+	}
 
 }

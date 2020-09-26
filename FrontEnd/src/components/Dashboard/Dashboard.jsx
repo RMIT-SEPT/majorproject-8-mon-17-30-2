@@ -21,15 +21,14 @@ function Dashboard(props) {
         
           <Profile apiUrl={props.apiUrl}/>
           {AuthenticationService.getRole() !== WORKER ?              
-          //if not a worker display buttons
+          // if not a worker display buttons
           <div className="card-deck dashboard-card-deck" >
             {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} link={details.link} />)}
           </div>
           :
-          //otherwise display today's work schedule
-          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()} date={today}/>
-          }  
-
+          // otherwise display today's work schedule
+          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()} date={today}/>}
+          
         </div>
       </div>      
     </div>

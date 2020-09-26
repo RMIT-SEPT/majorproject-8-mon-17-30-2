@@ -2,7 +2,10 @@ import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
 import GetRequestService from "../../services/GetRequestService";
 import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
+import AuthenticationService from "../../services/AuthenticationService";
+import {ADMIN} from "../../Utils/utils";
 import {Link} from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 
 function WorkerProfile(props){
@@ -46,16 +49,22 @@ function WorkerProfile(props){
                         {services.map(service => <li className="list-group-item" key={service.id}> {service.title}</li>)}
                     </div>
                 
-                </ul>
-                
-                <Link to={`/workers/edit/${props.match.params.workerId}`}>
+                </ul>                
+                <Link to={`/worker/${props.match.params.workerId}/edit`}>
                     <button className="btn btn-info profile-btn">Edit Details here</button>
                 </Link>
-            
-                
+
+                <br/><br/>
+                <h1 className="display-4">Assigned Working Hours</h1>
+                <WorkdaySchedule workerId={props.match.params.workerId} date="2007-09-25"/>
+                {AuthenticationService.getRole() === ADMIN ?
+                // if logged in as admin, offer an "edit roster" button
+                <Link to={`/worker/${props.match.params.workerId}/work-slots/edit`}>
+                    <button className="btn btn-info profile-btn">Edit Roster</button>
+                </Link>:<></>}
             
             </div>
-        <WorkdaySchedule workerId={props.match.params.workerId} date={moment().format('yyyy-MM-DD').toString()}/>
+
         </div>
        
 

@@ -42,3 +42,8 @@
 .card-body {
     padding: 0;
 }
+
+.new-booking-slot {
+    max-width: 350px;
+    min-width: 350px;
+}

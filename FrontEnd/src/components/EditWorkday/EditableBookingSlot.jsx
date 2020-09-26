@@ -29,7 +29,7 @@ function EditableBookingSlot(props) {
               <table className="table worker-table table-bordered ">              
                 <thead className="thead-light">  
                   <tr>
-                      <td class="slottitle">Available Services:</td>
+                      <td>Available Services:</td>
                       <td>
                           {services.map((service) => <>{service.title}<br/></>)}
                       </td>

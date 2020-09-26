@@ -19,7 +19,6 @@ function WorkerProfile(props){
         .then((response) => {        
             setUserDetails(response.data);
             setServices(response.data.services);    
-            console.log(response.data);
         })
         .catch(() => {
             console.log("ERROR USER CANNOT BE FOUND");

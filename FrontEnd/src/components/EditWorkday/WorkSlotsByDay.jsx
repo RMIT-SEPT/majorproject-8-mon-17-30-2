@@ -4,10 +4,8 @@ import "../../css/WorkerSchedule.css";
 import { Card, Button } from 'react-bootstrap';
 import WorkerService from "../../services/WorkerService";
 
-//props: workerId, date, workSlots, {addBookingSlot}
+//props: workerId, date, workSlots, {addBookingSlot}, {deleteWorkSlot}
 function WorkSlotsByDay(props){
-
-  console.log("props:", props);
 
   return (props.workSlots && props.workSlots.length > 0 ? (
   // if there are >0 slots:
@@ -24,12 +22,15 @@ function WorkSlotsByDay(props){
             <Card.Text className="cardtext">
             {workSlot.bookingSlots && workSlot.bookingSlots.length > 0 ? 
                 workSlot.bookingSlots.map((bookingSlot) => 
-                <EditableBookingSlot bookingSlot={bookingSlot}/>)
+                <EditableBookingSlot availableServices={props.availableServices} bookingSlot={bookingSlot}/>)
             : "No Booking Slots"}
             </Card.Text>
-            <Button variant="secondary" className="new-booking-slot" onClick={(workSlotId) => props.addBookingSlot(workSlotId)}>+</Button>
+            <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>
           </Card.Body>
           <br/>
+          <Card.Footer className='text-right'>
+            <Button variant='danger' onClick={props.deleteWorkSlot}>Delete</Button>
+          </Card.Footer>
         </Card>
         <br/>
         </>

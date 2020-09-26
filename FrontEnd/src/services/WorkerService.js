@@ -18,7 +18,6 @@ class WorkerService {
     }
 
     getWorkSlotsByDateAndWorkerId(workerId, date){
-        console.log("getting slots by ", workerId, date);
         return axios.get(WORKER_API_BASE_URL + '/' + workerId + '/work-slots/' + date);
     }
 

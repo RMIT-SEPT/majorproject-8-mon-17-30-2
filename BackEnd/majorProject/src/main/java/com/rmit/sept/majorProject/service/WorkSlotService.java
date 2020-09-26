@@ -156,7 +156,7 @@ public class WorkSlotService {
     }
     
     public boolean workSlotOverlap(WorkSlot newSlot){
-		for(WorkSlot existingSlot:findByDate(newSlot.getDate())){
+		for(WorkSlotSummary existingSlot:findByWorkerIdAndDateDTO(newSlot.getWorker().getId(), newSlot.getDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")))){
 			try {
 				if(existingSlot.getStartTime().isBefore(newSlot.getEndTime()) &&
                     newSlot.getStartTime().isBefore(existingSlot.getEndTime())){

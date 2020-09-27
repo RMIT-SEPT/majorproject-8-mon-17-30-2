@@ -1,18 +1,25 @@
 version: 2
+orbs:
+  aws-ecr: circleci/aws-ecr@6.12.2
+  aws-ecs: circleci/aws-ecs@1.3.0
 jobs:
-
   build-test-backend:
     working_directory: ~/majorproject-8-mon-17-30-2/BackEnd/majorProject
     docker:
       - image: circleci/openjdk:8-jdk-stretch
-      - image: circleci/postgres:9.6.3-alpine
         environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: root1
-          POSTGRES_DB: db
+          ECR_REPOSITORY_NAME: majorproject
+          FULL_IMAGE_NAME: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject
+          IMAGE_TAGGED: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject:backend-latest
+          LOGIN_URI: 350650532482.dkr.ecr.us-east-1.amazonaws.com
+          CLUSTER_NAME: M1-8-Mon-17-30-2-cluster
+          SERVICE_NAME: Backend
     steps:
       - checkout:
           path: ~/majorproject-8-mon-17-30-2
+
+      - setup_remote_docker
+
       - restore_cache:
           key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
@@ -24,15 +31,56 @@ jobs:
       - store_test_results:
           path: target/surefire-reports
       - store_artifacts:
-          path: target/majorProject-0.0.1-SNAPSHOT.jar
+          path: target/majorProject-2.0.0.RELEASE.jar
+
+      - run:
+          name: Install dependencies for AWS
+          command: |
+            sudo apt-get update
+            sudo apt-get -y -qq install awscli
+            sudo apt-get install python3-pip
+            sudo pip3 install --upgrade awscli
+
+      - run:
+          name: Login
+          command: |
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $LOGIN_URI
+
+      - run:
+          name: Build image
+          command: |
+            docker build -t $ECR_REPOSITORY_NAME .
+      - run:
+          name: Tag image
+          command: |
+            docker tag majorproject:latest $IMAGE_TAGGED
+      - run:
+          name: Push image
+          command: |
+            docker push $IMAGE_TAGGED
+
+      - run:
+          name: Update ECS service to deploy
+          command: |
+            aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
 
   build-test-frontend:
     working_directory: ~/majorproject-8-mon-17-30-2/FrontEnd
     docker:
       - image: circleci/node:12.18.3
+        environment:
+          ECR_REPOSITORY_NAME: majorproject
+          FULL_IMAGE_NAME: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject
+          IMAGE_TAGGED: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject:frontend-latest
+          LOGIN_URI: 350650532482.dkr.ecr.us-east-1.amazonaws.com
+          CLUSTER_NAME: M1-8-Mon-17-30-2-cluster
+          SERVICE_NAME: Frontend
     steps:
       - checkout:
           path: ~/majorproject-8-mon-17-30-2
+
+      - setup_remote_docker
+
       - restore_cache:
             key: dependencies-frontend-{{ checksum "package.json" }}
       - run: npm install
@@ -43,6 +91,39 @@ jobs:
             - ~/.cache
           key: dependencies-frontend-{{ checksum "package.json" }}
       - run: npm test
+
+      - run:
+          name: Install dependencies for AWS
+          command: |
+            sudo apt-get update
+            sudo apt-get -y -qq install awscli
+            sudo apt-get install python3-pip
+            sudo pip3 install --upgrade awscli
+
+      - run:
+          name: Login
+          command: |
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $LOGIN_URI
+
+      - run:
+          name: Build image
+          command: |
+            docker build -t $ECR_REPOSITORY_NAME .
+      - run:
+          name: Tag image
+          command: |
+            docker tag majorproject:latest $IMAGE_TAGGED
+      - run:
+          name: Push image
+          command: |
+            docker push $IMAGE_TAGGED
+
+      - run:
+          name: Update ECS service to deploy
+          command: |
+            aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
+
+
 
 workflows:
   version: 2

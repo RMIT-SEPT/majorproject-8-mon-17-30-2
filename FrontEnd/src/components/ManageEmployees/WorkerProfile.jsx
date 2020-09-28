@@ -6,7 +6,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 import {ADMIN} from "../../Utils/utils";
 import {Link} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import moment from 'moment';
+import moment, { isMoment } from 'moment';
 
 function WorkerProfile(props){
       // TO access business ID use props.match.params.workerId
@@ -55,7 +55,7 @@ function WorkerProfile(props){
 
                 <br/><br/>
                 <h1 className="display-4">Assigned Working Hours</h1>
-                <WorkdaySchedule workerId={props.match.params.workerId} date="2007-09-25"/>
+                <WorkdaySchedule workerId={props.match.params.workerId} date={moment().format("YYYY-MM-DD")}/>
                 {AuthenticationService.getRole() === ADMIN ?
                 // if logged in as admin, offer an "edit roster" button
                 <Link to={`/worker/${props.match.params.workerId}/work-slots/edit`}>

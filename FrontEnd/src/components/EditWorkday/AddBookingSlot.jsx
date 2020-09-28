@@ -59,6 +59,33 @@ function AddBookingSlot(props){
         props.onSubmit(startString, endString, workSlotId, chosenServiceIds);
     }
 
+    let serviceOptions = (
+        options.map((d, i) =>
+        <tr>
+            <td>
+                <input 
+                    className="checkbox"
+                    onChange={(thing)=>{
+                        let checked=thing.target.checked;
+                        setOptions(
+                            options.map((data)=>{
+                                if(d.id == data.id){
+                                    data.select = checked;
+                                }
+                                return data;
+                        }))}} 
+                    type="checkbox" 
+                    checked={d.select} 
+                    value={d.id}
+                />
+            </td>
+            <td>
+                {d.title}
+            </td>                
+        </tr>
+        )
+    )
+
     return (
         <div style={{textAlign: "center"}}>  
             <form onSubmit={passChoices}>
@@ -71,27 +98,9 @@ function AddBookingSlot(props){
                     minuteIncrement='15'
                 />
                 <h5>Which Services could be offered at this time?</h5>
-
-                {options.map((d, i) =>
-                <>
-                    <input 
-                        className="checkbox"
-                        onChange={(thing)=>{
-                            let checked=thing.target.checked;
-                            setOptions(
-                                options.map((data)=>{
-                                    if(d.id == data.id){
-                                        data.select = checked;
-                                    }
-                                    return data;
-                            }))}} 
-                        type="checkbox" 
-                        checked={d.select} 
-                        value={d.id}
-                    />{d.title}
-                </>
-                )}                
-
+                <table className="services">
+                    {serviceOptions} 
+                </table>
                 <div className="footer">
                     <Button type="submit">
                     Add

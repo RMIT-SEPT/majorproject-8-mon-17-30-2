@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Booking.Status;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
@@ -254,7 +255,8 @@ public class BookingService{
 	{
 		for(Booking booking: repository.findAll())
 		{
-			if(LocalDateTime.of(booking.getBookingSlot().getDate(), booking.getBookingSlot().getEndTime()).isBefore(LocalDateTime.now()))
+			if(LocalDateTime.of(booking.getBookingSlot().getDate(), booking.getBookingSlot().getEndTime()).isBefore(LocalDateTime.now())
+					&& booking.getStatus() == Status.BOOKED)
 			{
 				booking.setStatusCompleted();
 				repository.save(booking);

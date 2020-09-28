@@ -71,7 +71,7 @@ public class CustomerService implements PersonService<Customer>{
 		if (customerFound != null){
 			// If worker exist, updates the values of that worker if there are changes.
 			if (newCustomer.getName() != null) {
-				customerFound.setAddress(newCustomer.getAddress());
+				customerFound.setName(newCustomer.getName());
 			}
 			if (newCustomer.getAddress() != null) {
 				customerFound.setAddress(newCustomer.getAddress());

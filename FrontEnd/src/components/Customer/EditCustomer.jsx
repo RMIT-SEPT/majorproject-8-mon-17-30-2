@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../css/EditProfile.css";
+import "../../css/Register.css";
 import CustomerService from "../../services/CustomerService";
 
 
@@ -51,7 +51,7 @@ function EditCustomer(props){
     }
 
     return (
-        <div className="editDetails" method="POST">  
+        <div className="Register" method="POST">  
         <form onSubmit={handleSubmit}>
             <header className="Register-header">Edit account details</header>
 

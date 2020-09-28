@@ -27,12 +27,6 @@ function Profile(props){
 
     }, [authenticatedUserId, props.apiUrl]);
 
-    function editDetails(){
-        if(AuthenticationService.getRole() === CUSTOMER){
-            
-        }
-    }
-
     return(
         <div className="jumbotron profile">
             <h1 className="display-4">Hi, {authenticatedUser}!</h1>
@@ -40,6 +34,8 @@ function Profile(props){
             <hr className="my-4"/>
             <ul className="list-group profile-list">
                 <li className="list-group-item">Username: {userDetails.username}</li>
+                {AuthenticationService.getRole() === CUSTOMER &&
+                <li className="list-group-item">Email: {userDetails.email}</li>}
                 <li className="list-group-item">Name: {userDetails.name}</li>
                 {(AuthenticationService.getRole() === CUSTOMER || AuthenticationService.getRole() === WORKER) &&    
                 <div>
@@ -59,11 +55,11 @@ function Profile(props){
                 }
             </ul>
             {AuthenticationService.getRole() === ADMIN && 
-                <button onClick={editDetails} className="btn btn-info profile-btn">Edit Details here</button>
+                <button className="btn btn-info profile-btn">Edit Details here</button>
             }
             {AuthenticationService.getRole() === CUSTOMER && 
             <Link to={'/customer/edit'}>
-                <button onClick={editDetails} className="btn btn-info profile-btn">Edit Details here</button>
+                <button className="btn btn-info profile-btn">Edit Details here</button>
             </Link>}
             
 

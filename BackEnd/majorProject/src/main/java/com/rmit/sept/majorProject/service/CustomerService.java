@@ -62,6 +62,38 @@ public class CustomerService implements PersonService<Customer>{
 		}
 		return summary;
 	}
+	
+	public CustomerSummary editCustomer(Long customerId, Customer newCustomer){
+		// Search repository for existing target worker using Source ID (workerID)
+		Optional<Customer> customerOptional = repository.findById(customerId);
+		// Assign the found worker, can assign null due to OPTIONAL
+		Customer customerFound = customerOptional.get();
+		if (customerFound != null){
+			// If worker exist, updates the values of that worker if there are changes.
+			if (newCustomer.getName() != null) {
+				customerFound.setAddress(newCustomer.getAddress());
+			}
+			if (newCustomer.getAddress() != null) {
+				customerFound.setAddress(newCustomer.getAddress());
+			}
+			if (newCustomer.getPhoneNumber() != null) {
+				customerFound.setPhoneNumber(newCustomer.getPhoneNumber());
+			}
+			if (newCustomer.getEmail() != null) {
+				customerFound.setEmail(newCustomer.getEmail());
+			}
+			if (newCustomer.getUsername() != null) {
+				customerFound.setUsername(newCustomer.getUsername());
+			}
+			if (newCustomer.getPassword() != null) {
+				customerFound.setPassword(newCustomer.getPassword());
+			}
+
+		}
+		// Save new details to repository
+		repository.save(customerFound);
+		return new CustomerSummary(customerFound);
+	}
 
 	//---------GENERIC PERSON FUNCTIONS------------	
 

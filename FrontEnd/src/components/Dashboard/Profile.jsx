@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
+import {Link} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService"
 import GetRequestService from "../../services/GetRequestService";
 import {CUSTOMER, WORKER, ADMIN, BUSINESS_ID_SESSION_ATTRIBUTE} from "../../Utils/utils";
@@ -26,6 +27,12 @@ function Profile(props){
 
     }, [authenticatedUserId, props.apiUrl]);
 
+    function editDetails(){
+        if(AuthenticationService.getRole() === CUSTOMER){
+            
+        }
+    }
+
     return(
         <div className="jumbotron profile">
             <h1 className="display-4">Hi, {authenticatedUser}!</h1>
@@ -51,9 +58,13 @@ function Profile(props){
                    </div>
                 }
             </ul>
-            {AuthenticationService.getRole() !== WORKER && 
-                <button className="btn btn-info profile-btn">Edit Details here</button>
-           }
+            {AuthenticationService.getRole() === ADMIN && 
+                <button onClick={editDetails} className="btn btn-info profile-btn">Edit Details here</button>
+            }
+            {AuthenticationService.getRole() === CUSTOMER && 
+            <Link to={'/customer/edit'}>
+                <button onClick={editDetails} className="btn btn-info profile-btn">Edit Details here</button>
+            </Link>}
             
 
         </div>

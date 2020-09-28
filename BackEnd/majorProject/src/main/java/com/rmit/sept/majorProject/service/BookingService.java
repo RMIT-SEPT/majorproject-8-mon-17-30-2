@@ -8,11 +8,14 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Booking.Status;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
@@ -118,6 +121,7 @@ public class BookingService{
 	}
 	
 	public Iterable<Booking> getAllBookings(){
+		updateBookingStatus();
 		return repository.findAll();
 	}
 
@@ -130,13 +134,16 @@ public class BookingService{
 	}
 
 	public Iterable<Booking> findByCustomerUsername(String customerUsername){
+		updateBookingStatus();
 		return repository.findByCustomerUsername(customerUsername);
 	}
 
 	public Iterable<Booking> findByCustomerId(Long customerId){
+		updateBookingStatus();
 		return repository.findByCustomerId(customerId);
 	}
 	public Iterable<Booking> findByBusinessId(Long businessId){
+		updateBookingStatus();
 		return repository.findByBusinessId(businessId);
 	}
 
@@ -179,11 +186,13 @@ public class BookingService{
 	}
 
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
+		updateBookingStatus();
 		return repository.findByWorkerUsername(workerUsername);
 	}
 	
 	public Iterable<Booking> getAvailableBookingsByBusiness(Business business)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBusiness(business);
 		ArrayList<Booking> businessBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -198,6 +207,7 @@ public class BookingService{
 	
 	public Iterable<Booking> getAvailableBookingsByWorker(Worker worker)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByWorker(worker);
 		ArrayList<Booking> workerBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -212,6 +222,7 @@ public class BookingService{
 	
 	public Iterable<Booking> getAvailableBookingsByDay(LocalDate day)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBookingSlotDate(day);
 		ArrayList<Booking> dayBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -225,6 +236,7 @@ public class BookingService{
 	}
 	
 	public Iterable<BookingSummary> getNewestBookings(int noBookings){
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findAll();
 		Collections.sort(bookingList, Collections.reverseOrder());
 		if(noBookings > bookingList.size())
@@ -237,5 +249,18 @@ public class BookingService{
 			newList.add(new BookingSummary(bookingList.get(i)));
 		}
 		return newList;
+	}
+	
+	public void updateBookingStatus()
+	{
+		for(Booking booking: repository.findAll())
+		{
+			if(LocalDateTime.of(booking.getBookingSlot().getDate(), booking.getBookingSlot().getEndTime()).isBefore(LocalDateTime.now())
+					&& booking.getStatus() == Status.BOOKED)
+			{
+				booking.setStatusCompleted();
+				repository.save(booking);
+			}
+		}
 	}
 }

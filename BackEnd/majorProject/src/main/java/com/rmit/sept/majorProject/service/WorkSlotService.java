@@ -6,25 +6,32 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.Worker;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
-
+import java.util.Collection;
+import java.util.List;
+import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
+import com.rmit.sept.majorProject.dto.WorkSlotSummary;
+import com.rmit.sept.majorProject.model.BookingSlot;
+import com.rmit.sept.majorProject.model.Business;
+import com.rmit.sept.majorProject.model.WorkSlot;
+import com.rmit.sept.majorProject.model.Worker;
+import com.rmit.sept.majorProject.model.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 
 @org.springframework.stereotype.Service
 public class WorkSlotService {
 
-    @Autowired
-    private WorkSlotRepository repository;
+	//Services
     @Autowired
     private WorkerService workerService;
     @Autowired
@@ -32,6 +39,10 @@ public class WorkSlotService {
     @Autowired
     private ServiceService serviceService;
 
+    //Repositories
+    @Autowired
+    private WorkSlotRepository repository;
+    
 
     // return a list of all work slot objects, whether or not they contain a
     // booking

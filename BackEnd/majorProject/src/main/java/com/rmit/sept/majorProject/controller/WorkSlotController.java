@@ -5,13 +5,11 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.dto.WorkSlotBlueprint;
+import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.service.WorkSlotService;
-
 import javax.validation.Valid;
-
 import com.rmit.sept.majorProject.Util;
 
 @CrossOrigin(origins = Util.API_HOST)

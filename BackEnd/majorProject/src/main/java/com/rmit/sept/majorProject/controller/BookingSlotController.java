@@ -6,11 +6,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
-import com.rmit.sept.majorProject.query.SearchRequest;
-import com.rmit.sept.majorProject.repository.WorkSlotRepository;
+import com.rmit.sept.majorProject.dto.SearchRequest;
 import com.rmit.sept.majorProject.service.BookingSlotService;
 import com.rmit.sept.majorProject.Util;
 

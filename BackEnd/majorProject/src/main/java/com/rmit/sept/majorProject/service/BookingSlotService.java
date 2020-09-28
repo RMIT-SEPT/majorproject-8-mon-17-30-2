@@ -172,17 +172,22 @@ public class BookingSlotService{
     
     public boolean bookingSlotOverlap(BookingSlot newSlot, Long workSlotId){
 		WorkSlot workSlot = workSlotRepository.findById(workSlotId).get();
-		for(BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)){
-			try {
-				if(existingSlot.getStartTime().isBefore(newSlot.getEndTime()) &&
-					newSlot.getStartTime().isBefore(existingSlot.getEndTime()) &&
-					!newSlot.getStartTime().isBefore(workSlot.getStartTime()) &&
-					!newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+		try{
+			for(BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)){
+				if((existingSlot.getStartTime().isBefore(newSlot.getEndTime())  &&
+					newSlot.getStartTime().isBefore(existingSlot.getEndTime())) ||
+					newSlot.getStartTime().isBefore(workSlot.getStartTime())    ||
+					newSlot.getEndTime().isAfter(workSlot.getEndTime())){
 						return true;
 				}
 			}
-			catch(NullPointerException e) {}			
+			if(newSlot.getStartTime().isBefore(workSlot.getStartTime()) ||
+			   newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+				   return true;
+			   }
 		}
+		catch(NullPointerException e) {}			
+
 		return false;
 	}
 

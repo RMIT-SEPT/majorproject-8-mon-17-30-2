@@ -97,7 +97,6 @@ function EditEmployeeWorkday(props) {
     }
 
     function newBookingSlot(startTime, endTime, workSlotId, services){
-        console.log("ADDING NEW BOOKINGSLOT");
         const bookingSlot = {
             workSlotId: workSlotId,
             date: dateString,

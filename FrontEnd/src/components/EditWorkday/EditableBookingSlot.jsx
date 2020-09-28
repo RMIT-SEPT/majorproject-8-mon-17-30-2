@@ -23,7 +23,7 @@ function EditableBookingSlot(props) {
             bg="light"
             key={props.bookingSlot.id}>
             <Card.Body>
-              <Card.Header>{props.bookingSlot.startTime} - {props.bookingSlot.endTime}</Card.Header>
+              <Card.Header>Booking Slot: {props.bookingSlot.startTime} - {props.bookingSlot.endTime}</Card.Header>
               <Card.Title className="cardtitle"></Card.Title>
               <Card.Text className="cardtext">
               <table className="table worker-table table-bordered ">              

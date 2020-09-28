@@ -17,7 +17,7 @@ function WorkSlotsByDay(props){
           bg="light"
           key={workSlot.id}>
           <Card.Body>
-            <Card.Header className="bold">{workSlot.startTime} - {workSlot.endTime}</Card.Header>
+            <Card.Header className="bold">Shift: {workSlot.startTime} - {workSlot.endTime}</Card.Header>
             <Card.Title className="cardtitle"></Card.Title>
             <Card.Text className="cardtext">
             {workSlot.bookingSlots && workSlot.bookingSlots.length > 0 ? 

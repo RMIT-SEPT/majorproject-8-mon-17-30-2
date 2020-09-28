@@ -215,12 +215,13 @@ function BookingPageTest(props) {
         <Modal.Title>Choose a Booking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-          {bookingSlots.map((bookingSlot) => (
-            <BookingSlotBubble 
-              bookingSlot={bookingSlot} 
-              handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
-            />))
-          }
+          { bookingSlots.length > 0 ? 
+               bookingSlots.map((bookingSlot) => (
+                <BookingSlotBubble 
+                  bookingSlot={bookingSlot} 
+                  handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
+                />))
+            : "No Matching Bookings Found."}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

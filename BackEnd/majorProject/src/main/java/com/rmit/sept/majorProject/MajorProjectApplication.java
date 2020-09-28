@@ -113,21 +113,33 @@ public class MajorProjectApplication {
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
-			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);		
+			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);
+			barber.addService(haircut);
+			barber.addService(beardtrim);		
 			
 			Service reserveTable = new Service("Reserve Table", "Book a table and attend to them", 1);
 			Service birthday = new Service("Birthday Service", "Book a room for a birthday celebration and attend to them", 2);
 			Service foodShow = new Service("Cooking food show", "Cook your food in front of you and put on a show", 1);
+			restaurant.addService(reserveTable);
+			restaurant.addService(birthday);
+			restaurant.addService(foodShow);
 			
 			Service movingService = new Service("Moving", "Come to you and get your stuff somewhere else", 2);
 			Service smuggling = new Service("Smuggle", "We can smuggle anything out of the country", 1);
+			delivery.addService(movingService);
+			delivery.addService(smuggling);
 			
 			Service strategy = new Service("Strategy Consultation", "We talk strategy",1);
 			Service organisation = new Service("Organisation Consultation", "We talk organisation",1);
 			Service training = new Service("Training Service", "Train people", 2);
+			consultancy.addService(strategy);
+			consultancy.addService(organisation);
+			consultancy.addService(training);
 			
 			Service pestExt = new Service("Pest Extermination", "We kill those pests", 1);
 			Service animal = new Service("Relocate Animals", "Relocate animals that wandered into neighbourhoods", 1);
+			exterminator.addService(pestExt);
+			exterminator.addService(animal);
 					
 			//john offers haircuts or beard trims during his working slots
 			List<Service> johnServices = new ArrayList<Service>();

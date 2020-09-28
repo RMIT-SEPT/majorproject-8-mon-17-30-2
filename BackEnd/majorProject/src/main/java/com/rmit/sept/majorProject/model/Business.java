@@ -124,7 +124,7 @@ public class Business {
         service.setBusiness(null);
     }
 
-    public List<Service> getServices(){
+    public Iterable<Service> getServices(){
         return this.services;
     }
 

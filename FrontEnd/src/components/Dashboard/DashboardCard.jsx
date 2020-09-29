@@ -20,8 +20,6 @@ function DashboardCard(props){
     
     )
 
-
-
 }
 
 export default DashboardCard;

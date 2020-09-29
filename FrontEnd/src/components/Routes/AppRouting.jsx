@@ -20,7 +20,6 @@ import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
 import WorkerProfile from "../ManageEmployees/WorkerProfile";
 import EditEmployeePage from "../ManageEmployees/EditEmployeePage";
 import AddEmployeePage from "../ManageEmployees/AddEmployeePage";
-import EditCustomer from "../Customer/EditCustomer";
 import AboutAndContact from "../HomePage/AboutAndContact";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
@@ -44,8 +43,7 @@ function AppRouting() {
          <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 
         */}
         <CustomerAuthenticatedRoute path="/customer" exact render={(props) => <Dashboard {...props} title={`Customer Dashboard`} details={CUSTOMER_BUTTON_DETAILS} 
-        apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />   
-        <CustomerAuthenticatedRoute path="/customer/edit" exact render={(props) => <EditCustomer {...props} customerId={AuthenticationService.getLoggedInId()}/>} />
+        apiUrl={AuthenticationService.getRole() === CUSTOMER ? GET_CUSTOMER_URL : GET_ADMIN_URL}/>} />       
         <CustomerAuthenticatedRoute path="/bookings/past" exact component={BookingHistory}/> 
         <CustomerAuthenticatedRoute path="/bookings/create/:businessId" exact component={BookingPageTest} />
         <CustomerAuthenticatedRoute path="/bookings/business" exact component={SelectBusinessPage}/> 

@@ -31,10 +31,6 @@ class CustomerService {
         return axios.get(CUSTOMER_API_BASE_URL + '/' + customerId + '/bookings/current');
     }
 
-    updateCustomer(customerId, customer){
-        return axios.put(CUSTOMER_API_BASE_URL + '/' + customerId, customer);
-    }
-
 }
 
 export default new CustomerService()

@@ -40,13 +40,13 @@ function WorkerBookingSlot(props) {
                   <tr>
                       <td class="slottitle">Booked Service:</td>
                       <td>
-                          {props.bookingSlot.bookedService != null ? props.bookingSlot.bookedService : "Not set"}
+                          {props.bookingSlot.bookedService != null ? props.bookingSlot.bookedService.title : "Not set"}
                       </td>
                   </tr>
                   <tr>
                       <td class="slottitle">Capacity:</td>
                       <td>
-                          {props.bookingSlot.bookedService != null ? props.bookings.length + " / " + props.bookingSlot.bookedService.capacity : "Not set"}
+                          {props.bookingSlot.bookedService != null ? props.bookingSlot.bookings.length + " / " + props.bookingSlot.bookedService.capacity : "Not set"}
                       </td>
                   </tr>
                 </thead>

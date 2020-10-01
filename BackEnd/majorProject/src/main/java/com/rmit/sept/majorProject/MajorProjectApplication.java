@@ -265,10 +265,6 @@ public class MajorProjectApplication {
 			// //old bookings
 			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
 			oldBooking.setStatusCompleted();
-			Booking oldBooking1 = new Booking(austin, john, barber, beardtrim, oldSlot);
-			oldBooking1.setStatusCompleted();
-			Booking oldBooking2 = new Booking(austin, john, barber, beardtrim, oldSlot);
-			oldBooking2.setStatusCompleted();
 
 			//save everything to repos (do this at the end to avoid detach errors)
 			businessRepository.save(barber);
@@ -346,8 +342,6 @@ public class MajorProjectApplication {
 			bookingSlotRepository.save(isabeauSlot1);
 
 			bookingRepository.save(oldBooking);
-			bookingRepository.save(oldBooking1);
-			bookingRepository.save(oldBooking2);
 			bookingRepository.save(austinBooking);
 			bookingRepository.save(lukeBooking0);
 			bookingRepository.save(hershelBooking0);

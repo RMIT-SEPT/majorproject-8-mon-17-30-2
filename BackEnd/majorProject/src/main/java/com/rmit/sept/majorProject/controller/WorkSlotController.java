@@ -10,7 +10,7 @@ import com.rmit.sept.majorProject.dto.WorkSlotSummary;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.service.WorkSlotService;
 import javax.validation.Valid;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController

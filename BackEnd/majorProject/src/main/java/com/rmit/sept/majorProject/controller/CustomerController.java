@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.service.CustomerService;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController

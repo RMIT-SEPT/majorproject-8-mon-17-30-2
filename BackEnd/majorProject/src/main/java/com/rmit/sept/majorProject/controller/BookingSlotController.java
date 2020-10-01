@@ -10,7 +10,7 @@ import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.dto.SearchRequest;
 import com.rmit.sept.majorProject.service.BookingSlotService;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController

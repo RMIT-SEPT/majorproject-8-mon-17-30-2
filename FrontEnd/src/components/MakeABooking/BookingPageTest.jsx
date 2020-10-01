@@ -127,19 +127,20 @@ function BookingPageTest(props) {
           alert("error");
         }
       })
-      .catch(() => {        
+      .catch(() => {  
+        alert("Booking already exists!")      
     });
     handleClose();
   }
-
-  let bookingSlotList = <p>No Bookings Found!</p>;  
+ 
   function handleModal(event){
     event.preventDefault();
     const searchRequest = {
       businessId: businessId,
       serviceId: serviceId,
       workerId: workerId,
-      dateString: dateString
+      dateString: dateString,
+      fullyBooked: false
     }
     BookingService.getMatchingBookingSlots(searchRequest)
       .then((response) => {

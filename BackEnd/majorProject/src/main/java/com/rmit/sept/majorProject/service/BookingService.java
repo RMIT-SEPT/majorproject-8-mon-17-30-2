@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Booking.Status;
 import com.rmit.sept.majorProject.model.BookingSlot;
@@ -22,6 +21,7 @@ import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
+import com.rmit.sept.majorProject.utility.DateTimeSort;
 
 @org.springframework.stereotype.Service
 public class BookingService{
@@ -71,7 +71,7 @@ public class BookingService{
 		if(bookingSlot.fullyBooked()){
 			throw new DataIntegrityViolationException("Service is fully booked");
 		}
-		bookingSlot.setBookedService(service);
+	
 		bookingSlotRepository.save(bookingSlot);
 		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
 
@@ -80,7 +80,6 @@ public class BookingService{
 		}
 		
 		booking = this.repository.save(booking);
-
 		bookingSlot.addBooking(booking);
 		bookingSlotRepository.save(bookingSlot);
 		return new BookingSummary(booking);
@@ -92,7 +91,8 @@ public class BookingService{
 				if(bookings.getBusiness().equals(booking.getBusiness()) && 
 						bookings.getWorker().equals(booking.getWorker())
 						&& bookings.getService().equals(booking.getService())
-						&& bookings.getBookingSlot().equals(booking.getBookingSlot())){
+						&& bookings.getBookingSlot().equals(booking.getBookingSlot())
+						&& booking.getStatus() != Status.CANCELLED){
 					return true;
 				}
 			}
@@ -109,7 +109,7 @@ public class BookingService{
 				if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
 				{
 					booking.setStatusCancelled();
-					booking.getBookingSlot().removeBookedService();
+					booking.getBookingSlot().removeBooking(booking);
 					bookingSlotRepository.save(booking.getBookingSlot());
 					repository.save(booking);
 					return true;
@@ -129,7 +129,8 @@ public class BookingService{
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
         for(Booking booking : getAllBookings()){
             allBookingDtos.add(new BookingSummary(booking));
-        }
+		}
+		Collections.sort(allBookingDtos, new DateTimeSort());
         return allBookingDtos;
 	}
 
@@ -151,7 +152,8 @@ public class BookingService{
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
         for(Booking booking : findByCustomerId(customerId)){
             allBookingDtos.add(new BookingSummary(booking));
-        }
+		}
+		Collections.sort(allBookingDtos, new DateTimeSort());
         return allBookingDtos;
 	}
 
@@ -163,16 +165,19 @@ public class BookingService{
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 
 	public Iterable<BookingSummary> getCurrentBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
-			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0) {
+			if((booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0 &&
+			   (booking.getStatus() != Status.CANCELLED))) {
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 
@@ -183,6 +188,7 @@ public class BookingService{
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 

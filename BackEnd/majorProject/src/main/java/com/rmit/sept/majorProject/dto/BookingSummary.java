@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Booking.Status;
 
-public class BookingSummary {
+public class BookingSummary implements DateTime{
 
     private Long id;
     private Long customerId;

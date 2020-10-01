@@ -45,7 +45,7 @@ public class BookingController {
     	return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/api/booking/{bookingId}/cancel")
+	@DeleteMapping("/api/booking/{bookingId}")
     public ResponseEntity<?> cancelBooking(@PathVariable("bookingId") Long id){
 		Boolean result = this.bookingService.cancelBooking(id);
     	return new ResponseEntity<>(result ? HttpStatus.OK: HttpStatus.NOT_FOUND);

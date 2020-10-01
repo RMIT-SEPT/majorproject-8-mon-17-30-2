@@ -158,7 +158,8 @@ public class BookingService{
 	public Iterable<BookingSummary> getPastBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
-			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
+			if ((booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0 ||
+			    (booking.getStatus() == Status.CANCELLED))) {
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}

@@ -4,9 +4,10 @@ import "../../css/BookingHistory.css";
 
 //this component is going to be a single grey bubble displaying the data of a single booking
 function BookingBubble(props) {
+
     return (
         <div>
-        <Card data-testid="bubblecard" className='bookingbubble' bg="light">
+        <Card data-testid="bubblecard" border={props.booking.status=="COMPLETED" ? "success" : "danger"} className='bookingbubble' bg="light">
             <Card.Body>
               <Card.Header className="text-muted">Booking #{props.booking.id}</Card.Header>
               <Card.Title className="cardtitle">{props.booking.businessName}</Card.Title>
@@ -38,7 +39,7 @@ function BookingBubble(props) {
                 </span>
               </Card.Text>
               <Card.Footer className="text-right text-muted">
-                Completed {/* booking status */}
+                {props.booking.status}
               </Card.Footer>
             </Card.Body>
           </Card>

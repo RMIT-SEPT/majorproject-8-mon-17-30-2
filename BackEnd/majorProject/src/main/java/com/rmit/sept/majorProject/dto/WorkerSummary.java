@@ -16,6 +16,7 @@ public class WorkerSummary {
     private String address;
     private List<ServiceSummary> services = new ArrayList<ServiceSummary>();
     private List<Long> bookings = new ArrayList<Long>();
+    private Long businessId;
 
     public WorkerSummary(Worker worker){
         this.id = worker.getId();
@@ -30,6 +31,7 @@ public class WorkerSummary {
         this.username = worker.getUsername();
         this.phoneNumber = worker.getPhoneNumber();
         this.address = worker.getAddress();
+        this.businessId = worker.getBusiness().getId();
     }
 
     public Long getId() {
@@ -60,9 +62,12 @@ public class WorkerSummary {
         return phoneNumber;
     }
 
-
     public String getAddress() {
         return address;
+    }
+
+    public Long getBusinessId() {
+        return businessId;
     }
 
 }

@@ -1,23 +1,32 @@
 package com.rmit.sept.majorProject.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+
+import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Service;
+import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
 import com.rmit.sept.majorProject.repository.BusinessRepository;
 import com.rmit.sept.majorProject.repository.ServiceRepository;
+import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 
 @org.springframework.stereotype.Service
 public class BookingSlotService{
 
 	@Autowired
-    private BookingSlotRepository repository;
+	private BookingSlotRepository repository;
+	@Autowired
+	private WorkSlotRepository workSlotRepository;
 	@Autowired
 	private WorkerRepository workerRepository;
 	@Autowired
@@ -129,6 +138,57 @@ public class BookingSlotService{
 
 	public BookingSlot getNewest(){
 		return repository.getNewest();
+	}
+		
+	public Iterable<BookingSlotSummary> findByWorkSlotId(Long workSlotId){
+		ArrayList<BookingSlotSummary> matchingSlots = new ArrayList<BookingSlotSummary>();
+		for(BookingSlot slot : workSlotRepository.findById(workSlotId).get().getBookingSlots()){
+			matchingSlots.add(new BookingSlotSummary(slot));
+		}
+		return matchingSlots;
+	}
+
+	public BookingSlotSummary createNewBookingSlot(BookingSlotBlueprint blueprint){
+
+        LocalDate date = LocalDate.parse(blueprint.getDate());
+        LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
+		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
+		ArrayList<Service> services = new ArrayList<Service>();
+		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
+		for(Long serviceId : blueprint.getServiceIds()){
+			services.add(serviceRepository.findById(serviceId).get());
+		}
+
+		BookingSlot bookingSlot = new BookingSlot(date, startTime, endTime, services);
+
+		if(bookingSlotOverlap(bookingSlot, blueprint.getWorkSlotId())){
+            throw new DuplicateKeyException("BookingSlot overlap on " + blueprint.getDate() + 
+            " between " + blueprint.getStartTime() + " and " + blueprint.getEndTime());
+		}
+
+		workSlot.addBookingSlot(bookingSlot);
+		return new BookingSlotSummary(this.repository.save(bookingSlot));
+	}
+    
+    public boolean bookingSlotOverlap(BookingSlot newSlot, Long workSlotId){
+		WorkSlot workSlot = workSlotRepository.findById(workSlotId).get();
+		try{
+			for(BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)){
+				if((existingSlot.getStartTime().isBefore(newSlot.getEndTime())  &&
+					newSlot.getStartTime().isBefore(existingSlot.getEndTime())) ||
+					newSlot.getStartTime().isBefore(workSlot.getStartTime())    ||
+					newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+						return true;
+				}
+			}
+			if(newSlot.getStartTime().isBefore(workSlot.getStartTime()) ||
+			   newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+				   return true;
+			   }
+		}
+		catch(NullPointerException e) {}			
+
+		return false;
 	}
 
 }

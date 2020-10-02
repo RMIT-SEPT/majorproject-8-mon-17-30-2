@@ -3,15 +3,14 @@ import { Card, ToastBody } from 'react-bootstrap';
 import "../../css/WorkerSchedule.css";
 
 //this component is going to be a single grey bubble displaying the data of a single booking
-function WorkerBookingSlot(bookingSlot) {
+function WorkerBookingSlot(props) {
 
     const [bookings, setBookings] = useState([]); 
     const [services, setServices] = useState([]); 
 
     useEffect(() =>{
-        console.log("bookingslot:", bookingSlot);
-        setBookings(bookingSlot.bookingSlot.bookings);
-        setServices(bookingSlot.bookingSlot.availableServices);
+        setBookings(props.bookingSlot.bookings);
+        setServices(props.bookingSlot.availableServices);
     },[]);
     
     
@@ -19,15 +18,15 @@ function WorkerBookingSlot(bookingSlot) {
         <>
         <Card className='workerbookingslot'
             bg="light"
-            key={bookingSlot.id}>
+            key={props.id}>
             <Card.Body>
-              <Card.Header>Booking Slot {bookingSlot.bookingSlot.startTime} - {bookingSlot.bookingSlot.endTime}</Card.Header>
+              <Card.Header>Booking Slot: {props.bookingSlot.startTime} - {props.bookingSlot.endTime}</Card.Header>
               <Card.Title className="cardtitle"></Card.Title>
               <Card.Text className="cardtext">
               <table className="table worker-table table-bordered ">              
                 <thead className="thead-light">  
                   <tr>
-                      <td class="slottitle">Bookings{bookingSlot.bookingSlot.capacity}:</td>
+                      <td class="slottitle">Bookings:</td>
                       <td>
                           {bookings.length ? bookings.map((booking) => <>Booking #{booking.id}: {booking.customerName}<br/></>) : "No bookings"}
                       </td>
@@ -41,13 +40,13 @@ function WorkerBookingSlot(bookingSlot) {
                   <tr>
                       <td class="slottitle">Booked Service:</td>
                       <td>
-                          {bookingSlot.bookingSlot.bookedService != null ? bookingSlot.bookingSlot.bookedService : "Not set"}
+                          {props.bookingSlot.bookedService != null ? props.bookingSlot.bookedService.title : "Not set"}
                       </td>
                   </tr>
                   <tr>
                       <td class="slottitle">Capacity:</td>
                       <td>
-                          {bookingSlot.bookingSlot.bookedService != null ? bookingSlot.bookings.length + " / " + bookingSlot.bookingSlot.bookedService.capacity : "Not set"}
+                          {props.bookingSlot.bookedService != null ? props.bookingSlot.bookings.length + " / " + props.bookingSlot.bookedService.capacity : "Not set"}
                       </td>
                   </tr>
                 </thead>

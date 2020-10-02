@@ -19,7 +19,7 @@ import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.BookingService;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController
@@ -45,7 +45,7 @@ public class BookingController {
     	return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/api/booking/{bookingId}/cancel")
+	@DeleteMapping("/api/booking/{bookingId}")
     public ResponseEntity<?> cancelBooking(@PathVariable("bookingId") Long id){
 		Boolean result = this.bookingService.cancelBooking(id);
     	return new ResponseEntity<>(result ? HttpStatus.OK: HttpStatus.NOT_FOUND);

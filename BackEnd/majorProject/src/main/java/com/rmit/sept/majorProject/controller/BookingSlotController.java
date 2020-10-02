@@ -2,13 +2,15 @@ package com.rmit.sept.majorProject.controller;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
-import com.rmit.sept.majorProject.query.SearchRequest;
+import com.rmit.sept.majorProject.dto.SearchRequest;
 import com.rmit.sept.majorProject.service.BookingSlotService;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController
@@ -20,6 +22,18 @@ public class BookingSlotController {
 	@GetMapping("/api/booking-slot")
 	public Iterable<BookingSlotSummary> getAllBookingSlots() {
 		return bookingSlotService.getAllBookingSlotsDTO();
+	}
+
+	@PostMapping("/api/work-slot/{workSlotId}/booking-slot")
+	public ResponseEntity<?> addNewWorkSlot(@PathVariable Long workSlotId, @Valid @RequestBody BookingSlotBlueprint blueprint){
+		BookingSlotSummary bookingSlot;
+    	try {
+    		bookingSlot = this.bookingSlotService.createNewBookingSlot(blueprint);
+    	}
+    	catch(DuplicateKeyException DkEx) {
+    		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(bookingSlot, HttpStatus.CREATED);		
 	}
 
 	@GetMapping("/api/booking-slot/{id}")

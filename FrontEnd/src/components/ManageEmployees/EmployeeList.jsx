@@ -14,7 +14,6 @@ function EmployeeList(){
 
     },[]);
 
-
     return(
         <div className="card list list-width">
             <ul className="list-group list-group-flush remove-list-bullet">

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.BookingSlot;
 
-public class WorkSlotSummary{
+public class WorkSlotSummary implements DateTime{
 
     private Long id;
     private Long workerId;

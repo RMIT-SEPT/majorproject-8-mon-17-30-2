@@ -80,26 +80,26 @@ public class BookingController {
 		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("/api/business/{business}/bookings")
-	public ResponseEntity<?> getAvailableBookingsByBusiness(@PathVariable("business") Business business)
-	{
-		Iterable<Booking> bookings = bookingService.getAvailableBookingsByBusiness(business);
-		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-	}
-	
-	@GetMapping("/api/worker/{worker}/bookings")
-	public ResponseEntity<?> getAvailableBookingsByWorker(@PathVariable("worker") Worker worker)
-	{
-		Iterable<Booking> bookings = bookingService.getAvailableBookingsByWorker(worker);
-		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-	}
-	
-	@GetMapping("/api/day/{day}/bookings")
-	public ResponseEntity<?> getAvailableBookingsByDay(@PathVariable("day") LocalDate day)
-	{
-		Iterable<Booking> bookings = bookingService.getAvailableBookingsByDay(day);
-		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-	}
+//	@GetMapping("/api/business/{business}/bookings")
+//	public ResponseEntity<?> getAvailableBookingsByBusiness(@PathVariable("business") Business business)
+//	{
+//		Iterable<Booking> bookings = bookingService.getAvailableBookingsByBusiness(business);
+//		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+//	}
+//	
+//	@GetMapping("/api/worker/{worker}/bookings")
+//	public ResponseEntity<?> getAvailableBookingsByWorker(@PathVariable("worker") Worker worker)
+//	{
+//		Iterable<Booking> bookings = bookingService.getAvailableBookingsByWorker(worker);
+//		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+//	}
+//	
+//	@GetMapping("/api/day/{day}/bookings")
+//	public ResponseEntity<?> getAvailableBookingsByDay(@PathVariable("day") LocalDate day)
+//	{
+//		Iterable<Booking> bookings = bookingService.getAvailableBookingsByDay(day);
+//		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+//	}
 	
 	@GetMapping("/api/newest/{number}/bookings")
 	public ResponseEntity<?> getNewestBookings(@PathVariable("number") int number)

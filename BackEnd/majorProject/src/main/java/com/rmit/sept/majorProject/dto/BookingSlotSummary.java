@@ -8,7 +8,7 @@ import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Service;
 
-public class BookingSlotSummary{
+public class BookingSlotSummary implements DateTime{
 
     private Long id;
     private String businessName;

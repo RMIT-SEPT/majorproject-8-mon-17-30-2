@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import com.rmit.sept.majorProject.dto.ServiceSummary;
 import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.service.ServiceService;
-import com.rmit.sept.majorProject.Util;
+import com.rmit.sept.majorProject.utility.Util;
 
 @CrossOrigin(origins = Util.API_HOST)
 @RestController

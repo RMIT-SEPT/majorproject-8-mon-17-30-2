@@ -10,13 +10,20 @@ class WorkerService {
     }
 
     getWorkSlotById(workSlotId){
-        console.log("getting workslot ", workSlotId);
         return axios.get(WORKSLOT_API_BASE_URL + '/' + workSlotId);
     }
 
     addBookingSlot(workSlotId, bookingSlot){
-        console.log("adding bookingslot", workSlotId, bookingSlot)
         return axios.post(WORKSLOT_API_BASE_URL + '/' + workSlotId + '/booking-slot', bookingSlot)
+    }
+
+    editWorkSlot(workSlotId, workSlot){
+        console.log(workSlotId, workSlot);
+        return axios.put(WORKSLOT_API_BASE_URL + '/' + workSlotId, workSlot);
+    }
+
+    editBookingSlot(workSlotId, bookingSlotId, bookingSlot){
+        return axios.put(WORKSLOT_API_BASE_URL + '/' + workSlotId + '/booking-slot/' + bookingSlotId, bookingSlot)
     }
 
 }

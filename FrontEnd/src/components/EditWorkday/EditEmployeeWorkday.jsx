@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import AddWorkSlot from "./AddWorkSlot"
+import EditWorkSlot from "./EditWorkSlot"
 import AddBookingSlot from "./AddBookingSlot"
+import EditBookingSlot from "./EditBookingSlot"
 import WorkSlotsByDay from "./WorkSlotsByDay"
 import "../../css/EditWorkday.css"
 import DatePicker from "react-datepicker";
@@ -26,8 +28,12 @@ function EditEmployeeWorkday(props) {
     // adding slots
     const [workSlots, setWorkSlots] = useState();
     const [currentWorkSlot, setCurrentWorkSlot] = useState();
-    var cws = null;
     const [availableServices, setAvailableServices] = useState([]);
+
+    // editing slots
+    const [editingWorkSlot, setEditingWorkSlot] = useState(false);
+    const [editingBookingSlot, setEditingBookingSlot] = useState(false);
+    const [currentBookingSlot, setCurrentBookingSlot] = useState();
 
     const [date, setDate] = useState(today);
     const [dateString, setDateString] = useState(todayString);
@@ -42,10 +48,14 @@ function EditEmployeeWorkday(props) {
     function handleClose(){
         setShowWorkSlot(false); 
         setShowBookingSlot(false);
+        setEditingWorkSlot(false);
+        setEditingBookingSlot(false);
     }
+
     function handleWorkSlotModal(){
         setShowWorkSlot(true);  
     }
+
     async function handleBookingSlotModal(workSlotId){
         WorkSlotService.getWorkSlotById(workSlotId)
         .then((response) =>{
@@ -54,6 +64,17 @@ function EditEmployeeWorkday(props) {
         setShowBookingSlot(true);
     }
 
+    function handleEditWorkSlot(workSlot){
+        setCurrentWorkSlot(workSlot);
+        setEditingWorkSlot(true);        
+    }
+
+    function handleEditBookingSlot(bookingSlot){
+        setCurrentBookingSlot(bookingSlot);
+        setEditingBookingSlot(true);        
+    }
+
+    // init and render update
     function initServices(){
         ServiceService.getServicesByBusinessId(businessId)
         .then((response) =>{
@@ -73,8 +94,11 @@ function EditEmployeeWorkday(props) {
         .then((response) =>{
             setWorkSlots(response.data.length ? response.data : []);
         });
-    },[date, showWorkSlot, showBookingSlot, currentWorkSlot]);
+    },[date, showWorkSlot, showBookingSlot,
+       currentWorkSlot, currentBookingSlot,
+       editingBookingSlot, editingWorkSlot]);
 
+    // submitting
     function newWorkSlot(startTime, endTime){
         const workSlot = {
             workerId: workerId,
@@ -109,13 +133,52 @@ function EditEmployeeWorkday(props) {
         .then(() =>{
             handleClose();
             alert("BookingSlot Created!");
-        }).catch(() => {
-            alert("Error: BookingSlot Overlap.\n" + workerName + " can't be in two places at once!\nTry a different time range.");
+        }).catch((error) => {
+            alert(error.message + "Error: BookingSlot Overlap.\n" + workerName + " can't be in two places at once!\nTry a different time range.");
         });  
         WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
         .then((response) =>{
             setWorkSlots(response.data.length ? response.data : []);
         });   
+    }
+
+    // editing
+    function editWorkSlot(newStart, newEnd){
+        const workSlot = {
+            workerId: workerId,
+            businessId: worker.businessId,
+            date: dateString,
+            startTime: newStart,
+            endTime: newEnd
+        }
+        WorkSlotService.editWorkSlot(currentWorkSlot.id, workSlot)
+        .then(() =>{
+            handleClose();
+            alert("Workslot saved!");
+        }).catch((error) => {
+            alert(error.message);
+        });  
+        WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
+        .then((response) =>{
+            setWorkSlots(response.data.length ? response.data : []);
+        });   
+    }
+
+    function editBookingSlot(bookingSlot){
+        console.log("edited booking slot!", bookingSlot);
+        // var workSlotId = currentWorkSlot.id;
+        // var bookingSlotId = currentBookingSlot.id;
+        // WorkSlotService.editBookingSlot(workSlotId, bookingSlot, bookingSlot)
+        // .then(() =>{
+        //     handleClose();
+        //     alert("BookingSlot Created!");
+        // }).catch((error) => {
+        //     alert(error.message);
+        // });  
+        // WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
+        // .then((response) =>{
+        //     setWorkSlots(response.data.length ? response.data : []);
+        // });   
     }
 
     return(
@@ -141,12 +204,17 @@ function EditEmployeeWorkday(props) {
                 workerId={workerId} 
                 date={dateString} 
                 workSlots={workSlots} 
-                addBookingSlot={(workSlotId) => handleBookingSlotModal(workSlotId)}
+                addBookingSlot={handleBookingSlotModal}
+                handleEditWorkSlot={handleEditWorkSlot}
+                handleEditBookingSlot={handleEditBookingSlot}
+                editWorkSlot={editWorkSlot}
+                editBookingSlot={editBookingSlot}
             />
             <Button className="addworkslot" onClick={handleWorkSlotModal}>+</Button>
 
+            {/*add work slot*/}
             <Modal show={showWorkSlot} onHide={handleClose}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title>Add a Workslot</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -162,8 +230,9 @@ function EditEmployeeWorkday(props) {
                 </Modal.Footer>
             </Modal>
 
+            {/*add booking slot*/}
             <Modal show={showBookingSlot} onHide={handleClose}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title>Add a BookingSlot</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -171,6 +240,44 @@ function EditEmployeeWorkday(props) {
                         workSlot={currentWorkSlot}
                         availableServices={availableServices}
                         onSubmit={newBookingSlot}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/*edit work slot*/}
+            <Modal show={editingWorkSlot} onHide={handleClose}>
+                <Modal.Header>
+                    <Modal.Title>Edit Workslot</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <EditWorkSlot 
+                        workSlot={currentWorkSlot}
+                        onSubmit={editWorkSlot}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/*edit booking slot*/}
+            <Modal show={editingBookingSlot} onHide={handleClose}>
+                <Modal.Header>
+                    <Modal.Title>Edit Booking Slot</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <EditBookingSlot 
+                        workSlot={currentWorkSlot}
+                        bookingSlot={currentBookingSlot}
+                        availableServices={availableServices}
+                        onSubmit={editBookingSlot}
                     />
                 </Modal.Body>
                 <Modal.Footer>

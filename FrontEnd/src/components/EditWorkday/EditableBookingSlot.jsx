@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Modal } from 'react-bootstrap';
+import AddBookingSlot from "./AddBookingSlot"
 import "../../css/WorkerSchedule.css";
 
-//this component is going to be a single grey bubble displaying the data of a single booking
+//props: bookingSlot (services, startTime, endTime)
 function EditableBookingSlot(props) {
 
     const [services, setServices] = useState([]); 
+    const [workslot, setWorkslot] = useState();
+    const [availableServices, setAvailableServices] = useState([]);
 
     useEffect(() =>{
         setServices(props.bookingSlot.availableServices);
     },[]);  
-    
-    function editBookingSlot(){
-    }
     
     function deleteBookingSlot(){
     }
@@ -39,12 +39,14 @@ function EditableBookingSlot(props) {
               </Card.Text>
             </Card.Body>
             <Card.Footer className="text-right text-muted">
-                <Button onClick={editBookingSlot}>🖉</Button>
-                <Button variant='danger' onClick={deleteBookingSlot}>🗑</Button>
+                <Button size="sm" onClick={() => props.handleEditBookingSlot(props.bookingSlot)}>✏️</Button><> </>
+                <Button size="sm" variant='danger' onClick={() => deleteBookingSlot(props.bookingSlot)}>🗑️</Button>
             </Card.Footer>
           </Card>
           <br/>
         </>
+
+        
     )
 }
 

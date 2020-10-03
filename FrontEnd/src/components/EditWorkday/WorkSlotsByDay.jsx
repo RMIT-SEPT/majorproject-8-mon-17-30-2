@@ -28,8 +28,10 @@ function WorkSlotsByDay(props){
             <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>
           </Card.Body>
           <br/>
+          {// for austin to do
+          }
           <Card.Footer className='text-right'>
-            <Button variant='danger' onClick={props.deleteWorkSlot}>Delete</Button>
+            <Button variant='danger' onClick={() => props.deleteWorkSlot(workSlot.id, workSlot.bookingSlots)}>Delete</Button>
           </Card.Footer>
         </Card>
         <br/>

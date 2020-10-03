@@ -118,6 +118,12 @@ function EditEmployeeWorkday(props) {
         });   
     }
 
+    function deleteWorkSlot(workSlotId, bookingSlots){
+       
+        console.log(workSlotId);
+        console.log(bookingSlots);
+    }
+
     return(
         <div className="container-fluid">
             <br/>
@@ -142,6 +148,7 @@ function EditEmployeeWorkday(props) {
                 date={dateString} 
                 workSlots={workSlots} 
                 addBookingSlot={(workSlotId) => handleBookingSlotModal(workSlotId)}
+                deleteWorkSlot={(workSlotId, bookingSlots) => deleteWorkSlot(workSlotId, bookingSlots)}
             />
             <Button className="addworkslot" onClick={handleWorkSlotModal}>+</Button>
 

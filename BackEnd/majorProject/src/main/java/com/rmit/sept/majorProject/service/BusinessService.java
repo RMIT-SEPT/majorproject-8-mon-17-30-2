@@ -17,6 +17,7 @@ import com.rmit.sept.majorProject.repository.ServiceRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.validation.Valid;
 
@@ -31,8 +32,10 @@ public class BusinessService{
 	private WorkerRepository workerRepository;
 	@Autowired
 	private ServiceRepository serviceRepository;
+	@Autowired
+	private BusinessRepository businessRepository;
 
-	public BusinessSummary addBusiness(Long adminId, @Valid Business business) {
+	public BusinessSummary addBusiness(Long adminId, Business business) {
 		if(!adminRepository.existsById(adminId))
 		{
 			throw new DataRetrievalFailureException("Invalid admin ID " + adminId);
@@ -82,10 +85,16 @@ public class BusinessService{
 				workerTemp.setBusiness(repository.findById(businessId).get());
 				for(Long serviceID:workerServiceId.getServiceID())
 				{
-					if(serviceRepository.findById(serviceID).get().getBusiness().getId() != businessId) {
-						throw new DataRetrievalFailureException("Service ID " + serviceID + " is not in business ID " + businessId);
+					if(!serviceRepository.existsById(serviceID))
+					{
+						throw new DataRetrievalFailureException("Service ID " + serviceID + " is not found");
 					}
-					workerTemp.addService(serviceRepository.findById(serviceID).get());
+					Service tempService = serviceRepository.findById(serviceID).get();
+					if(!((Collection<Service>)businessRepository.findById(businessId).get().getServices()).contains(tempService))
+					{
+							throw new DataRetrievalFailureException("Service ID " + serviceID + " is not in business ID " + businessId);
+					}
+					workerTemp.addService(tempService);
 				}
 				workerList.add(workerTemp);
 			}

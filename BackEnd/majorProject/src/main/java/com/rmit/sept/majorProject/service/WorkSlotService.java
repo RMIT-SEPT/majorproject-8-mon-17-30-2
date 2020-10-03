@@ -42,6 +42,8 @@ public class WorkSlotService {
     //Repositories
     @Autowired
     private WorkSlotRepository repository;
+    @Autowired
+    private BookingSlotRepository bookingSlotRepository;
     
 
     // return a list of all work slot objects, whether or not they contain a
@@ -141,6 +143,8 @@ public class WorkSlotService {
         // return new WorkSlotSummary(workSlotFound);
     }
 
+
+
 	public WorkSlotSummary createNewWorkSlot(WorkSlotBlueprint blueprint){
 
 		Worker worker = workerService.findById(blueprint.getWorkerId()).get();
@@ -179,4 +183,19 @@ public class WorkSlotService {
 		return false;
 	}
 
+    public boolean deleteWorkSlot(Long workSlotId) {
+        boolean toRet = false;
+        WorkSlot workSlot = findById(workSlotId);
+        if(workSlot != null){
+            bookingSlotRepository.deleteAll(workSlot.getBookingSlots());
+            repository.delete(workSlot);
+            toRet = true;
+        } else {
+            throw new NullPointerException("Incorrect WorkslotId: workslot is not in the database");
+        }
+
+        return toRet;
+
+
+    }
 }

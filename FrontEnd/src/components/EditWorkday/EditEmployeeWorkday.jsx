@@ -118,8 +118,8 @@ function EditEmployeeWorkday(props) {
         });   
     }
 
-    function deleteWorkSlot(workSlotId, bookingSlots){
-       
+    function deleteWorkSlot(workerId, workSlotId, bookingSlots){
+        console.log(workerId);
         console.log(workSlotId);
         console.log(bookingSlots);
     }
@@ -148,7 +148,7 @@ function EditEmployeeWorkday(props) {
                 date={dateString} 
                 workSlots={workSlots} 
                 addBookingSlot={(workSlotId) => handleBookingSlotModal(workSlotId)}
-                deleteWorkSlot={(workSlotId, bookingSlots) => deleteWorkSlot(workSlotId, bookingSlots)}
+                deleteWorkSlot={(workerId, workSlotId, bookingSlots) => deleteWorkSlot(workerId, workSlotId, bookingSlots)}
             />
             <Button className="addworkslot" onClick={handleWorkSlotModal}>+</Button>
 

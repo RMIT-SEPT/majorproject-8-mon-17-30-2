@@ -6,11 +6,7 @@ import java.util.ArrayList;
 
 import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
-import com.rmit.sept.majorProject.model.BookingSlot;
-import com.rmit.sept.majorProject.model.Business;
-import com.rmit.sept.majorProject.model.Service;
-import com.rmit.sept.majorProject.model.WorkSlot;
-import com.rmit.sept.majorProject.model.Worker;
+import com.rmit.sept.majorProject.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 
@@ -191,4 +187,14 @@ public class BookingSlotService{
 		return false;
 	}
 
+	public boolean deleteBookingSlot(Long bookingSlotId) {
+		boolean toRet = false;
+		BookingSlot bookingSlot = findById(bookingSlotId);
+		if(bookingSlot != null){
+			repository.delete(bookingSlot);
+			toRet = true;
+		}
+		return toRet;
+
+	}
 }

@@ -141,12 +141,29 @@ function EditEmployeeWorkday(props) {
        
     }
 
+    function deleteBookingSlot(bookingSlotId){
+
+        WorkSlotService.deleteBookingSlot(bookingSlotId).then((response) =>{
+          console.log(response);
+          if(response.status === 200){
+            setSuccessfulDeletion(response.status + "booking-slot");
+          }
+        })
+        .catch()
+        .finally(() => {
+            WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
+            .then((response) =>{
+                setWorkSlots(response.data.length ? response.data : []);
+            });   
+        });
+      }
     return(
         <div className="container-fluid">
             <br/>
             <h1>Editing {workerName}'s Roster</h1>
             <br/>
             {successfulDeletion == 200 ? <div className="alert alert-success delete-workslot"> Successfully Deleted WorkSlot</div> : null}
+            {successfulDeletion == "200booking-slot" ? <div className="alert alert-success delete-workslot"> Successfully Deleted BookingSlot</div> : null}
             <h4>For Date:</h4>
             <DatePicker
                 selected={date}
@@ -167,6 +184,7 @@ function EditEmployeeWorkday(props) {
                 workSlots={workSlots} 
                 addBookingSlot={(workSlotId) => handleBookingSlotModal(workSlotId)}
                 deleteWorkSlot={(workSlotId) => deleteWorkSlot(workSlotId)}
+                deleteBookingSlot = {deleteBookingSlot}
             />
             <Button className="addworkslot" onClick={handleWorkSlotModal}>+</Button>
 

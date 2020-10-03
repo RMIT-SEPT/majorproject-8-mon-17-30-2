@@ -57,4 +57,21 @@ public class BookingSlotController {
 	public BookingSlotSummary getNewest(){
 		return new BookingSlotSummary(bookingSlotService.getNewest());
 	}
+
+	@DeleteMapping(value = "/api/booking-slot/{bookingSlotId}")
+	public ResponseEntity<?> deleteWorkSlot(@PathVariable Long bookingSlotId) {
+		if(bookingSlotId == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		boolean isRemoved = bookingSlotService.deleteBookingSlot(bookingSlotId);
+
+		if (!isRemoved) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(bookingSlotId, HttpStatus.OK);
+	}
+
+
 }

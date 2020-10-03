@@ -186,20 +186,12 @@ public class WorkSlotService {
     public boolean deleteWorkSlot(Long workSlotId) {
         boolean toRet = false;
         WorkSlot workSlot = findById(workSlotId);
-
-
         if(workSlot != null){
             bookingSlotRepository.deleteAll(bookingSlotRepository.findAllByWorkSlotId(workSlotId));
             workSlot.getBookingSlots().clear();
-
             repository.delete(workSlot);
             toRet = true;
-        } else {
-            throw new NullPointerException("Incorrect WorkslotId: workslot is not in the database");
         }
-
         return toRet;
-
-
     }
 }

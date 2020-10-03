@@ -22,7 +22,8 @@ function WorkSlotsByDay(props){
             <Card.Text className="cardtext">
             {workSlot.bookingSlots && workSlot.bookingSlots.length > 0 ? 
                 workSlot.bookingSlots.map((bookingSlot) => 
-                <EditableBookingSlot availableServices={props.availableServices} bookingSlot={bookingSlot}/>)
+                <EditableBookingSlot key={bookingSlot.id} availableServices={props.availableServices} bookingSlot={bookingSlot} 
+                deleteBookingSlot={props.deleteBookingSlot}/>)
             : "No Booking Slots"}
             </Card.Text>
             <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>

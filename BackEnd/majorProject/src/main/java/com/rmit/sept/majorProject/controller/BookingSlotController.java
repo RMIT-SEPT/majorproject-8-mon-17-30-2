@@ -59,7 +59,7 @@ public class BookingSlotController {
 	}
 
 	@DeleteMapping(value = "/api/booking-slot/{bookingSlotId}")
-	public ResponseEntity<?> deleteWorkSlot(@PathVariable Long bookingSlotId) {
+	public ResponseEntity<?> deleteBookingSlot(@PathVariable Long bookingSlotId) {
 		if(bookingSlotId == null){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

@@ -27,6 +27,14 @@ class SlotService {
         return axios.put(BOOKINGSLOT_API_BASE_URL + '/' + bookingSlotId, bookingSlot)
     }
 
+    deleteBookingSlot(bookingSlotId){
+        console.log("delete bookingslotId:", bookingSlotId)
+        return axios.delete(BOOKINGSLOT_API_BASE_URL + '/' + bookingSlotId);
+    }
+    
+    deleteWorkSlotById(workSlotId){
+        return axios.delete(WORKSLOT_API_BASE_URL + '/' + workSlotId);
+    }
 }
 
 export default new SlotService()

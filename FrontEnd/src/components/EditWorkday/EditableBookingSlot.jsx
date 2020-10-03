@@ -37,7 +37,7 @@ function EditableBookingSlot(props) {
             </Card.Body>
             <Card.Footer className="text-right text-muted">
                 <Button size="sm" onClick={() => props.handleEditBookingSlot(props.bookingSlot)}>✏️</Button><> </>
-                {/*<Button size="sm" variant='danger' onClick={() => deleteBookingSlot(props.bookingSlot)}>🗑️</Button>*/}
+                <Button size="sm" variant='danger' onClick={() => props.deleteBookingSlot(props.bookingSlot.id)}>🗑️</Button>
             </Card.Footer>
           </Card>
           <br/>

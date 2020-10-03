@@ -29,16 +29,19 @@ function WorkSlotsByDay(props){
             <Card.Text className="cardtext">
             {workSlot.bookingSlots && workSlot.bookingSlots.length > 0 ? 
                 workSlot.bookingSlots.map((bookingSlot) => 
-                <EditableBookingSlot availableServices={props.availableServices} bookingSlot={bookingSlot} workSlot={workSlot} handleEditBookingSlot={props.handleEditBookingSlot}/>)
+                <EditableBookingSlot key={bookingSlot.id} availableServices={props.availableServices} bookingSlot={bookingSlot} 
+                handleEditBookingSlot={props.handleEditBookingSlot} deleteBookingSlot={props.deleteBookingSlot}/>)
             : "No Booking Slots"}
             </Card.Text>
             <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>
             <br/>
           </Card.Body>
           <br/>
+          {// for austin to do
+          }
           <Card.Footer className='text-right'>
             <Button onClick={() => props.handleEditWorkSlot(workSlot)}>✏️</Button><> </>
-            {/* <Button variant='danger' onClick={props.deleteWorkSlot(props.workSlot)}>🗑️</Button> */}
+            <Button variant='danger' onClick={() => props.deleteWorkSlot(workSlot.id)}>🗑️</Button>
           </Card.Footer>
         </Card>
         <br/>

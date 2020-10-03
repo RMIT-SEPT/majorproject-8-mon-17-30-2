@@ -72,4 +72,19 @@ public class WorkSlotController {
     	return new ResponseEntity<>(workslot, HttpStatus.CREATED);
     }
 
+	@DeleteMapping(value = "/api/work-slot/{workSlotId}")
+	public ResponseEntity<?> deleteWorkSlot(@PathVariable Long workSlotId) {
+
+		boolean isRemoved = workSlotService.deleteWorkSlot(workSlotId);
+
+		if (!isRemoved) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(workSlotId, HttpStatus.OK);
+	}
+    
+    
+    
+
 }

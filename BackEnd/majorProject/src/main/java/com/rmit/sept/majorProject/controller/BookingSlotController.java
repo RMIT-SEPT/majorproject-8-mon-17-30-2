@@ -69,5 +69,22 @@ public class BookingSlotController {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
     	}
     	return new ResponseEntity<>(bookingSlot, HttpStatus.CREATED);
-    }
+	}
+	
+	@DeleteMapping(value = "/api/booking-slot/{bookingSlotId}")
+	public ResponseEntity<?> deleteBookingSlot(@PathVariable Long bookingSlotId) {
+		if(bookingSlotId == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		boolean isRemoved = bookingSlotService.deleteBookingSlot(bookingSlotId);
+
+		if (!isRemoved) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(bookingSlotId, HttpStatus.OK);
+	}
+
+
 }

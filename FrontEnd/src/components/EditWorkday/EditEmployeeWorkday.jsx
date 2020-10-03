@@ -31,6 +31,8 @@ function EditEmployeeWorkday(props) {
 
     const [date, setDate] = useState(today);
     const [dateString, setDateString] = useState(todayString);
+
+    const [successfulDeletion, setSuccessfulDeletion] = useState();
     function handleDate(date){
         setDate(date);
         setDateString(moment(date).format('YYYY-MM-DD'));
@@ -44,9 +46,11 @@ function EditEmployeeWorkday(props) {
         setShowBookingSlot(false);
     }
     function handleWorkSlotModal(){
+        setSuccessfulDeletion(0);
         setShowWorkSlot(true);  
     }
     async function handleBookingSlotModal(workSlotId){
+        setSuccessfulDeletion(0);
         WorkSlotService.getWorkSlotById(workSlotId)
         .then((response) =>{
             setCurrentWorkSlot(response.data);
@@ -76,6 +80,7 @@ function EditEmployeeWorkday(props) {
     },[date, showWorkSlot, showBookingSlot, currentWorkSlot]);
 
     function newWorkSlot(startTime, endTime){
+       
         const workSlot = {
             workerId: workerId,
             businessId: worker.businessId,
@@ -97,6 +102,7 @@ function EditEmployeeWorkday(props) {
     }
 
     function newBookingSlot(startTime, endTime, workSlotId, services){
+        
         const bookingSlot = {
             workSlotId: workSlotId,
             date: dateString,
@@ -118,10 +124,21 @@ function EditEmployeeWorkday(props) {
         });   
     }
 
-    function deleteWorkSlot(workerId, workSlotId, bookingSlots){
-        console.log(workerId);
-        console.log(workSlotId);
-        console.log(bookingSlots);
+    function deleteWorkSlot(workSlotId){
+        WorkSlotService.deleteWorkSlotById(workSlotId)
+        .then((response) =>{
+            setSuccessfulDeletion(response.status);
+        }).catch((err) => {
+            setSuccessfulDeletion(err.status);
+        })
+        .finally(() => {
+            WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
+            .then((response) =>{
+                setWorkSlots(response.data.length ? response.data : []);
+            });   
+        });
+
+       
     }
 
     return(
@@ -129,6 +146,7 @@ function EditEmployeeWorkday(props) {
             <br/>
             <h1>Editing {workerName}'s Roster</h1>
             <br/>
+            {successfulDeletion == 200 ? <div className="alert alert-success delete-workslot"> Successfully Deleted WorkSlot</div> : null}
             <h4>For Date:</h4>
             <DatePicker
                 selected={date}
@@ -148,7 +166,7 @@ function EditEmployeeWorkday(props) {
                 date={dateString} 
                 workSlots={workSlots} 
                 addBookingSlot={(workSlotId) => handleBookingSlotModal(workSlotId)}
-                deleteWorkSlot={(workerId, workSlotId, bookingSlots) => deleteWorkSlot(workerId, workSlotId, bookingSlots)}
+                deleteWorkSlot={(workSlotId) => deleteWorkSlot(workSlotId)}
             />
             <Button className="addworkslot" onClick={handleWorkSlotModal}>+</Button>
 

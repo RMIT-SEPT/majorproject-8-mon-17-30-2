@@ -186,8 +186,12 @@ public class WorkSlotService {
     public boolean deleteWorkSlot(Long workSlotId) {
         boolean toRet = false;
         WorkSlot workSlot = findById(workSlotId);
+
+
         if(workSlot != null){
-            bookingSlotRepository.deleteAll(workSlot.getBookingSlots());
+            bookingSlotRepository.deleteAll(bookingSlotRepository.findAllByWorkSlotId(workSlotId));
+            workSlot.getBookingSlots().clear();
+
             repository.delete(workSlot);
             toRet = true;
         } else {

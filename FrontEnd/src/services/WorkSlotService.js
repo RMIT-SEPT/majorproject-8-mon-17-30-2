@@ -18,7 +18,10 @@ class WorkerService {
         console.log("adding bookingslot", workSlotId, bookingSlot)
         return axios.post(WORKSLOT_API_BASE_URL + '/' + workSlotId + '/booking-slot', bookingSlot)
     }
-
+    
+    deleteWorkSlotById(workSlotId){
+        return axios.delete(WORKSLOT_API_BASE_URL + '/' + workSlotId);
+    }
 }
 
 export default new WorkerService()

@@ -23,8 +23,6 @@ function AddBookingSlot(props){
             setStartTime(moment('2000-01-01 ' + props.workSlot.startTime, moment.ISO_8601).toString());
             setEndTime(moment('2000-01-01 ' + props.workSlot.endTime, moment.ISO_8601).toString());
             setWorkSlotId(props.workSlot.id);
-            console.log(props.workSlot.startTime);
-            console.log(moment('2000-01-01 ' + props.workSlot.startTime, moment.ISO_8601).toString());
         }
         setAvailableServices(props.availableServices);
         setOptions(props.availableServices.map((d) => {
@@ -55,8 +53,6 @@ function AddBookingSlot(props){
         for(var i = 0; i < chosenServices.length; i++) {
             chosenServiceIds.push(chosenServices[i].id);
         }
-        console.log(chosenServices);
-        console.log(chosenServiceIds);
         props.onSubmit(startString, endString, workSlotId, chosenServiceIds);
     }
 

@@ -19,7 +19,6 @@ class SlotService {
     }
 
     editWorkSlot(workSlotId, workSlot){
-        console.log(workSlotId, workSlot);
         return axios.put(WORKSLOT_API_BASE_URL + '/' + workSlotId, workSlot);
     }
 
@@ -28,7 +27,6 @@ class SlotService {
     }
 
     deleteBookingSlot(bookingSlotId){
-        console.log("delete bookingslotId:", bookingSlotId)
         return axios.delete(BOOKINGSLOT_API_BASE_URL + '/' + bookingSlotId);
     }
     

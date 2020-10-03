@@ -169,12 +169,11 @@ function EditEmployeeWorkday(props) {
     }
 
     function editBookingSlot(bookingSlot){
-        console.log("edited booking slot!", bookingSlot);
         var bookingSlotId = currentBookingSlot.id;
         SlotService.editBookingSlot(bookingSlotId, bookingSlot)
         .then(() =>{
             handleClose();
-            alert("BookingSlot Created!");
+            alert("BookingSlot saved!");
         }).catch((error) => {
             alert(error.message);
         });  
@@ -201,7 +200,6 @@ function EditEmployeeWorkday(props) {
 
     function deleteBookingSlot(bookingSlotId){
         SlotService.deleteBookingSlot(bookingSlotId).then((response) =>{
-          console.log(response);
           if(response.status === 200){
             setSuccessfulDeletion(response.status + "booking-slot");
           }

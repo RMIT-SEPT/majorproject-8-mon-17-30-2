@@ -31,7 +31,6 @@ function EditBookingSlot(props){
                 title: d.title
             };
         }));
-        console.log("rendering bookingslot")
     },[props.workSlot, props.bookingSlot, chosenServices]);
 
     // boolean check to see if a service is already available in the bookingslot, to pre-tick the box when editing

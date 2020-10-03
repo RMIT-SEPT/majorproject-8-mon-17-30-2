@@ -7,6 +7,12 @@ import WorkerService from "../../services/WorkerService";
 //props: workerId, date, workSlots, {addBookingSlot}, {deleteWorkSlot}
 function WorkSlotsByDay(props){
 
+  const [workSlots, setWorkSlots] = useState([]);
+
+  useEffect(() => {
+
+  },[]);
+
   return (props.workSlots && props.workSlots.length > 0 ? (
   // if there are >0 slots:
     <>
@@ -27,7 +33,7 @@ function WorkSlotsByDay(props){
             : "No Booking Slots"}
             </Card.Text>
             <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>
-            <br/><br/>
+            <br/>
           </Card.Body>
           <br/>
           <Card.Footer className='text-right'>

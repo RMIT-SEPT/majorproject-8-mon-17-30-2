@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import WorkerService from "../../services/WorkerService.js"
 import { Button, Modal } from 'react-bootstrap';
 import moment from 'moment';
-import WorkSlotService from "../../services/WorkSlotService";
+import SlotService from "../../services/SlotService";
 import ServiceService from "../../services/ServiceService.js";
 
 // props = workerId
@@ -57,7 +57,7 @@ function EditEmployeeWorkday(props) {
     }
 
     async function handleBookingSlotModal(workSlotId){
-        WorkSlotService.getWorkSlotById(workSlotId)
+        SlotService.getWorkSlotById(workSlotId)
         .then((response) =>{
             setCurrentWorkSlot(response.data);
         });  
@@ -107,7 +107,7 @@ function EditEmployeeWorkday(props) {
             startTime: startTime,
             endTime: endTime
         };
-        WorkSlotService.addWorkSlot(workSlot)
+        SlotService.addWorkSlot(workSlot)
         .then(() =>{
             handleClose();
             alert("Workslot Created!");
@@ -128,8 +128,7 @@ function EditEmployeeWorkday(props) {
             endTime: endTime,
             serviceIds: services
         };
-        console.log(bookingSlot)
-        WorkSlotService.addBookingSlot(workSlotId, bookingSlot)
+        SlotService.addBookingSlot(workSlotId, bookingSlot)
         .then(() =>{
             handleClose();
             alert("BookingSlot Created!");
@@ -151,7 +150,7 @@ function EditEmployeeWorkday(props) {
             startTime: newStart,
             endTime: newEnd
         }
-        WorkSlotService.editWorkSlot(currentWorkSlot.id, workSlot)
+        SlotService.editWorkSlot(currentWorkSlot.id, workSlot)
         .then(() =>{
             handleClose();
             alert("Workslot saved!");
@@ -161,24 +160,23 @@ function EditEmployeeWorkday(props) {
         WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
         .then((response) =>{
             setWorkSlots(response.data.length ? response.data : []);
-        });   
+        }); 
     }
 
     function editBookingSlot(bookingSlot){
         console.log("edited booking slot!", bookingSlot);
-        // var workSlotId = currentWorkSlot.id;
-        // var bookingSlotId = currentBookingSlot.id;
-        // WorkSlotService.editBookingSlot(workSlotId, bookingSlot, bookingSlot)
-        // .then(() =>{
-        //     handleClose();
-        //     alert("BookingSlot Created!");
-        // }).catch((error) => {
-        //     alert(error.message);
-        // });  
-        // WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
-        // .then((response) =>{
-        //     setWorkSlots(response.data.length ? response.data : []);
-        // });   
+        var bookingSlotId = currentBookingSlot.id;
+        SlotService.editBookingSlot(bookingSlotId, bookingSlot)
+        .then(() =>{
+            handleClose();
+            alert("BookingSlot Created!");
+        }).catch((error) => {
+            alert(error.message);
+        });  
+        WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
+        .then((response) =>{
+            setWorkSlots(response.data.length ? response.data : []);
+        });   
     }
 
     return(

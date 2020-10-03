@@ -12,11 +12,8 @@ function EditableBookingSlot(props) {
 
     useEffect(() =>{
         setServices(props.bookingSlot.availableServices);
-    },[]);  
-    
-    function deleteBookingSlot(){
-    }
-    
+    },[props.bookingSlot.availableServices]);  
+       
     return (
         <>
         <Card className='workerbookingslot'
@@ -40,14 +37,13 @@ function EditableBookingSlot(props) {
             </Card.Body>
             <Card.Footer className="text-right text-muted">
                 <Button size="sm" onClick={() => props.handleEditBookingSlot(props.bookingSlot)}>✏️</Button><> </>
-                <Button size="sm" variant='danger' onClick={() => deleteBookingSlot(props.bookingSlot)}>🗑️</Button>
+                {/*<Button size="sm" variant='danger' onClick={() => deleteBookingSlot(props.bookingSlot)}>🗑️</Button>*/}
             </Card.Footer>
           </Card>
           <br/>
-        </>
-
-        
+        </>        
     )
+
 }
 
 export default EditableBookingSlot;

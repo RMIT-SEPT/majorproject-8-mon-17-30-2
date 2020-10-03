@@ -5,14 +5,14 @@ import "../../css/AddSlots.css";
 import { Button, Form } from 'react-bootstrap';
 import Select from 'react-select'
 
-// props: bookingSlot, availableservices, {onSubmit} 
+// props: bookingSlot, availableServices, {onSubmit} 
 function EditBookingSlot(props){
 
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
     const [availableServices, setAvailableServices] = useState([]);
-    const [options, setOptions] = useState([]); 
-    const [workSlotId, setWorkSlotId] = useState([]); 
+    const [chosenServices, setChosenServices] = useState([]);
+    const [options, setOptions] = useState([]);  
 
     // const [startTime, setStartTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());
     // const [endTime, setEndTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());   
@@ -23,6 +23,7 @@ function EditBookingSlot(props){
             setEndTime(moment('2000-01-01 ' + props.bookingSlot.endTime, moment.ISO_8601).toString());
         }
         setAvailableServices(props.availableServices);
+        setChosenServices(props.bookingSlot.availableServices);
         setOptions(props.availableServices.map((d) => {
             return{
                 select: serviceIsChosen(d.id) ? true : false, 
@@ -30,11 +31,12 @@ function EditBookingSlot(props){
                 title: d.title
             };
         }));
-    },[props.workSlot, props.bookingSlot]);
+        console.log("rendering bookingslot")
+    },[props.workSlot, props.bookingSlot, chosenServices]);
 
     // boolean check to see if a service is already available in the bookingslot, to pre-tick the box when editing
     function serviceIsChosen(serviceId){
-        return (props.bookingSlot.availableServices.filter(e => e.id === serviceId).length) > 0;
+        return (chosenServices.filter(e => e.id === serviceId).length) > 0;
     }
 
     function handleStart(newStart){
@@ -56,9 +58,13 @@ function EditBookingSlot(props){
         for(var i = 0; i < chosenServices.length; i++) {
             chosenServiceIds.push(chosenServices[i].id);
         }
-        console.log(chosenServices);
-        console.log(chosenServiceIds);
-        props.onSubmit(startString, endString, workSlotId, chosenServiceIds);
+        const newBookingSlot = {
+            startTime: startString,
+            endTime: endString,
+            workSlotId: props.bookingSlot.workSlotId,
+            serviceIds: chosenServiceIds
+        }
+        props.onSubmit(newBookingSlot);
     }
 
     let serviceOptions = (

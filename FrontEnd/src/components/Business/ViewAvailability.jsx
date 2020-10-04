@@ -3,6 +3,8 @@ import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
 import BookingBubble from "../Bubbles/BookingBubble";
+import AvailabilityBubble from "../Bubbles/AvailabilityBubble";
+import Card from "react-bootstrap/esm/Card";
 
 function ViewAvailabilty(props) {
 
@@ -19,20 +21,14 @@ function ViewAvailabilty(props) {
             setAvailSlots(response.data)
         }).catch();
     }
-
     return (
         <div>
             <header className="bookings-header"><span role="img" aria-label="Time emoji">All Available Worker Slots</span> </header>
-            {/* { availSlots.length > 0 ?
-               availSlots.map((booking) => <BookingBubble key = {booking.id} booking = {booking} />)
+            { availSlots.length > 0 ? 
+               availSlots.map((availSlots) => <AvailabilityBubble key = {availSlots.id} booking = {availSlots} />) 
                 :
                 <div className = "bookings-header">No Bookings Found</div>
-            } */}
-            <ul>
-                {availSlots.map(availSlots => (
-                    <div key={availSlots.id}>{availSlots.businessName}{availSlots.date}</div>
-                ))}
-            </ul>
+            }
         </div>
     );
 }

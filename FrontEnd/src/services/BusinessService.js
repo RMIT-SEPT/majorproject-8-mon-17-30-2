@@ -18,6 +18,10 @@ class BusinessService {
         return axios.get(BUSINESS_API_BASE_URL + '/' + businessId);
     }
 
+    getBusinessAvailability(businessId) {
+        return axios.get(API_HOST + '/api/booking-slot/available/' + businessId);
+    }
+
 }
 
 export default new BusinessService()

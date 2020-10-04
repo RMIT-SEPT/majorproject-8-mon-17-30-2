@@ -131,7 +131,7 @@ public class BookingService{
             allBookingDtos.add(new BookingSummary(booking));
 		}
 		Collections.sort(allBookingDtos, new DateTimeSort());
-        return allBookingDtos;
+		return allBookingDtos;
 	}
 
 	public Iterable<Booking> findByCustomerUsername(String customerUsername){

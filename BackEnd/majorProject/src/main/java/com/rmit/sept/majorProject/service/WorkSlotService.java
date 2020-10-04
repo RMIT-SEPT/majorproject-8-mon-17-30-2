@@ -81,27 +81,7 @@ public class WorkSlotService {
         }
         return workSlotDtos;
     }
-
-    // Return Workslots Base on Business ID
-    public Iterable<WorkSlot> findByBusinessId(Long businessId) {
-        return repository.findByBusinessId(businessId);
-    }
-
-    // Returns WorkSlot DTO for the next 7 days
-    public Iterable<WorkSlotSummary> findByBusinessIdDTO(Long businessId) {
-        LocalDate today = LocalDate.now();
-        LocalDate nextWeek = LocalDate.now().plusDays(7);
-        ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
-        for (WorkSlot workSlot : findByBusinessId(businessId)) {
-            if (workSlot.getDate().compareTo(today) >= 0 && workSlot.getDate().compareTo(nextWeek) <= 0) {
-                workSlotDtos.add(new WorkSlotSummary(workSlot));
-            }
-
-        }
-        Collections.sort(workSlotDtos, Comparator.comparing(WorkSlotSummary::getStartTime));
-        return workSlotDtos;
-    }
-
+    
     public Iterable<WorkSlot> findByDate(LocalDate date) {
         return repository.findByDate(date);
     }

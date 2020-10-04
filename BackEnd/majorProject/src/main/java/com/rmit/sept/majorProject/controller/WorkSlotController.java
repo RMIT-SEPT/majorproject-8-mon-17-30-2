@@ -66,11 +66,4 @@ public class WorkSlotController {
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping("/api/business/{businessId}/work-slots/")
-    public ResponseEntity<?> getWorkSlotsByBusiness(@PathVariable Long businessId){
-        Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByBusinessIdDTO(businessId);
-		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
-		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
-	}
-
 }

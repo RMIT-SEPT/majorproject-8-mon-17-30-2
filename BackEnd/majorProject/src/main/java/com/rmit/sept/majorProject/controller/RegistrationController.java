@@ -40,24 +40,26 @@ public class RegistrationController {
     
     // WORKER REGISTRATION API
     @PostMapping("worker/register")
-    public ResponseEntity<?> registerWorkerAccount(@Valid @RequestBody Worker worker){	    
+    public ResponseEntity<?> registerWorkerAccount(@Valid @RequestBody Worker worker){
+    	Worker savedWorker;
         try {
-            workerService.registerNewWorker(worker);
+        	savedWorker = workerService.registerNewWorker(worker);
         } catch (DuplicateKeyException dkEx) {
             return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Worker>(worker, HttpStatus.CREATED);        
+        return new ResponseEntity<Worker>(savedWorker, HttpStatus.CREATED);        
     }
 
     // ADMIN REGISTRATION API
     @PostMapping("admin/register")
     public ResponseEntity<?> registerAdminAccount(@Valid @RequestBody Admin admin){	    
+    	Admin savedAdmin;
         try {
-            adminService.registerNewAdmin(admin);
+            savedAdmin = adminService.registerNewAdmin(admin);
         } catch (DuplicateKeyException dkEx) {
             return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Admin>(admin, HttpStatus.CREATED);        
+        return new ResponseEntity<Admin>(savedAdmin, HttpStatus.CREATED);        
     }
     
 }

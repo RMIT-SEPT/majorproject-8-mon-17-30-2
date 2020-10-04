@@ -31,7 +31,7 @@ class CurrentBookings extends Component {
 
     return (
       <div>
-        <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> Bookings <span role="img" aria-label="Time emoji">🕒</span></header>
+        <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> Upcoming Bookings <span role="img" aria-label="Time emoji">🕒</span></header>
         {bookings}
       </div>
 

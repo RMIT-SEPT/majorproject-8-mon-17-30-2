@@ -8,17 +8,20 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import com.rmit.sept.majorProject.model.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import com.rmit.sept.majorProject.model.Booking;
+import com.rmit.sept.majorProject.model.Booking.Status;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Business;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.BookingRepository;
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
+import com.rmit.sept.majorProject.utility.DateTimeSort;
 
 @org.springframework.stereotype.Service
 public class BookingService{
@@ -68,7 +71,7 @@ public class BookingService{
 		if(bookingSlot.fullyBooked()){
 			throw new DataIntegrityViolationException("Service is fully booked");
 		}
-		bookingSlot.setBookedService(service);
+	
 		bookingSlotRepository.save(bookingSlot);
 		Booking booking = new Booking(customer, worker, business, service, bookingSlot);
 
@@ -77,7 +80,6 @@ public class BookingService{
 		}
 		
 		booking = this.repository.save(booking);
-
 		bookingSlot.addBooking(booking);
 		bookingSlotRepository.save(bookingSlot);
 		return new BookingSummary(booking);
@@ -89,7 +91,8 @@ public class BookingService{
 				if(bookings.getBusiness().equals(booking.getBusiness()) && 
 						bookings.getWorker().equals(booking.getWorker())
 						&& bookings.getService().equals(booking.getService())
-						&& bookings.getBookingSlot().equals(booking.getBookingSlot())){
+						&& bookings.getBookingSlot().equals(booking.getBookingSlot())
+						&& booking.getStatus() != Status.CANCELLED){
 					return true;
 				}
 			}
@@ -106,7 +109,7 @@ public class BookingService{
 				if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
 				{
 					booking.setStatusCancelled();
-					booking.getBookingSlot().removeBookedService();
+					booking.getBookingSlot().removeBooking(booking);
 					bookingSlotRepository.save(booking.getBookingSlot());
 					repository.save(booking);
 					return true;
@@ -118,6 +121,7 @@ public class BookingService{
 	}
 	
 	public Iterable<Booking> getAllBookings(){
+		updateBookingStatus();
 		return repository.findAll();
 	}
 
@@ -125,18 +129,22 @@ public class BookingService{
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
         for(Booking booking : getAllBookings()){
             allBookingDtos.add(new BookingSummary(booking));
-        }
+		}
+		Collections.sort(allBookingDtos, new DateTimeSort());
         return allBookingDtos;
 	}
 
 	public Iterable<Booking> findByCustomerUsername(String customerUsername){
+		updateBookingStatus();
 		return repository.findByCustomerUsername(customerUsername);
 	}
 
 	public Iterable<Booking> findByCustomerId(Long customerId){
+		updateBookingStatus();
 		return repository.findByCustomerId(customerId);
 	}
 	public Iterable<Booking> findByBusinessId(Long businessId){
+		updateBookingStatus();
 		return repository.findByBusinessId(businessId);
 	}
 
@@ -144,27 +152,32 @@ public class BookingService{
 		ArrayList<BookingSummary> allBookingDtos = new ArrayList<BookingSummary>();
         for(Booking booking : findByCustomerId(customerId)){
             allBookingDtos.add(new BookingSummary(booking));
-        }
+		}
+		Collections.sort(allBookingDtos, new DateTimeSort());
         return allBookingDtos;
 	}
 
 	public Iterable<BookingSummary> getPastBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
-			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0) {
+			if ((booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) < 0 ||
+			    (booking.getStatus() == Status.CANCELLED))) {
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 
 	public Iterable<BookingSummary> getCurrentBookingsByCustomerIdDTO(Long customerId){
 		ArrayList<BookingSummary> pastBookings = new ArrayList<BookingSummary>();
 		for(Booking booking : findByCustomerId(customerId)){
-			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0) {
+			if((booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0 &&
+			   (booking.getStatus() != Status.CANCELLED))) {
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 
@@ -175,15 +188,18 @@ public class BookingService{
 				pastBookings.add(new BookingSummary(booking));
 			}
 		}
+		Collections.sort(pastBookings, new DateTimeSort());
 		return pastBookings;
 	}
 
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
+		updateBookingStatus();
 		return repository.findByWorkerUsername(workerUsername);
 	}
 	
 	public Iterable<Booking> getAvailableBookingsByBusiness(Business business)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBusiness(business);
 		ArrayList<Booking> businessBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -198,6 +214,7 @@ public class BookingService{
 	
 	public Iterable<Booking> getAvailableBookingsByWorker(Worker worker)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByWorker(worker);
 		ArrayList<Booking> workerBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -212,6 +229,7 @@ public class BookingService{
 	
 	public Iterable<Booking> getAvailableBookingsByDay(LocalDate day)
 	{
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findByBookingSlotDate(day);
 		ArrayList<Booking> dayBooking = new ArrayList<Booking>();
 		for(Booking booking: bookingList)
@@ -225,6 +243,7 @@ public class BookingService{
 	}
 	
 	public Iterable<BookingSummary> getNewestBookings(int noBookings){
+		updateBookingStatus();
 		ArrayList<Booking> bookingList = (ArrayList<Booking>) repository.findAll();
 		Collections.sort(bookingList, Collections.reverseOrder());
 		if(noBookings > bookingList.size())
@@ -237,5 +256,18 @@ public class BookingService{
 			newList.add(new BookingSummary(bookingList.get(i)));
 		}
 		return newList;
+	}
+	
+	public void updateBookingStatus()
+	{
+		for(Booking booking: repository.findAll())
+		{
+			if(LocalDateTime.of(booking.getBookingSlot().getDate(), booking.getBookingSlot().getEndTime()).isBefore(LocalDateTime.now())
+					&& booking.getStatus() == Status.BOOKED)
+			{
+				booking.setStatusCompleted();
+				repository.save(booking);
+			}
+		}
 	}
 }

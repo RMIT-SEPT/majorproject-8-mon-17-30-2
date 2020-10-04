@@ -1,0 +1,21 @@
+.addworkslot{
+    min-width: 400px;
+    font-size: 24pt;
+}
+
+.DatePicker{
+    min-width: 400px;
+    max-width: 400px;
+}
+
+.workday{
+    min-width: 400px;
+    max-width: 400px;
+}
+.delete-workslot{
+    min-width: 400px;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom:20px;
+    
+}

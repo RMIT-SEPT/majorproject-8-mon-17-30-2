@@ -67,6 +67,10 @@ public class Service {
         return (current != newCapacity);
     }
 
+//    public Business getBusiness() {
+//    	return this.business;
+//    }
+    
     public void setBusiness(Business newBusiness) {
         if(sameAsFormer(newBusiness)){
             return;

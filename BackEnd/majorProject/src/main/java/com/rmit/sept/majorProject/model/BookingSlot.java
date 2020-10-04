@@ -155,4 +155,12 @@ public class BookingSlot extends Slot {
                 ", endTime=" + endTime +
                 '}';
     }
+
+	public void removeBooking(Booking booking) {
+        bookings.remove(booking);
+        if(bookings.size() == 0){
+            removeBookedService();
+        }
+    }
+    
 }

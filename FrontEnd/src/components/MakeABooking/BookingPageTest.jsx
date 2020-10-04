@@ -127,19 +127,20 @@ function BookingPageTest(props) {
           alert("error");
         }
       })
-      .catch(() => {        
+      .catch(() => {  
+        alert("Booking already exists!")      
     });
     handleClose();
   }
-
-  let bookingSlotList = <p>No Bookings Found!</p>;  
+ 
   function handleModal(event){
     event.preventDefault();
     const searchRequest = {
       businessId: businessId,
       serviceId: serviceId,
       workerId: workerId,
-      dateString: dateString
+      dateString: dateString,
+      fullyBooked: false
     }
     BookingService.getMatchingBookingSlots(searchRequest)
       .then((response) => {
@@ -215,12 +216,13 @@ function BookingPageTest(props) {
         <Modal.Title>Choose a Booking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-          {bookingSlots.map((bookingSlot) => (
-            <BookingSlotBubble 
-              bookingSlot={bookingSlot} 
-              handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
-            />))
-          }
+          { bookingSlots.length > 0 ? 
+               bookingSlots.map((bookingSlot) => (
+                <BookingSlotBubble 
+                  bookingSlot={bookingSlot} 
+                  handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
+                />))
+            : "No Matching Bookings Found."}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

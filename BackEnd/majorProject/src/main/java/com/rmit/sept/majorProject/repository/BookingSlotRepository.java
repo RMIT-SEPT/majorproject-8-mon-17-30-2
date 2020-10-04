@@ -15,6 +15,8 @@ public interface BookingSlotRepository extends CrudRepository<BookingSlot, Long>
     public BookingSlot getNewest();
 
     public Iterable<BookingSlot> findByDateAndStartTimeAndEndTime(LocalDate date, LocalTime startTime, LocalTime endTime);
+
+    public Iterable<BookingSlot> findAllByWorkSlotId(Long workSlotId);
     // @Query(value = "SELECT * FROM booking_slot WHERE ")
     // public Iterable<BookingSlot> getAllAvailable();
 

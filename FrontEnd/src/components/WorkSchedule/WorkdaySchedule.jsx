@@ -12,7 +12,7 @@ function WorkdaySchedule(props){
   const [slots, setSlots] = useState([]);  
 
   useEffect(() =>{
-    WorkerService.getWorkSlotByDateAndWorkerId(props.workerId, props.date).then((response) =>{
+    WorkerService.getWorkSlotsByDateAndWorkerId(props.workerId, props.date).then((response) =>{
       setSlots(response.data.length ? response.data : []);
     });
   },[]);
@@ -20,7 +20,7 @@ function WorkdaySchedule(props){
   return (slots.length ? (
   // if there are >0 slots:
     <>
-    <h1 class="blockquote text-center">Assigned Working Hours<br/>{props.date}</h1>
+    <h1 class="blockquote text-center"><br/>{props.date}</h1>
     {slots.map((workSlot) => 
       <>
       <Card className='workday'

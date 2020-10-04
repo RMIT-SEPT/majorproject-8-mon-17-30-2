@@ -64,19 +64,17 @@ class BookingPage extends Component {
       },
     };
 
-    console.log(newBooking);
-
     PostRequestService.postRequest("/api/booking", newBooking)
       .then((response) => {
         if (response.data != null) {
           alert("Booking Created");
         } else {
-          alert("error");
+          alert("Error");
         }
       })
-      .catch(() => {
-        this.setState({ bookingCreateFail: true });
-      });
+      .catch((error => {
+        console.error(error.message);
+      }));
   }
 
   render() {

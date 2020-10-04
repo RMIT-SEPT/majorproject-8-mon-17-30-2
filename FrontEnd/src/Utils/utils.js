@@ -20,7 +20,8 @@ const CUSTOMER_BUTTON_DETAILS = [
 const ADMIN_BUTTON_DETAILS = [
     {key: 1, title: "Manage Employees", desc: "View, Add or Edit employees!", link:"/workers"},
     {key: 2, title: "Manage Schedule", desc: "Add or Edit working times!", link:"/schedule"},
-    {key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!", link:"/bookings/summary"}
+    {key: 3, title: "Booking Summary", desc: "View a summary of completed bookings or ongoing bookings!", link:"/bookings/summary"},
+    {key: 4, title: "View Worker's Availability", desc: "View when a worker is available for a Job in the upcoming 7 days!", link:"/workers/availability"}
 ];
 
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'

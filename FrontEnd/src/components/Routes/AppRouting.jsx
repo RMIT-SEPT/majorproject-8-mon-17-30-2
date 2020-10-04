@@ -61,7 +61,7 @@ function AppRouting() {
         <AdminAuthenticatedRoute path="/worker/:workerId/edit" exact render={(props) => <EditEmployeePage {...props}/> } />
         <AdminAuthenticatedRoute path="/workers/add" exact render={(props) => <AddEmployeePage {...props}/> } />
         <AdminAuthenticatedRoute path="/worker/:workerId/work-slots/edit" exact render={(props) => <EditEmployeeWorkday {...props}/> } />
-        <AdminAuthenticatedRoute path="/schedule" exact component={ViewAvailability}/> 
+        <AdminAuthenticatedRoute path="/workers/availability" exact component={ViewAvailability}/> 
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
       </Switch>

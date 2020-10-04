@@ -23,11 +23,11 @@ function ViewAvailabilty(props) {
     }
     return (
         <div>
-            <header className="bookings-header"><span role="img" aria-label="Time emoji">All Available Worker Slots</span> </header>
+            <header className="bookings-header">Available Worker Slots (Next 7-Days)</header>
             { availSlots.length > 0 ? 
                availSlots.map((availSlots) => <AvailabilityBubble key = {availSlots.id} booking = {availSlots} />) 
                 :
-                <div className = "bookings-header">No Bookings Found</div>
+                <h5 className="text-muted" style={{textAlign: 'center'}} >No Available Slots found!</h5>
             }
         </div>
     );

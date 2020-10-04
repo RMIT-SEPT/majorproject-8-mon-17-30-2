@@ -6,11 +6,7 @@ import java.util.ArrayList;
 
 import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
-import com.rmit.sept.majorProject.model.BookingSlot;
-import com.rmit.sept.majorProject.model.Business;
-import com.rmit.sept.majorProject.model.Service;
-import com.rmit.sept.majorProject.model.WorkSlot;
-import com.rmit.sept.majorProject.model.Worker;
+import com.rmit.sept.majorProject.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 
@@ -161,7 +157,7 @@ public class BookingSlotService{
 
 		BookingSlot bookingSlot = new BookingSlot(date, startTime, endTime, services);
 
-		if(bookingSlotOverlap(bookingSlot, blueprint.getWorkSlotId())){
+		if(bookingSlotOverlap(bookingSlot, null, blueprint.getWorkSlotId())){
             throw new DuplicateKeyException("BookingSlot overlap on " + blueprint.getDate() + 
             " between " + blueprint.getStartTime() + " and " + blueprint.getEndTime());
 		}
@@ -169,26 +165,70 @@ public class BookingSlotService{
 		workSlot.addBookingSlot(bookingSlot);
 		return new BookingSlotSummary(this.repository.save(bookingSlot));
 	}
+
+	public BookingSlotSummary editBookingSlot(Long bookingSlotId, BookingSlotBlueprint blueprint) {
+		BookingSlot bookingSlot = repository.findById(bookingSlotId).get();
+		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
+
+        LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
+		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
+		ArrayList<Service> services = new ArrayList<Service>();
+		for(Long serviceId : blueprint.getServiceIds()){
+			services.add(serviceRepository.findById(serviceId).get());
+		}
+		BookingSlot newBookingSlot = new BookingSlot(bookingSlot.getDate(), startTime, endTime, services);
+
+        // If found, update details
+        if (bookingSlot != null) {
+            if(bookingSlotOverlap(newBookingSlot, bookingSlotId, bookingSlot.getWorkSlot().getId())){
+                throw new DuplicateKeyException("BookingSlot overlap on " + bookingSlot.getDate() + 
+                " between " + newBookingSlot.getStartTime() + " and " + newBookingSlot.getEndTime());
+            }              
+            if (newBookingSlot.getStartTime() != null) {
+                bookingSlot.setStartTime(newBookingSlot.getStartTime());
+            }
+            if (newBookingSlot.getEndTime() != null) {
+                bookingSlot.setEndTime(newBookingSlot.getEndTime());
+			}  
+			if (newBookingSlot.getAvailableServices() != null){
+				bookingSlot.setAvailableServices(services);
+			}   
+			workSlot.addBookingSlot(bookingSlot);            
+        }
+
+        return new BookingSlotSummary(this.repository.save(bookingSlot));
+    }
     
-    public boolean bookingSlotOverlap(BookingSlot newSlot, Long workSlotId){
+	// checks if a bookingslot will overlap with other bookingslots inside the parent workslot
+	public boolean bookingSlotOverlap(BookingSlot newSlot, Long newSlotId, Long workSlotId){
 		WorkSlot workSlot = workSlotRepository.findById(workSlotId).get();
-		try{
+		try{			
 			for(BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)){
 				if((existingSlot.getStartTime().isBefore(newSlot.getEndTime())  &&
-					newSlot.getStartTime().isBefore(existingSlot.getEndTime())) ||
-					newSlot.getStartTime().isBefore(workSlot.getStartTime())    ||
-					newSlot.getEndTime().isAfter(workSlot.getEndTime())){
-						return true;
+					newSlot.getStartTime().isBefore(existingSlot.getEndTime()))){
+						if((newSlotId == null) ||
+						(newSlotId != null && newSlotId != existingSlot.getId())){
+							return true;
+						}
 				}
 			}
-			if(newSlot.getStartTime().isBefore(workSlot.getStartTime()) ||
-			   newSlot.getEndTime().isAfter(workSlot.getEndTime())){
-				   return true;
-			   }
+			if(newSlot.getStartTime().isBefore(workSlot.getStartTime()) || newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+				return true;
+			}
 		}
 		catch(NullPointerException e) {}			
 
 		return false;
 	}
 
+	public boolean deleteBookingSlot(Long bookingSlotId) {
+		boolean toRet = false;
+		BookingSlot bookingSlot = findById(bookingSlotId);
+		if(bookingSlot != null){
+			repository.delete(bookingSlot);
+			toRet = true;
+		}
+		return toRet;
+
+	}
 }

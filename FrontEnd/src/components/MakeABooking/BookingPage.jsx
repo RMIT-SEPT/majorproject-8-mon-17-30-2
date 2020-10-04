@@ -64,8 +64,6 @@ class BookingPage extends Component {
       },
     };
 
-    console.log(newBooking);
-
     PostRequestService.postRequest("/api/booking", newBooking)
       .then((response) => {
         if (response.data != null) {

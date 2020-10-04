@@ -1,6 +1,7 @@
 package com.rmit.sept.majorProject.repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import com.rmit.sept.majorProject.model.WorkSlot;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,6 @@ public interface WorkSlotRepository extends CrudRepository<WorkSlot, Long> {
     public Iterable<WorkSlot> findByBusinessId(Long businessId);
 
     public Iterable<WorkSlot> findByWorkerId(Long workerId);
+
     
 }

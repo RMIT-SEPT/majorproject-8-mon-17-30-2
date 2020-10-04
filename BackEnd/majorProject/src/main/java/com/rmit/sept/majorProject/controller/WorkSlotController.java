@@ -28,7 +28,7 @@ public class WorkSlotController {
     	catch(DuplicateKeyException DkEx) {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
     	}
-    	return new ResponseEntity<>(workslot, HttpStatus.CREATED);		
+    	return new ResponseEntity<>(workslot, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/api/work-slot/{workSlotId}")
@@ -60,10 +60,31 @@ public class WorkSlotController {
 		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/api/worker/{workerId}/work-slots/edit")
-    public ResponseEntity<?> updateWorkSlot(@RequestBody WorkSlot newWorkSlot, @PathVariable Long workerId){
-		WorkSlotSummary exist = workSlotService.editWorkSlot(workerId ,newWorkSlot);
-		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	@RequestMapping(method = RequestMethod.PUT, value = "/api/work-slot/{workSlotId}")
+    public ResponseEntity<?> updateWorkSlot(@RequestBody WorkSlot newWorkSlot, @PathVariable Long workSlotId){
+		WorkSlotSummary workslot;
+    	try {
+    		workslot = workSlotService.editWorkSlot(workSlotId, newWorkSlot);
+    	}
+    	catch(DuplicateKeyException DkEx) {
+    		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(workslot, HttpStatus.CREATED);
     }
+
+	@DeleteMapping(value = "/api/work-slot/{workSlotId}")
+	public ResponseEntity<?> deleteWorkSlot(@PathVariable Long workSlotId) {
+
+		boolean isRemoved = workSlotService.deleteWorkSlot(workSlotId);
+
+		if (!isRemoved) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(workSlotId, HttpStatus.OK);
+	}
+    
+    
+    
 
 }

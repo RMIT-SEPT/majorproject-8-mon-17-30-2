@@ -2,8 +2,8 @@ import React, {useState, useEffect} from "react";
 import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
-import BookingBubble from "../Bubbles/BookingBubble";
 import BootstrapTable from 'react-bootstrap-table-next';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 function PastBookingSummary(props){
 

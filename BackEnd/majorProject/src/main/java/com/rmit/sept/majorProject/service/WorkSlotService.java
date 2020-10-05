@@ -73,19 +73,18 @@ public class WorkSlotService {
         return workSlotDtos;
     }
 
-    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString){
+    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString) {
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
-        for(WorkSlot workSlot : findByWorkerId(workerId)){
-            if(workSlot.getDate().equals(date)){
+        for (WorkSlot workSlot : findByWorkerId(workerId)) {
+            if (workSlot.getDate().equals(date)) {
                 workSlotDtos.add(new WorkSlotSummary(workSlot));
-            }            
+            }
         }
-        Collections.sort(workSlotDtos, Comparator.comparing(WorkSlotSummary::getStartTime));
         return workSlotDtos;
     }
-
-    public Iterable<WorkSlot> findByDate(LocalDate date){
+    
+    public Iterable<WorkSlot> findByDate(LocalDate date) {
         return repository.findByDate(date);
     }
 
@@ -126,7 +125,8 @@ public class WorkSlotService {
 
         return summary;
 
-        // Different working way, but doesnt check base off given worker ID, top version should be better..
+        // Different working way, but doesnt check base off given worker ID, top version
+        // should be better..
 
         // Optional<WorkSlot> workSlotOptional =
         // repository.findById(newWorkSlot.getId());

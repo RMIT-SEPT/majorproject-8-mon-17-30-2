@@ -48,6 +48,13 @@ public class BookingSlotController {
 		return bookingSlotService.getAvailableBookingSlotsDTO();
 	}
 
+	// Business Availability, Returns list of BookingSlots by BusinessId for next 7 days
+	@GetMapping("/api/booking-slot/available/{businessId}")
+	public ResponseEntity<?> getBusinessAvailability(@PathVariable Long businessId) {
+		Iterable<BookingSlotSummary> availability = bookingSlotService.getBusinessAvailabilityDTO(businessId);
+		return new ResponseEntity<>(availability, availability.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+
 	@PostMapping("/api/booking-slot/search")
 	public ResponseEntity<?> searchAvailableBookingSlots(@Valid @RequestBody SearchRequest search){
 		Iterable<BookingSlotSummary> availableBookingSlots = bookingSlotService.searchAvailableBookingSlots(search.getBusinessId(), search.getServiceId(), search.getWorkerId(), search.getDate());

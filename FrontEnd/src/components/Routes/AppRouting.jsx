@@ -22,6 +22,7 @@ import EditEmployeePage from "../ManageEmployees/EditEmployeePage";
 import AddEmployeePage from "../ManageEmployees/AddEmployeePage";
 import EditCustomer from "../Customer/EditCustomer";
 import AboutAndContact from "../HomePage/AboutAndContact";
+import ViewAvailability from "../Business/ViewAvailability";
 import Footer from "../Footer";
 import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_DETAILS, GET_WORKER_URL, CUSTOMER} from "../../Utils/utils";
 import EditEmployeeWorkday from "../EditWorkday/EditEmployeeWorkday";
@@ -60,6 +61,7 @@ function AppRouting() {
         <AdminAuthenticatedRoute path="/worker/:workerId/edit" exact render={(props) => <EditEmployeePage {...props}/> } />
         <AdminAuthenticatedRoute path="/workers/add" exact render={(props) => <AddEmployeePage {...props}/> } />
         <AdminAuthenticatedRoute path="/worker/:workerId/work-slots/edit" exact render={(props) => <EditEmployeeWorkday {...props}/> } />
+        <AdminAuthenticatedRoute path="/workers/availability" exact component={ViewAvailability}/> 
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
       </Switch>

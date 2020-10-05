@@ -1,0 +1,12 @@
+.week{
+    text-align: center;
+    margin: auto;
+    overflow-x: auto;
+}
+
+.day{
+    vertical-align: top;
+    width: 430px;
+    height: 600px;
+    overflow: auto;
+}

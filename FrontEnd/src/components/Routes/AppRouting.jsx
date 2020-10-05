@@ -10,7 +10,7 @@ import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
 import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
 // import BookingPage from "../BookingPage";
-import BookingSummary from "../AdminBookingSummary/BookingSummary"
+import BookingSummary from "../AdminBookingSummary/BookingSummary";
 import BookingPageTest from "../MakeABooking/BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
 import SelectBusinessPage from "../MakeABooking/SelectBusinessPage";
@@ -18,6 +18,7 @@ import PastBookingSummary from "../AdminBookingSummary/PastBookingSummary";
 import CurrentBookings from "../CurrentBookings/CurrentBookings";
 import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
 import WorkerProfile from "../ManageEmployees/WorkerProfile";
+import WeekSchedule from "../WorkSchedule/WeekSchedule";
 import EditEmployeePage from "../ManageEmployees/EditEmployeePage";
 import AddEmployeePage from "../ManageEmployees/AddEmployeePage";
 import EditCustomer from "../Customer/EditCustomer";
@@ -62,6 +63,7 @@ function AppRouting() {
         <AdminAuthenticatedRoute path="/worker/:workerId/work-slots/edit" exact render={(props) => <EditEmployeeWorkday {...props}/> } />
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
+        <WorkerAuthenticatedRoute path="/worker/:workerId/work-slots/week" exact render={(props) => <WeekSchedule {...props} apiUrl={GET_WORKER_URL} />} />
       </Switch>
       <Route path="/" render={(props) => <Footer />}/>
     

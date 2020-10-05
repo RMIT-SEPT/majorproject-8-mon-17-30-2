@@ -26,7 +26,6 @@ function EditEmployeeWorkday(props) {
     // adding slots
     const [workSlots, setWorkSlots] = useState();
     const [currentWorkSlot, setCurrentWorkSlot] = useState();
-    var cws = null;
     const [availableServices, setAvailableServices] = useState([]);
 
     const [date, setDate] = useState(today);

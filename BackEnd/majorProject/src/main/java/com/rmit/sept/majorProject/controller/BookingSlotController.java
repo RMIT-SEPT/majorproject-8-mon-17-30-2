@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.dto.SearchRequest;
+import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.service.BookingSlotService;
 import com.rmit.sept.majorProject.utility.Util;
 
@@ -64,4 +65,33 @@ public class BookingSlotController {
 	public BookingSlotSummary getNewest(){
 		return new BookingSlotSummary(bookingSlotService.getNewest());
 	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/api/booking-slot/{bookingSlotId}")
+    public ResponseEntity<?> updateBookingSlot(@RequestBody BookingSlotBlueprint newBookingSlot, @PathVariable Long bookingSlotId){
+		BookingSlotSummary bookingSlot;
+    	try {
+    		bookingSlot = bookingSlotService.editBookingSlot(bookingSlotId, newBookingSlot);
+    	}
+    	catch(DuplicateKeyException DkEx) {
+    		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<>(bookingSlot, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping(value = "/api/booking-slot/{bookingSlotId}")
+	public ResponseEntity<?> deleteBookingSlot(@PathVariable Long bookingSlotId) {
+		if(bookingSlotId == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		boolean isRemoved = bookingSlotService.deleteBookingSlot(bookingSlotId);
+
+		if (!isRemoved) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(bookingSlotId, HttpStatus.OK);
+	}
+
+
 }

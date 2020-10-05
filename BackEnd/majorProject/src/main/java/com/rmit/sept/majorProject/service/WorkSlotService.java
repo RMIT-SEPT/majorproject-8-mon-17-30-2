@@ -42,6 +42,8 @@ public class WorkSlotService {
     //Repositories
     @Autowired
     private WorkSlotRepository repository;
+    @Autowired
+    private BookingSlotRepository bookingSlotRepository;
     
 
     // return a list of all work slot objects, whether or not they contain a
@@ -94,27 +96,31 @@ public class WorkSlotService {
         return repository.findById(workSlotId).get();
     }
 
-    public WorkSlotSummary editWorkSlot(Long workerId, WorkSlot newWorkSlot) {
+    public WorkSlotSummary editWorkSlot(Long workSlotId, WorkSlot newWorkSlot) {
         // Get a LIST of 'workSlots' for the parsed in worker ID
-        Iterable<WorkSlot> workerSlots = this.findByWorkerId(workerId);
-        // // Search LIST to find target slot to edit based on source ID
+        WorkSlot workSlot = repository.findById(workSlotId).get();
         WorkSlotSummary summary = null;
-        for (WorkSlot workSlot : workerSlots) {
-            if (workSlot.getId() == newWorkSlot.getId()) {
-                // If found, update details
-                if (newWorkSlot.getDate() != null) {
-                    workSlot.setDate(newWorkSlot.getDate());
-                }
-                if (newWorkSlot.getStartTime() != null) {
-                    workSlot.setStartTime(newWorkSlot.getStartTime());
-                }
-                if (newWorkSlot.getEndTime() != null) {
-                    workSlot.setEndTime(newWorkSlot.getEndTime());
-                }
-                
-                repository.save(workSlot);
-                summary = new WorkSlotSummary(workSlot);
+        // If found, update details
+        if (workSlot != null) {
+            if(workSlotOverlap(newWorkSlot, workSlotId, workSlot.getWorker().getId())){
+                throw new DuplicateKeyException("Workslot overlap on " + newWorkSlot.getDate() + 
+                " between " + newWorkSlot.getStartTime() + " and " + newWorkSlot.getEndTime());
             }
+            if(bookingSlotOverlap(newWorkSlot, workSlot)){
+                throw new DuplicateKeyException(
+                    "New times conflict with this shift's booking slots. Edit booking slots first.");
+            }                
+            if (newWorkSlot.getDate() != null) {
+                workSlot.setDate(newWorkSlot.getDate());
+            }
+            if (newWorkSlot.getStartTime() != null) {
+                workSlot.setStartTime(newWorkSlot.getStartTime());
+            }
+            if (newWorkSlot.getEndTime() != null) {
+                workSlot.setEndTime(newWorkSlot.getEndTime());
+            }                
+            repository.save(workSlot);
+            summary = new WorkSlotSummary(workSlot);
         }
 
         return summary;
@@ -141,6 +147,8 @@ public class WorkSlotService {
         // return new WorkSlotSummary(workSlotFound);
     }
 
+
+
 	public WorkSlotSummary createNewWorkSlot(WorkSlotBlueprint blueprint){
 
 		Worker worker = workerService.findById(blueprint.getWorkerId()).get();
@@ -158,7 +166,7 @@ public class WorkSlotService {
 
 		WorkSlot workslot = new WorkSlot(date, startTime, endTime, worker);
 
-		if(workSlotOverlap(workslot)){
+		if(workSlotOverlap(workslot, null, blueprint.getWorkerId())){
             throw new DuplicateKeyException("Workslot overlap on " + blueprint.getDate() + 
             " between " + blueprint.getStartTime() + " and " + blueprint.getEndTime());
 		}
@@ -166,17 +174,45 @@ public class WorkSlotService {
 		return new WorkSlotSummary(this.repository.save(workslot));
     }
     
-    public boolean workSlotOverlap(WorkSlot newSlot){
-		for(WorkSlotSummary existingSlot:findByWorkerIdAndDateDTO(newSlot.getWorker().getId(), newSlot.getDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")))){
+    public boolean workSlotOverlap(WorkSlot newSlot, Long newSlotId, Long workerId){
+        Iterable<WorkSlotSummary> existingSlots = findByWorkerIdAndDateDTO(workerId, newSlot.getDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")));
+		for(WorkSlotSummary existingSlot:existingSlots){
 			try {
 				if(existingSlot.getStartTime().isBefore(newSlot.getEndTime()) &&
                     newSlot.getStartTime().isBefore(existingSlot.getEndTime())){
-					return true;
+                    if((newSlotId == null) ||
+                       (newSlotId != null && newSlotId != existingSlot.getId())){
+                        return true;
+                    }
 				}
 			}
 			catch(NullPointerException e) {}			
 		}
 		return false;
-	}
+    }
+    
+    public boolean bookingSlotOverlap(WorkSlot newSlot, WorkSlot oldSlot){
+		for(BookingSlot existingSlot:oldSlot.getBookingSlots()){
+			try {
+				if(existingSlot.getStartTime().isBefore(newSlot.getStartTime()) ||
+                   existingSlot.getEndTime().isAfter(newSlot.getEndTime())){
+                    return true;
+                }
+            }
+			catch(NullPointerException e) {}			
+		}
+		return false;
+    }
 
+    public boolean deleteWorkSlot(Long workSlotId) {
+        boolean toRet = false;
+        WorkSlot workSlot = findById(workSlotId);
+        if(workSlot != null){
+            bookingSlotRepository.deleteAll(bookingSlotRepository.findAllByWorkSlotId(workSlotId));
+            workSlot.getBookingSlots().clear();
+            repository.delete(workSlot);
+            toRet = true;
+        }
+        return toRet;
+    }
 }

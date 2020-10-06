@@ -48,7 +48,7 @@ function EditWorker(props){
             email: email,
             username: username
         }
-        WorkerService.EditWorker(props.match.params.workerId, worker)
+        WorkerService.updateWorker(props.match.params.workerId, worker)
         .then((response) =>{
             if(response.data != null){
                 alert("Details saved!");

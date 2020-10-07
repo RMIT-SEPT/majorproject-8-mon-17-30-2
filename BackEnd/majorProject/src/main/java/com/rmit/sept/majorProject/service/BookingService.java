@@ -192,6 +192,17 @@ public class BookingService{
 		return pastBookings;
 	}
 
+	public Iterable<BookingSummary> getNewBookingsByBusinessIdDTO(Long businessId){
+		ArrayList<BookingSummary> newBookings = new ArrayList<BookingSummary>();
+		for(Booking booking : findByBusinessId(businessId)){
+			if (booking.getBookingSlot().getBookSlotDate().compareTo(LocalDate.now()) >= 0) {
+				newBookings.add(new BookingSummary(booking));
+			}
+		}
+		Collections.sort(newBookings, new DateTimeSort());
+		return newBookings;
+	}
+
 	public Iterable<Booking> getBookingsByWorker(String workerUsername){
 		updateBookingStatus();
 		return repository.findByWorkerUsername(workerUsername);

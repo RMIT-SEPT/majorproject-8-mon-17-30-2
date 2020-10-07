@@ -15,6 +15,7 @@ import BookingPageTest from "../MakeABooking/BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
 import SelectBusinessPage from "../MakeABooking/SelectBusinessPage";
 import PastBookingSummary from "../AdminBookingSummary/PastBookingSummary";
+import NewBookingSummary from "../AdminBookingSummary/NewBookingSummary";
 import CurrentBookings from "../CurrentBookings/CurrentBookings";
 import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
 import WorkerProfile from "../ManageEmployees/WorkerProfile";
@@ -55,7 +56,8 @@ function AppRouting() {
          {/* ADMIN ROUTES */}
         <AdminAuthenticatedRoute path="/admin" exact render={(props) => <Dashboard {...props} title={`Admin Dashboard`} details={ADMIN_BUTTON_DETAILS} apiUrl={GET_ADMIN_URL}/>} />
         <AdminAuthenticatedRoute path="/bookings/summary" exact render={(props) => <BookingSummary {...props}/>} />
-        <AdminAuthenticatedRoute path="/bookings/summary/past" exact render={(props) => <PastBookingSummary {...props} title={`Past Booking Summary`}/> } />
+        <AdminAuthenticatedRoute path="/bookings/summary/past" exact render={(props) => <PastBookingSummary {...props} title={`Past Booking Summary`}/> } /> 
+        <AdminAuthenticatedRoute path="/bookings/summary/new" exact render={(props) => <NewBookingSummary {...props} title={`Upcoming Bookings`}/> } /> 
         <AdminAuthenticatedRoute path="/workers" exact render={(props) => <ManageEmployeePage {...props}/> } />
         <AdminAuthenticatedRoute path="/worker/:workerId" exact render={(props) => <WorkerProfile {...props} apiUrl={GET_WORKER_URL}/> } />
         <AdminAuthenticatedRoute path="/worker/:workerId/edit" exact render={(props) => <EditEmployeePage {...props}/> } />

@@ -1,5 +1,7 @@
 import React, {useState} from "react";
-import Register from "../Register";
+import RegisterCustomer from "../RegisterCustomer";
+import SignupOptions from "../SignupOptions";
+import AdminBusinessSignup from "../Business/AdminBusinessSignup";
 import Login from "../Login";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "../Nav/Navbar";
@@ -38,8 +40,10 @@ function AppRouting() {
       
       <Switch>
         {/* GENERAL ROUTES */}
-        <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
-        <Route path="/register" exact component={Register} />
+        <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />  
+        <Route path="/register" exact component={SignupOptions} />      
+        <Route path="/register/customer" exact component={RegisterCustomer} />
+        <Route path="/register/business" exact component={AdminBusinessSignup} />
         <Route path="/about" exact component={AboutAndContact} />
         {/* CUSTOMER ROUTES
          <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 

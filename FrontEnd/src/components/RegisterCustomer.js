@@ -3,7 +3,7 @@ import "../css/Register.css";
 import PostRequestService from "../services/PostRequestService";
 import {POST_CUSTOMER_URL} from "../Utils/utils";
 
-class Register extends Component {
+class RegisterCustomer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,7 +55,7 @@ class Register extends Component {
     return (
       <div className="Register" method="POST">  
         <form onSubmit={this.handleSubmit}>
-          <header className="Register-header">Create an Account</header>
+          <header className="display-4">Create a Customer Account</header>
 
           <div className="form">
           {this.state.hasRegisterFailed && <div className="alert alert-danger"> Invalid Credentials </div>}
@@ -141,4 +141,4 @@ class Register extends Component {
     );
   }
 }
-export default Register;
+export default RegisterCustomer;

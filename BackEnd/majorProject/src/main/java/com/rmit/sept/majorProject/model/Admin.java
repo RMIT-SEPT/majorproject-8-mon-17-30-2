@@ -2,6 +2,8 @@ package com.rmit.sept.majorProject.model;
 
 import javax.persistence.*;
 
+import com.rmit.sept.majorProject.dto.AdminBlueprint;
+
 @Entity
 public class Admin extends Person{
 
@@ -25,6 +27,14 @@ public class Admin extends Person{
         this.username = other.getUsername();
         this.password = other.getPassword();
         this.business = other.getBusiness();
+        this.role = Role.ADMIN;
+    }
+
+    //blueprint constructor
+    public Admin(AdminBlueprint other){
+        this.name = other.getName();
+        this.username = other.getUsername();
+        this.password = other.getPassword();
         this.role = Role.ADMIN;
     }
 

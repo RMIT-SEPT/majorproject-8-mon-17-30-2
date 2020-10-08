@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import View from "react";
 import "../../css/Register.css";
 import CustomerService from "../../services/CustomerService";
 import {Button} from "react-bootstrap";
+import BusinessService from "../../services/BusinessService";
+import { __RouterContext } from "react-router";
 
 
 function AdminBusinessSignup(props){
@@ -18,24 +21,27 @@ function AdminBusinessSignup(props){
     const [services, setServices] = useState([]);
     const [newServiceTitle, setNewServiceTitle] = useState("");
     const [newServiceDesc, setNewServiceDesc] = useState("");
+    const [newServiceCap, setNewServiceCap] = useState(1);
     const [invalidData, setInvalidData] = useState(false);
 
-    useEffect(() => {
-
-    },[services])
+    let history = useHistory()
 
     function handleNewService(event){
         event.preventDefault();
-        console.log("wtf");
-        console.log(services);
         const service = {
             title: newServiceTitle,
-            description: newServiceDesc
+            description: newServiceDesc,
+            capacity: newServiceCap
         }
         setNewServiceDesc("");
         setNewServiceTitle("");
+        setNewServiceCap(1);
         setServices(services.concat(service));
-    }    
+    }   
+    
+    function finalise(){
+        history.push("/");
+    }
     
     function handleSubmit(event){
         event.preventDefault();
@@ -51,14 +57,22 @@ function AdminBusinessSignup(props){
             name: businessName,
             services: services
         }
-        // BusinessService.signupBusinessAdmin(business, admin)
-        // .then((response) =>{
-        //     if(response.data != null){
-        //         alert("Details saved!");
-        //     }
-        // }).catch(() => {
-        //     setInvalidData(true);
-        // });
+        console.log(admin);
+        console.log(business);
+        BusinessService.signUpAdmin(admin)
+        .then((response) => {
+            if(response.data != null){
+                BusinessService.signUpBusiness(response.data.id, business)
+                .then((response2) => {
+                    if(response2.data != null){
+                        alert("Business and Admin registered. Hope you remember your password! Proceeding to login page.");
+                        finalise();
+                    }
+                })
+            }
+        }).catch(() => {
+            setInvalidData(true);
+        });
     }
 
     return (
@@ -79,6 +93,7 @@ function AdminBusinessSignup(props){
                     placeholder="John Doe"
                     value={name}
                     onChange={e => setName(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -90,6 +105,7 @@ function AdminBusinessSignup(props){
                     placeholder="123 Apple Street"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -101,6 +117,7 @@ function AdminBusinessSignup(props){
                     placeholder="12345678"
                     value={phoneNumber}
                     onChange={e => setPhoneNumber(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -112,6 +129,7 @@ function AdminBusinessSignup(props){
                     placeholder="john.doe@email.com"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -123,6 +141,7 @@ function AdminBusinessSignup(props){
                     placeholder="user123"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -134,6 +153,7 @@ function AdminBusinessSignup(props){
                     placeholder="hunter2"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -148,9 +168,10 @@ function AdminBusinessSignup(props){
                 <input
                     type="text"
                     name="businessName"
-                    placeholder="Jack's Gym"
-                    value={password}
+                    placeholder="John's Gym"
+                    value={businessName}
                     onChange={e => setBusinessName(e.target.value)}
+                    form="parentForm"
                     required
                 />
             </div>
@@ -159,10 +180,9 @@ function AdminBusinessSignup(props){
                 <br/><label>Services:</label><br/>
                 {services.length > 0 ? services.map(service => {
                     return (
-                        <p>{service.title} : {service.description}</p>
+                        <p>{service.title} : {service.description} : {service.capacity}</p>
                     )
                 }) : <p className="text-muted">Please add services that your business provides.</p>}
-
                 
                 <div style={{border: "1px solid black"}}>
                     <div>
@@ -181,10 +201,20 @@ function AdminBusinessSignup(props){
                         <input
                             type="text"
                             name="serviceDesc"
-                            placeholder="A class where you ride bikes on the spot."
+                            placeholder="A class where you ride bikes on the spot"
                             value={newServiceDesc}
                             onChange={e => setNewServiceDesc(e.target.value)}
                             form="serviceForm"
+                            required
+                        /><br/>
+                        <p>Service Patron Capacity:</p>
+                        <input
+                            type="number"
+                            name="serviceCap"
+                            value={newServiceCap}
+                            onChange={e => setNewServiceCap(e.target.value)}
+                            form="serviceForm"
+                            min="0"
                             required
                         /><br/>
                         <button type="submit" form="serviceForm">Add Service</button>
@@ -195,8 +225,8 @@ function AdminBusinessSignup(props){
 
             </div>
             <div className="footer">
-            <button className="button buttonshadow" type="submit">
-                Save
+            <button className="button buttonshadow" type="submit" form="parentForm">
+                Register
             </button>
             </div>
 

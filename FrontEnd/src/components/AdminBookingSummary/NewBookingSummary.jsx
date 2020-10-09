@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
-import BookingBubble from "../Bubbles/BookingBubble";
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-function PastBookingSummary(props) {
+function NewBookingSummary(props) {
 
     const [bookings, setBookings] = useState([]);
     const columns = [{
@@ -50,10 +49,10 @@ function PastBookingSummary(props) {
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             let businessId = response.data.businessId;
-            getPastBookings(businessId);
+            getNewBookings(businessId);
         }).catch();
     }, []);
-    function getPastBookings(businessId) {
+    function getNewBookings(businessId) {
         BusinessService.getBusinessNewBookings(businessId).then(response => {
             setBookings(response.data)
         }).catch();
@@ -67,16 +66,10 @@ function PastBookingSummary(props) {
 
             <div style={style}>
                 <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> {props.title} <span role="img" aria-label="Time emoji">🕒</span></header>
-                {/* {bookings.length > 0 ?
-                    bookings.map((booking) => <BookingBubble key={booking.id} booking={booking} />)
-                    :
-                    <div className="bookings-header">No Bookings Found</div>
-                } */}
-
                 <BootstrapTable sort={{ dataField: 'date', order: 'asc' }} keyField='id' data={bookings} columns={columns} />
             </div>
         </div>
     );
 }
 
-export default PastBookingSummary;
+export default NewBookingSummary;

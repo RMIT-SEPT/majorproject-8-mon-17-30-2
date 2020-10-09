@@ -8,6 +8,7 @@ import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
@@ -164,6 +165,8 @@ public class BookingSlotService{
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
 		ArrayList<Service> services = new ArrayList<Service>();
 		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
+		if(startTime.isAfter(endTime))
+			throw new DataIntegrityViolationException("Start time is after end time");
 		for(Long serviceId : blueprint.getServiceIds()){
 			services.add(serviceRepository.findById(serviceId).get());
 		}
@@ -185,6 +188,10 @@ public class BookingSlotService{
 
         LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
+		if(startTime.isAfter(endTime))
+		{
+			throw new DataIntegrityViolationException("Start time is after end time");
+		}
 		ArrayList<Service> services = new ArrayList<Service>();
 		for(Long serviceId : blueprint.getServiceIds()){
 			services.add(serviceRepository.findById(serviceId).get());

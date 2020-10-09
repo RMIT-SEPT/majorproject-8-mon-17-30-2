@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -184,6 +185,44 @@ public class WorkSlotServiceTest {
 	}
 	
 	//Edit a work slot with work slot overlap
-//	@Test
-//	public void 
+	@Test
+	public void testEditWorkSlot_OverlapWorkSlot() {
+		WorkSlotService workSlotSpy = spy(workSlotService);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("10:30"), LocalTime.parse("15:30"),workerTest);
+		newWorkSlotTest.setId(1L);
+		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
+		doReturn(true).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
+		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
+		Assertions.assertThrows(DuplicateKeyException.class, () -> {
+			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
+		  });
+	}
+	
+	//Edit a work slot with booking slot overlap
+	@Test
+	public void testEditWorkSlot_OverlapBookingSlot() {
+		WorkSlotService workSlotSpy = spy(workSlotService);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("10:30"), LocalTime.parse("15:30"),workerTest);
+		newWorkSlotTest.setId(1L);
+		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
+		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
+		doReturn(true).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
+		Assertions.assertThrows(DuplicateKeyException.class, () -> {
+			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
+		  });
+	}
+	
+	//Edit work slot with work slot time invalid
+	@Test
+	public void testEditWorkSlot_InvalidStartEndTime() {
+		WorkSlotService workSlotSpy = spy(workSlotService);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("15:30"), LocalTime.parse("10:30"),workerTest);
+		newWorkSlotTest.setId(1L);
+		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
+		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
+		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
+		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
+		  });
+	}
 }

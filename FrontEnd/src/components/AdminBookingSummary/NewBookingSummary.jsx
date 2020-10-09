@@ -54,7 +54,7 @@ function PastBookingSummary(props) {
         }).catch();
     }, []);
     function getPastBookings(businessId) {
-        BusinessService.getBusinessPastBookings(businessId).then(response => {
+        BusinessService.getBusinessNewBookings(businessId).then(response => {
             setBookings(response.data)
         }).catch();
     }

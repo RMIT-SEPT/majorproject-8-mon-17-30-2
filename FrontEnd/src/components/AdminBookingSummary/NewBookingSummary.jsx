@@ -1,38 +1,82 @@
-// Josh to fill in to for task: Admin see feed of new bookings and their status
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
 import BookingBubble from "../Bubbles/BookingBubble";
+import BootstrapTable from 'react-bootstrap-table-next';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-function NewBookingSummary(props){
+function PastBookingSummary(props) {
 
     const [bookings, setBookings] = useState([]);
+    const columns = [{
+        dataField: 'id',
+        text: 'ID',
+        sort: true
+    }, {
+        dataField: 'businessName',
+        text: 'Business',
+        sort: true
+    }, {
+        dataField: 'date',
+        text: 'Date',
+        sort: "desc"
+    }, {
+        dataField: 'startTime',
+        text: 'Start Time',
+        sort: true
+    }, {
+        dataField: 'endTime',
+        text: 'End Time',
+        sort: true
+    }, {
+        dataField: 'serviceTitle',
+        text: 'Service',
+        sort: true
+    }, {
+        dataField: 'workerName',
+        text: 'Worker',
+        sort: true
+    }, {
+        dataField: 'customerName',
+        text: 'Customer',
+        sort: true
+    }]
+    const style = {
+        maxWidth: "50%",
+        margin: "auto"
+    }
 
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             let businessId = response.data.businessId;
-            getNewBookings(businessId);
+            getPastBookings(businessId);
         }).catch();
     }, []);
-
-    function getNewBookings(businessId){
-        BusinessService.getBusinessNewBookings(businessId).then(response => {
+    function getPastBookings(businessId) {
+        BusinessService.getBusinessPastBookings(businessId).then(response => {
             setBookings(response.data)
         }).catch();
     }
 
-    return(
-        <div>
-            <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> {props.title} <span role="img" aria-label="Time emoji">🕒</span></header>
-            { bookings.length > 0 ? 
-               bookings.map((booking) => <BookingBubble key = {booking.id} booking = {booking} />)
-                :
-                <div className = "bookings-header">No Bookings Found</div>
-            }
 
+
+
+    return (
+        <div>
+
+            <div style={style}>
+                <header className="bookings-header"><span role="img" aria-label="Time emoji">🕒</span> {props.title} <span role="img" aria-label="Time emoji">🕒</span></header>
+                {/* {bookings.length > 0 ?
+                    bookings.map((booking) => <BookingBubble key={booking.id} booking={booking} />)
+                    :
+                    <div className="bookings-header">No Bookings Found</div>
+                } */}
+
+                <BootstrapTable sort={{ dataField: 'date', order: 'asc' }} keyField='id' data={bookings} columns={columns} />
+            </div>
         </div>
     );
 }
 
-export default NewBookingSummary;
+export default PastBookingSummary;

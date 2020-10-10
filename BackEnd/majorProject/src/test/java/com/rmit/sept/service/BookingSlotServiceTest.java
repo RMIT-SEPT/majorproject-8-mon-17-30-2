@@ -209,25 +209,4 @@ public class BookingSlotServiceTest {
 			bookingSlotSpy.editBookingSlot(bookingSlotTest.getId(), newBookingBP);
 		});
 	}
-	
-	//Edit booking slot with invalid date
-	@Test
-	public void testEditBookingSlot_InvalidDate() {
-		BookingSlotBlueprint newBookingBP = bookingSlotBPTest;
-		newBookingBP.setDate("1990-06-02");
-		BookingSlot newBookingSlot = bookingSlotTest;
-		newBookingSlot.setDate(LocalDate.parse("1990-06-02"));
-		BookingSlotService bookingSlotSpy = spy(bookingSlotService);
-		when(serviceRepository.findById(serviceTest0.getId())).thenReturn(Optional.of(serviceTest0));
-		when(serviceRepository.findById(serviceTest1.getId())).thenReturn(Optional.of(serviceTest1));
-		when(bookingSlotRepository.findById(bookingSlotTest.getId())).thenReturn(Optional.of(bookingSlotTest));
-		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
-		when(bookingSlotRepository.save(newBookingSlot)).thenReturn(newBookingSlot);
-		doReturn(false).when(bookingSlotSpy).bookingSlotOverlap(bookingSlotTest, bookingSlotTest.getId(), workSlotTest.getId());
-		Assertions.assertThrows(DataIntegrityViolationException.class, ()->{
-			bookingSlotSpy.editBookingSlot(bookingSlotTest.getId(), newBookingBP);
-		});
-		
-	}
-	
 }

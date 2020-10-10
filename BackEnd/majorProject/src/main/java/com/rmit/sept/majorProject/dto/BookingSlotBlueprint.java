@@ -8,8 +8,7 @@ public class BookingSlotBlueprint {
     private String endTime;
     private Long workSlotId;
 
-    public BookingSlotBlueprint(){  
-        System.out.println("aaa");      
+    public BookingSlotBlueprint(){        
     }
 
     public BookingSlotBlueprint(Long workSlotId, String date, String startTime,

@@ -25,6 +25,9 @@ class WorkerService {
         return axios.get(WORKER_API_BASE_URL + '/business/' + businessId);
     }
 
+    updateWorker(workerId, worker){
+        return axios.put(WORKER_API_BASE_URL + '/edit/' + workerId, worker);
+    }
 }
 
 export default new WorkerService()

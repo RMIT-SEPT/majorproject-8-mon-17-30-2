@@ -1,5 +1,7 @@
 import React, {useState} from "react";
-import Register from "../Register";
+import RegisterCustomer from "../RegisterCustomer";
+import SignupOptions from "../SignupOptions";
+import AdminBusinessSignup from "../Business/AdminBusinessSignup";
 import Login from "../Login";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "../Nav/Navbar";
@@ -10,7 +12,7 @@ import AdminAuthenticatedRoute from "./AdminAuthenticatedRoute";
 import Dashboard from "../Dashboard/Dashboard";
 import BookingHistory from "../BookingHistory/BookingHistory";
 // import BookingPage from "../BookingPage";
-import BookingSummary from "../AdminBookingSummary/BookingSummary"
+import BookingSummary from "../AdminBookingSummary/BookingSummary";
 import BookingPageTest from "../MakeABooking/BookingPageTest";
 import AuthenticationService from "../../services/AuthenticationService";
 import SelectBusinessPage from "../MakeABooking/SelectBusinessPage";
@@ -19,6 +21,7 @@ import NewBookingSummary from "../AdminBookingSummary/NewBookingSummary";
 import CurrentBookings from "../CurrentBookings/CurrentBookings";
 import ManageEmployeePage from "../ManageEmployees/ManageEmployeePage";
 import WorkerProfile from "../ManageEmployees/WorkerProfile";
+import WeekSchedule from "../WorkSchedule/WeekSchedule";
 import EditEmployeePage from "../ManageEmployees/EditEmployeePage";
 import AddEmployeePage from "../ManageEmployees/AddEmployeePage";
 import EditCustomer from "../Customer/EditCustomer";
@@ -39,8 +42,10 @@ function AppRouting() {
       
       <Switch>
         {/* GENERAL ROUTES */}
-        <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />        
-        <Route path="/register" exact component={Register} />
+        <Route path="/" exact render={(props) => <Login {...props} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />  
+        <Route path="/register" exact component={SignupOptions} />      
+        <Route path="/register/customer" exact component={RegisterCustomer} />
+        <Route path="/register/business" exact component={AdminBusinessSignup} />
         <Route path="/about" exact component={AboutAndContact} />
         {/* CUSTOMER ROUTES
          <CustomerAuthenticatedRoute path="/bookings/create" exact component={BookingPageTest}/> 
@@ -66,6 +71,7 @@ function AppRouting() {
         <AdminAuthenticatedRoute path="/workers/availability" exact component={ViewAvailability}/> 
          {/* WORKER ROUTES */}
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
+        <WorkerAuthenticatedRoute path="/worker/:workerId/work-slots/week" exact render={(props) => <WeekSchedule {...props} apiUrl={GET_WORKER_URL} />} />
       </Switch>
       <Route path="/" render={(props) => <Footer />}/>
     

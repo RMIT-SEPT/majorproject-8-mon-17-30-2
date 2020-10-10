@@ -148,7 +148,7 @@ function AdminBusinessSignup(props){
             <div className="form-input">
                 <label>Password:</label>
                 <input
-                    type="text"
+                    type="password"
                     name="password"
                     placeholder="hunter2"
                     value={password}

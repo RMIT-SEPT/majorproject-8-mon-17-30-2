@@ -79,6 +79,13 @@ public class BookingController {
 		Iterable<BookingSummary> bookings = bookingService.getPastBookingsByBusinessIdDTO(businessId);
 		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
+
+	@GetMapping("/api/business/{businessId}/bookings/new")
+	public ResponseEntity<?> getNewBookingsByBusiness(@PathVariable Long businessId)
+	{
+		Iterable<BookingSummary> bookings = bookingService.getNewBookingsByBusinessIdDTO(businessId);
+		return new ResponseEntity<>(bookings, bookings.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
 	
 //	@GetMapping("/api/business/{business}/bookings")
 //	public ResponseEntity<?> getAvailableBookingsByBusiness(@PathVariable("business") Business business)

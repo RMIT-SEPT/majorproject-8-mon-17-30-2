@@ -82,6 +82,9 @@ public class WorkerService implements PersonService<Worker>{
 		Worker workerFound = workerOptional.get();
 		if (workerFound != null){
 			// If worker exist, updates the values of that worker if there are changes.
+			if (newWorker.getName() != null) {
+				workerFound.setName(newWorker.getName());
+			}
 			if (newWorker.getBusiness() != null) {
 				workerFound.setBusiness(newWorker.getBusiness());
 			}

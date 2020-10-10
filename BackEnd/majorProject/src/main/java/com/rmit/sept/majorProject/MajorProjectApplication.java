@@ -106,6 +106,8 @@ public class MajorProjectApplication {
 			//create date/times
 			LocalDate day              = LocalDate.of(2021, 12, 31);
 			LocalDate oldDay           = LocalDate.of(2007, 9, 25);
+			LocalDate oldDay2          = LocalDate.of(2009, 10, 30);
+			LocalDate oldDay3          = LocalDate.of(2010, 1, 30);
 			LocalTime shiftStartTime   = LocalTime.of(10, 00);
 			LocalTime shiftEndTime     = LocalTime.of(17, 00);
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
@@ -236,8 +238,14 @@ public class MajorProjectApplication {
 			
 			// // //old shift and bookingslot for past booking/booking history testing
 			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
+			WorkSlot oldShift2 = new WorkSlot(oldDay2, shiftStartTime, bookingStartTime, john);
+			WorkSlot oldShift3 = new WorkSlot(oldDay3, bookingStartTime, shiftEndTime, john);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
+			BookingSlot oldSlot2 = new BookingSlot(oldDay2, shiftStartTime, bookingStartTime, johnServices);
+			BookingSlot oldSlot3 = new BookingSlot(oldDay3, bookingStartTime, shiftEndTime, johnServices);
 			oldShift.addBookingSlot(oldSlot);
+			oldShift2.addBookingSlot(oldSlot2);
+			oldShift3.addBookingSlot(oldSlot3);
 	
 			// vacant upcoming bookingSlots
 			LocalDate newDay1 = day.plusDays(1);
@@ -264,7 +272,11 @@ public class MajorProjectApplication {
 
 			// //old bookings
 			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
+			Booking oldBooking2 = new Booking(austin, john, barber, haircut, oldSlot2);
+			Booking oldBooking3 = new Booking(austin, john, barber, beardtrim, oldSlot3);
 			oldBooking.setStatusCompleted();
+			oldBooking2.setStatusCompleted();
+			oldBooking3.setStatusCompleted();
 
 			//save everything to repos (do this at the end to avoid detach errors)
 			businessRepository.save(barber);
@@ -311,6 +323,8 @@ public class MajorProjectApplication {
 			
 			workSlotRepository.save(johnShift);
 			workSlotRepository.save(oldShift);
+			workSlotRepository.save(oldShift2);
+			workSlotRepository.save(oldShift3);
 			workSlotRepository.save(newShift1);
 			workSlotRepository.save(newShift2);
 			bookingSlotRepository.save(johnSlot);
@@ -329,7 +343,9 @@ public class MajorProjectApplication {
 			workSlotRepository.save(isabeauShift1);
 			
 			bookingSlotRepository.save(johnSlot);
-			bookingSlotRepository.save(oldSlot);	
+			bookingSlotRepository.save(oldSlot);
+			bookingSlotRepository.save(oldSlot2);
+			bookingSlotRepository.save(oldSlot3);	
 			bookingSlotRepository.save(tomSlot0);
 			bookingSlotRepository.save(tomSlot1);
 			bookingSlotRepository.save(scottSlot0);
@@ -342,6 +358,8 @@ public class MajorProjectApplication {
 			bookingSlotRepository.save(isabeauSlot1);
 
 			bookingRepository.save(oldBooking);
+			bookingRepository.save(oldBooking2);
+			bookingRepository.save(oldBooking3);
 			bookingRepository.save(austinBooking);
 			bookingRepository.save(lukeBooking0);
 			bookingRepository.save(hershelBooking0);

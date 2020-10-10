@@ -103,20 +103,19 @@ public class BookingService{
 	}
 
 	public boolean cancelBooking(Long id){
-		
-		for(Booking booking : getAllBookings()){
-			if(id == booking.getBookingId()){
-				if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
-				{
-					booking.setStatusCancelled();
-					booking.getBookingSlot().removeBooking(booking);
-					bookingSlotRepository.save(booking.getBookingSlot());
-					repository.save(booking);
-					return true;
-				}
-				throw new DataIntegrityViolationException("Exceeded booking cancellation time of 48 hours");
+		Booking booking;
+		if(repository.findById(id).isPresent()){
+			booking = repository.findById(id).get();
+			if(ChronoUnit.DAYS.between(LocalDate.now(),booking.getBookingSlot().getDate()) >= 2)
+			{
+				booking.setStatusCancelled();
+				booking.getBookingSlot().removeBooking(booking);
+				bookingSlotRepository.save(booking.getBookingSlot());
+				repository.save(booking);
+				return true;
 			}
-        }
+			throw new DataIntegrityViolationException("Exceeded booking cancellation time of 48 hours");
+		}
 		return false;
 	}
 	

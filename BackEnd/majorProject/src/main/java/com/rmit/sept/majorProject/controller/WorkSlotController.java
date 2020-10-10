@@ -1,6 +1,7 @@
 package com.rmit.sept.majorProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class WorkSlotController {
     	}
     	catch(DuplicateKeyException DkEx) {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	catch(DataIntegrityViolationException DIVEx) {
+    		return new ResponseEntity<String>(DIVEx.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     	}
     	return new ResponseEntity<>(workslot, HttpStatus.CREATED);
 	}
@@ -68,6 +72,9 @@ public class WorkSlotController {
     	}
     	catch(DuplicateKeyException DkEx) {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	catch(DataIntegrityViolationException DIVEx) {
+    		return new ResponseEntity<String>(DIVEx.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     	}
     	return new ResponseEntity<>(workslot, HttpStatus.CREATED);
     }

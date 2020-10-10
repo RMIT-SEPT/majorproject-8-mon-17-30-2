@@ -100,5 +100,17 @@ public class BookingSlotSummary implements DateTime{
         return this.bookings;
 
     }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if(((BookingSlotSummary)o).getId() == id
+    			&& ((BookingSlotSummary)o).getBusinessId() == businessId
+    			&& ((BookingSlotSummary)o).getWorkSlotId() == workSlotId
+    			&& ((BookingSlotSummary)o).getWorkerId() == workerId)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
 
 }

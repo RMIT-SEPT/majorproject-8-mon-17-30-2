@@ -60,4 +60,15 @@ public class BookingSlotBlueprint {
         this.workSlotId = workSlotId;
     }
     
+    @Override
+    public boolean equals(Object o) {
+    	if(((BookingSlotBlueprint)o).getDate().equals(date)
+    			&& ((BookingSlotBlueprint)o).getStartTime().equals(startTime)
+    			&& ((BookingSlotBlueprint)o).getEndTime().equals(endTime)
+    			&& ((BookingSlotBlueprint)o).getWorkSlotId() == workSlotId) {
+    		return true;
+    	}
+    	return false;
+    }
+    
 }

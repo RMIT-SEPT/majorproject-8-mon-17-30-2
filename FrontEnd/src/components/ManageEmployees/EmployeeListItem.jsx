@@ -7,6 +7,6 @@ function EmployeeListItem(props){
                 <li> {props.name}</li>
             </button>
         </Link>  
-        );
+    );
 }
 export default EmployeeListItem;

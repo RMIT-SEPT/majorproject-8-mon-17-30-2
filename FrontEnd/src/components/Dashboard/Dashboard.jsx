@@ -17,7 +17,7 @@ function Dashboard(props) {
         <div className="card-header dashboard-heading-container">
           <h1 className="dashboard-heading">{props.title}</h1>
         </div>
-        <div className="card-body">
+        <div className="jumbotron-profile">
         
           <Profile apiUrl={props.apiUrl}/>
           {AuthenticationService.getRole() !== WORKER ?              
@@ -27,7 +27,8 @@ function Dashboard(props) {
           </div>
           :
           // otherwise display today's work schedule
-          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()} date={today}/>}
+          <><h1 className="display-4 container-fluid">Assigned Working Hours</h1>
+          <WorkdaySchedule workerId={AuthenticationService.getLoggedInId()} date={today}/></>}
           
         </div>
       </div>      

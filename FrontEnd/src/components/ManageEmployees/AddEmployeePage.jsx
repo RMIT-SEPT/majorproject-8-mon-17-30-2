@@ -4,35 +4,20 @@
 import React, { useEffect, useState } from "react";
 import "../../css/Register.css";
 import WorkerService from "../../services/WorkerService";
+import AuthenticationService from "../../services/AuthenticationService"
 
 
-function AddWorker(props){
+function AddWorker(){
 
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber]  = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
-    const [hasInit, setHasInit] = useState(false);
+    const [password, setPassword] = useState("");
+    // const [business, setBusiness] = useState("");
+    // const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
-
-    useEffect(() =>{
-        if(!hasInit){
-            init();
-        }
-    },[name, address, phoneNumber, email, username, invalidData]);
-
-    function init(){
-        WorkerService.getWorkerById(props.workerId)
-        .then((response) =>{
-            setName(response.data.name);
-            setAddress(response.data.address);
-            setPhoneNumber(response.data.phoneNumber);
-            setEmail(response.data.email);
-            setUsername(response.data.username);
-        });
-        setHasInit(true);
-    }
 
     function handleSubmit(event){
         event.preventDefault();
@@ -41,12 +26,14 @@ function AddWorker(props){
             address: address,
             phoneNumber: phoneNumber,
             email: email,
-            username: username
+            username: username,
+            password: password
+            // business: AuthenticationService.getBusinessId()
         }
-        WorkerService.addWorker(props.customerId, worker)
+        WorkerService.addWorker(worker)
         .then((response) =>{
             if(response.data != null){
-                alert("Details saved!");
+                alert("Worker Added!");
             }
         }).catch(() => {
             setInvalidData(true);
@@ -117,10 +104,22 @@ function AddWorker(props){
                     required
                 />
             </div>
+            <div className="form-input">
+                <label>Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="mission123"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    form="parentForm"
+                    required
+                />
+            </div>
             </div>
             <div className="footer">
             <button className="button buttonshadow" type="submit">
-                Save
+                Add
             </button>
             </div>
         </form>

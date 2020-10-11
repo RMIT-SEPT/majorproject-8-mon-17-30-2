@@ -1,0 +1,17 @@
+version: '3'
+services:
+  springboot-docker-compose-app-container:
+    image: springboot-docker-compose-app:1
+    build:
+      context: ./BackEnd/majorProject
+      dockerfile: ./Dockerfile
+    volumes:
+      - /data/springboot-docker-compose-app
+    ports:
+      - "8080:8080"
+  react-js-compose-app-container:
+    build:
+      context: ./FrontEnd
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:80"

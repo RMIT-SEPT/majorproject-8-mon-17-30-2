@@ -73,4 +73,15 @@ public class WorkSlot extends Slot {
         return this.worker;
     }
     
+    @Override
+    public boolean equals(Object o) {
+    	if(((WorkSlot) o).getDate().isEqual(date)
+    			&& ((WorkSlot) o).getStartTime().compareTo(startTime) == 0
+    			&& ((WorkSlot) o).getEndTime().compareTo(endTime) == 0
+    			&& ((WorkSlot) o).getWorker().equals(worker)) {
+    		return true;
+    	}
+    	return false;
+    }
+    
 }

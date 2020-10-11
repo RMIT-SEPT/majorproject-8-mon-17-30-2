@@ -8,6 +8,7 @@ import com.rmit.sept.majorProject.dto.BookingSlotBlueprint;
 import com.rmit.sept.majorProject.dto.BookingSlotSummary;
 import com.rmit.sept.majorProject.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 
 import com.rmit.sept.majorProject.repository.BookingSlotRepository;
@@ -34,7 +35,7 @@ public class BookingSlotService{
     public Iterable<BookingSlot> getAllBookingSlots(){
 		return repository.findAll();
 	}
-	
+	// Find BookingSlots by BookingSlotID
 	public BookingSlot findById(Long bookingSlotId){
 		return repository.findById(bookingSlotId).get();
 	}
@@ -46,8 +47,8 @@ public class BookingSlotService{
 			bookingSlotDtos.add(new BookingSlotSummary(bookingSlot));
         }
         return bookingSlotDtos;
-    }
-    
+	}
+	
     //return list of all bookingslots that either:
     // 1: are unset (no booking has been created, and thus no service has been "set")
     // 2: have vacancy (booking(s) have been created, service has been set, but the capacity hasn't been reached)
@@ -68,7 +69,7 @@ public class BookingSlotService{
         }
         return availableSlotDtos;
 	}
-	
+
 	public Iterable<BookingSlot> getAvailableBookingSlotsByBusiness(Long businessId){
         ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
         for(BookingSlot slot : repository.findAll()){
@@ -85,7 +86,20 @@ public class BookingSlotService{
             availableSlotDtos.add(new BookingSlotSummary(slot));
         }
         return availableSlotDtos;
-    }
+	}
+	
+	// Business Availability, Returns list of BookingSlots by BusinessId for next 7 days
+	public Iterable<BookingSlotSummary> getBusinessAvailabilityDTO(Long businessId) { 
+		ArrayList<BookingSlotSummary> availableDTO = new ArrayList<BookingSlotSummary>();
+		LocalDate today = LocalDate.now();
+		LocalDate nextWeek = LocalDate.now().plusDays(7);
+        for(BookingSlot slot : getAvailableBookingSlotsByBusiness(businessId)){
+			if (slot.getDate().compareTo(today) >= 0 && slot.getDate().compareTo(nextWeek) <= 0) {
+				availableDTO.add(new BookingSlotSummary(slot));
+			}
+        }
+        return availableDTO;
+	}
 
 	public Iterable<BookingSlotSummary> searchAvailableBookingSlots(Long businessId, Long serviceId, Long workerId, LocalDate date) {
 
@@ -151,6 +165,8 @@ public class BookingSlotService{
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
 		ArrayList<Service> services = new ArrayList<Service>();
 		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
+		if(startTime.isAfter(endTime))
+			throw new DataIntegrityViolationException("Start time is after end time");
 		for(Long serviceId : blueprint.getServiceIds()){
 			services.add(serviceRepository.findById(serviceId).get());
 		}
@@ -172,6 +188,10 @@ public class BookingSlotService{
 
         LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
+		if(startTime.isAfter(endTime))
+		{
+			throw new DataIntegrityViolationException("Start time is after end time");
+		}
 		ArrayList<Service> services = new ArrayList<Service>();
 		for(Long serviceId : blueprint.getServiceIds()){
 			services.add(serviceRepository.findById(serviceId).get());

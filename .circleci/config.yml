@@ -129,5 +129,11 @@ workflows:
   version: 2
   build_backend_and_frontend:
     jobs:
-      - build-test-backend
-      - build-test-frontend
+      - build-test-backend:
+          filters:
+            branches:
+              only: master
+      - build-test-frontend:
+          filters:
+            branches:
+              only: master

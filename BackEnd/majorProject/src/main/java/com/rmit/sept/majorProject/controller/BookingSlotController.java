@@ -2,6 +2,7 @@ package com.rmit.sept.majorProject.controller;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class BookingSlotController {
     	catch(DuplicateKeyException DkEx) {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
     	}
+    	catch(DataIntegrityViolationException DIVEx) {
+    		return new ResponseEntity<String>(DIVEx.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    	}
     	return new ResponseEntity<>(bookingSlot, HttpStatus.CREATED);		
 	}
 
@@ -46,6 +50,13 @@ public class BookingSlotController {
 	@GetMapping("/api/booking-slot/available")
 	public Iterable<BookingSlotSummary> getAvailableBookingSlots() {
 		return bookingSlotService.getAvailableBookingSlotsDTO();
+	}
+
+	// Business Availability, Returns list of BookingSlots by BusinessId for next 7 days
+	@GetMapping("/api/booking-slot/available/{businessId}")
+	public ResponseEntity<?> getBusinessAvailability(@PathVariable Long businessId) {
+		Iterable<BookingSlotSummary> availability = bookingSlotService.getBusinessAvailabilityDTO(businessId);
+		return new ResponseEntity<>(availability, availability.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping("/api/booking-slot/search")
@@ -67,6 +78,9 @@ public class BookingSlotController {
     	}
     	catch(DuplicateKeyException DkEx) {
     		return new ResponseEntity<String>(DkEx.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
+    	catch(DataIntegrityViolationException DIVEx) {
+    		return new ResponseEntity<String>(DIVEx.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     	}
     	return new ResponseEntity<>(bookingSlot, HttpStatus.CREATED);
 	}

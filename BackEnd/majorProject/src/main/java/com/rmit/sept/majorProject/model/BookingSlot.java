@@ -162,5 +162,15 @@ public class BookingSlot extends Slot {
             removeBookedService();
         }
     }
+	
+	@Override
+	public boolean equals(Object o) {
+		if(((BookingSlot)o).getBookSlotDate().compareTo(date) == 0
+				&& ((BookingSlot)o).getStartTime().compareTo(startTime) == 0
+				&& ((BookingSlot)o).getEndTime().compareTo(endTime) == 0) {
+			return true;
+		}
+		return false;
+	}
     
 }

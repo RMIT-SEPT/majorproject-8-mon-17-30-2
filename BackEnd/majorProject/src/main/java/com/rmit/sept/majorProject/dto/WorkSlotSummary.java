@@ -56,4 +56,15 @@ public class WorkSlotSummary implements DateTime{
         return bookingSlots;
     }   
 
+    @Override
+    public boolean equals(Object o) {
+    	if(((WorkSlotSummary) o).getDate().isEqual(date)
+    			&& ((WorkSlotSummary) o).getStartTime().compareTo(startTime) == 0
+    			&& ((WorkSlotSummary) o).getEndTime().compareTo(endTime) == 0
+    			&& ((WorkSlotSummary) o).getWorkerId() == workerId) {
+    		return true;
+    	}
+    	return false;
+    }
+    
 }

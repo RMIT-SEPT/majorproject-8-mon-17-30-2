@@ -13,6 +13,7 @@ import com.rmit.sept.majorProject.model.Service;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import java.util.Collection;
@@ -73,19 +74,18 @@ public class WorkSlotService {
         return workSlotDtos;
     }
 
-    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString){
+    public Iterable<WorkSlotSummary> findByWorkerIdAndDateDTO(Long workerId, String dateString) {
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ArrayList<WorkSlotSummary> workSlotDtos = new ArrayList<WorkSlotSummary>();
-        for(WorkSlot workSlot : findByWorkerId(workerId)){
-            if(workSlot.getDate().equals(date)){
+        for (WorkSlot workSlot : findByWorkerId(workerId)) {
+            if (workSlot.getDate().equals(date)) {
                 workSlotDtos.add(new WorkSlotSummary(workSlot));
-            }            
+            }
         }
-        Collections.sort(workSlotDtos, Comparator.comparing(WorkSlotSummary::getStartTime));
         return workSlotDtos;
     }
-
-    public Iterable<WorkSlot> findByDate(LocalDate date){
+    
+    public Iterable<WorkSlot> findByDate(LocalDate date) {
         return repository.findByDate(date);
     }
 
@@ -112,13 +112,22 @@ public class WorkSlotService {
                     "New times conflict with this shift's booking slots. Edit booking slots first.");
             }                
             if (newWorkSlot.getDate() != null) {
-                workSlot.setDate(newWorkSlot.getDate());
+            	if(newWorkSlot.getDate().isAfter(LocalDate.now()))
+            		workSlot.setDate(newWorkSlot.getDate());
+            	else
+            		throw new DataIntegrityViolationException("Date is in the past");
             }
             if (newWorkSlot.getStartTime() != null) {
-                workSlot.setStartTime(newWorkSlot.getStartTime());
+            	if(newWorkSlot.getStartTime().isBefore(workSlot.getEndTime()))
+            		workSlot.setStartTime(newWorkSlot.getStartTime());
+            	else
+            		throw new DataIntegrityViolationException("Start time is after end time");
             }
             if (newWorkSlot.getEndTime() != null) {
-                workSlot.setEndTime(newWorkSlot.getEndTime());
+            	if(newWorkSlot.getEndTime().isAfter(workSlot.getStartTime()))
+            		workSlot.setEndTime(newWorkSlot.getEndTime());
+            	else
+            		throw new DataIntegrityViolationException("End Time is before start time");
             }                
             repository.save(workSlot);
             summary = new WorkSlotSummary(workSlot);
@@ -126,7 +135,8 @@ public class WorkSlotService {
 
         return summary;
 
-        // Different working way, but doesnt check base off given worker ID, top version should be better..
+        // Different working way, but doesnt check base off given worker ID, top version
+        // should be better..
 
         // Optional<WorkSlot> workSlotOptional =
         // repository.findById(newWorkSlot.getId());
@@ -162,6 +172,9 @@ public class WorkSlotService {
 		}
 		if(business == null) {
 			throw new DataRetrievalFailureException("Business not found");
+		}
+		if(startTime.isAfter(endTime)) {
+			throw new DataIntegrityViolationException("Start time is after the end time");
 		}
 
 		WorkSlot workslot = new WorkSlot(date, startTime, endTime, worker);

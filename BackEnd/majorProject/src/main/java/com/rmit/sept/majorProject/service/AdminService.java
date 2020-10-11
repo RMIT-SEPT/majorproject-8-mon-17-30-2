@@ -3,6 +3,7 @@ package com.rmit.sept.majorProject.service;
 import java.util.ArrayList;
 import java.util.Optional;
 import com.rmit.sept.majorProject.dto.AdminSummary;
+import com.rmit.sept.majorProject.dto.AdminBlueprint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +30,16 @@ public class AdminService implements PersonService<Admin> {
 		Admin newAdmin = new Admin(admin);
 		return repository.save(newAdmin);
 	}
+
+	public Admin registerNewAdminByBlueprint(final AdminBlueprint admin) throws DuplicateKeyException {
+		String username = admin.getUsername();
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
+		}
+		Admin newAdmin = new Admin(admin);
+		return repository.save(newAdmin);
+	}
+
 
 	//---------------DTO FUNCTIONS--------------
 

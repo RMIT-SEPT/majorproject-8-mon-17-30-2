@@ -3,7 +3,10 @@ package com.rmit.sept.majorProject.service;
 import com.rmit.sept.majorProject.dto.ServiceSummary;
 import com.rmit.sept.majorProject.dto.WorkerServiceBlueprint;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
+import com.rmit.sept.majorProject.dto.BusinessBlueprint;
 import com.rmit.sept.majorProject.dto.BusinessSummary;
+import com.rmit.sept.majorProject.dto.ServiceBlueprint;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 
@@ -35,12 +38,15 @@ public class BusinessService{
 	@Autowired
 	private BusinessRepository businessRepository;
 
-	public BusinessSummary addBusiness(Long adminId, Business business) {
+	public BusinessSummary addBusiness(Long adminId, BusinessBlueprint business) {
 		if(!adminRepository.existsById(adminId))
 		{
 			throw new DataRetrievalFailureException("Invalid admin ID " + adminId);
 		}
 		Business businessTemp = new Business(business.getBusinessName());
+		for(ServiceBlueprint service : business.getServices()){
+			businessTemp.addService(new Service(service.getTitle(), service.getDescription(), service.getCapacity()));
+		}
 		businessTemp.setBusinessOwner(adminRepository.findById(adminId).get());
 		Business savedBusiness = repository.save(businessTemp);
 		Admin admin = adminRepository.findById(adminId).get();

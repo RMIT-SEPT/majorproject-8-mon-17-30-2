@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.controller;
 
+import com.rmit.sept.majorProject.dto.BusinessBlueprint;
 import com.rmit.sept.majorProject.dto.BusinessSummary;
 import com.rmit.sept.majorProject.dto.ServiceSummary;
 import com.rmit.sept.majorProject.dto.WorkerServiceBlueprint;
@@ -31,16 +32,16 @@ public class BusinessController {
 	private BusinessService businessService;
 	
 	@PostMapping("api/business/{adminId}")
-	public ResponseEntity<?> addBusiness(@PathVariable Long adminId, @Valid @RequestBody Business business)
+	public ResponseEntity<?> addBusiness(@PathVariable Long adminId, @Valid @RequestBody BusinessBlueprint business)
 	{
 		BusinessSummary businessSum;
 		if(adminId < 1)
 		{
-			return new ResponseEntity<String>("Invalid Admin Id",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Invalid Admin Id", HttpStatus.BAD_REQUEST);
 		}
 		try
 		{
-			 businessSum = businessService.addBusiness(adminId, business);
+			businessSum = businessService.addBusiness(adminId, business);
 		}
 		catch(DataRetrievalFailureException DRFE)
 		{

@@ -8,8 +8,7 @@ public class BookingSlotBlueprint {
     private String endTime;
     private Long workSlotId;
 
-    public BookingSlotBlueprint(){  
-        System.out.println("aaa");      
+    public BookingSlotBlueprint(){        
     }
 
     public BookingSlotBlueprint(Long workSlotId, String date, String startTime,
@@ -59,6 +58,17 @@ public class BookingSlotBlueprint {
 
     public void setWorkSlotId(Long workSlotId) {
         this.workSlotId = workSlotId;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if(((BookingSlotBlueprint)o).getDate().equals(date)
+    			&& ((BookingSlotBlueprint)o).getStartTime().equals(startTime)
+    			&& ((BookingSlotBlueprint)o).getEndTime().equals(endTime)
+    			&& ((BookingSlotBlueprint)o).getWorkSlotId() == workSlotId) {
+    		return true;
+    	}
+    	return false;
     }
     
 }

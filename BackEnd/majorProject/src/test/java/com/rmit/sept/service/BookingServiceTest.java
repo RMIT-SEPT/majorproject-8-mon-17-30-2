@@ -8,12 +8,14 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,7 +54,7 @@ import com.rmit.sept.majorProject.service.WorkerService;
 public class BookingServiceTest {
 
 	@TestConfiguration
-	static class BookingServiceImplTestConcextConfiguration{
+	static class BookingServiceImplTestContextConfiguration{
 		@Bean
 		public BookingService bookingService() {
 			return new BookingService();
@@ -78,18 +81,26 @@ public class BookingServiceTest {
 	@MockBean
 	private BookingSlotRepository bookingSlotRepository;
 	
-	static Customer customerTest = new Customer("cust","custUser","custPass","custStreet","cust@email.com","3215321");
-	static Worker workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
-	static Business businessTest = new Business("Busi Business");
-	static Service serviceTest = new Service("Deliver Packages", "We deliver those packages", 3);
-	static ArrayList<Service> serviceList = new ArrayList<Service>();
-	static WorkSlot workSlotTest = new WorkSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), workerTest);
-	static BookingSlot bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
-	static Booking bookingTest;
-	static BookingBlueprint bookingTestBlueprint;
+	Customer customerTest;
+	Worker workerTest;
+	Business businessTest;
+	Service serviceTest;
+	ArrayList<Service> serviceList;
+	WorkSlot workSlotTest;
+	BookingSlot bookingSlotTest;
+	BookingSlot bookingSlotLateTest;
+	Booking bookingTest;
+	BookingBlueprint bookingTestBlueprint;
 	
-	@BeforeAll
-	public static void init() {
+	@BeforeEach
+	public void init() {
+		customerTest = new Customer("cust","custUser","custPass","custStreet","cust@email.com","3215321");
+		workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
+		businessTest = new Business("Busi Business");
+		serviceTest = new Service("Deliver Packages", "We deliver those packages", 3);
+		serviceList = new ArrayList<Service>();
+		workSlotTest = new WorkSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), workerTest);
+		bookingSlotTest = new BookingSlot(LocalDate.of(2020, 12, 20), LocalTime.of(5,30), LocalTime.of(12,30), serviceList);
 		serviceList.add(serviceTest);
 		customerTest.setId(1L);
 		workerTest.setId(1L);
@@ -129,7 +140,7 @@ public class BookingServiceTest {
 		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
 		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		//Asserts if createNewBoooking throws the NoSuchElementException
 		Assertions.assertThrows(NoSuchElementException.class, () -> {
 			bookingService.createNewBooking(bookingTestBlueprint);
 		  });
@@ -144,7 +155,7 @@ public class BookingServiceTest {
 		when(this.businessService.findById(bookingTestBlueprint.getBusinessId())).thenReturn(businessTest);
 		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		//Asserts if createNewBoooking throws the NoSuchElementException
 		Assertions.assertThrows(NoSuchElementException.class, () -> {
 			bookingService.createNewBooking(bookingTestBlueprint);
 		  });
@@ -206,7 +217,7 @@ public class BookingServiceTest {
 		when(this.bookingSlotService.findById(bookingTestBlueprint.getBookingSlotId())).thenReturn(bookingSlotTest);
 		doReturn(true).when(bookingSpy).duplicateBooking(Mockito.isNotNull());
 		when(this.bookingRepository.save(bookingTest)).thenReturn(bookingTest);
-		//Asserts if createNewBoooking throws the DataRetrievalFailureException
+		//Asserts if createNewBoooking throws the DuplicateKeyException
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
 			bookingSpy.createNewBooking(bookingTestBlueprint);
 		  });
@@ -233,5 +244,33 @@ public class BookingServiceTest {
 		ArrayList<Booking> result = (ArrayList<Booking>) bookingService.getAllBookings();
 		assertEquals(bookingList, result);
 	}
+	
+	
+	//Cancel booking with existing booking
+	@Test
+	public void testCancelBooking_withExistingBooking() {
+		when(bookingRepository.findById(1L)).thenReturn(Optional.of(bookingTest));
+		assertEquals(bookingService.cancelBooking(1L), true);		
+	}
+	
+	//Cancel booking that is scheduled within less than 48 hours
+	@Test
+	public void testCancelBooking_within48hours() {
+		Booking lateBooking = bookingTest; 
+		lateBooking.getBookingSlot().setDate(LocalDate.now().plusDays(1L));
+		when(bookingRepository.findById(1L)).thenReturn(Optional.of(lateBooking));
+		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+			bookingService.cancelBooking(1L);
+		  });
+	}
+	
+	//Cancel booking with an invalid booking id
+	@Test
+	public void testCancelBooking_invalidBookingId() {
+		when(bookingRepository.findById(1L)).thenReturn(Optional.empty());
+		assertEquals(bookingService.cancelBooking(1L), false);		
+	}
+	
+	
 	
 }

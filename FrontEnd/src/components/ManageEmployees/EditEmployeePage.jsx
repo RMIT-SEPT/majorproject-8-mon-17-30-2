@@ -1,15 +1,6 @@
-//For Muhammad to fill in to prefil the edit page with employee details and to have a button which saves details
-// to get the current employee id use props.match.params.workerId
-
 import React, { useEffect, useState } from "react";
 import "../../css/Register.css";
 import WorkerService from "../../services/WorkerService";
-// import GetRequestService from "../../services/GetRequestService";
-// import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
-// import AuthenticationService from "../../services/AuthenticationService";
-// import {ADMIN} from "../../Utils/utils";
-// import {Link} from "react-router-dom";
-
 
 function EditWorker(props){
 

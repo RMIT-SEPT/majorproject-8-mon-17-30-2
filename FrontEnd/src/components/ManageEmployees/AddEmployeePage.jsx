@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import "../../css/Register.css";
 import WorkerService from "../../services/WorkerService";
 import AuthenticationService from "../../services/AuthenticationService"
-
+import { useHistory } from "react-router-dom";
 
 function AddWorker(){
 
@@ -15,9 +15,10 @@ function AddWorker(){
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const [business, setBusiness] = useState("");
+    const [business, setBusiness] = useState("");
     // const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
+    let history = useHistory()
 
     function handleSubmit(event){
         event.preventDefault();
@@ -27,13 +28,15 @@ function AddWorker(){
             phoneNumber: phoneNumber,
             email: email,
             username: username,
-            password: password
-            // business: AuthenticationService.getBusinessId()
+            password: password,
+            businessId: AuthenticationService.getBusinessId()
         }
+        console.log("AAAAA", worker);
         WorkerService.addWorker(worker)
         .then((response) =>{
             if(response.data != null){
                 alert("Worker Added!");
+                history.push("/workers");
             }
         }).catch(() => {
             setInvalidData(true);
@@ -43,7 +46,7 @@ function AddWorker(){
     return (
         <div className="Register" method="POST">  
         <form onSubmit={handleSubmit}>
-            <header className="Register-header">Edit account details</header>
+            <header className="Register-header">Add New Employee</header>
 
             <div className="form">
             {invalidData && <div className="alert alert-danger"> Invalid Credentials </div>}

@@ -81,7 +81,7 @@ public class Worker extends Person {
         this.email = other.getEmail();
         this.username = other.getUsername();
         this.password = other.getPassword();
-        this.role = Role.ADMIN;
+        this.role = Role.WORKER;
     }
 
     // --------------PERSONAL---------------

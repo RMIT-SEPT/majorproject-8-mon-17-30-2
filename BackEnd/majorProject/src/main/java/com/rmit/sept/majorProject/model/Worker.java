@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.rmit.sept.majorProject.dto.WorkerBlueprint;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Email;
 
@@ -67,6 +70,17 @@ public class Worker extends Person {
         this.address = other.getAddress();
         this.phoneNumber = other.getPhoneNumber();
         this.business = other.getBusiness();
+        this.role = Role.WORKER;
+    }
+
+    //blueprint constructor
+    public Worker(WorkerBlueprint other){
+        this.name = other.getName();
+        this.address = other.getAddress();
+        this.phoneNumber = other.getPhoneNumber();
+        this.email = other.getEmail();
+        this.username = other.getUsername();
+        this.password = other.getPassword();
         this.role = Role.WORKER;
     }
 

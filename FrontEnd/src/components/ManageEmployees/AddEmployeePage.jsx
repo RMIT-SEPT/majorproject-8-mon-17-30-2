@@ -1,38 +1,21 @@
-//For Muhammad to fill in to add employee with relevant details to the current business
-// use AuthenticationService.getBusinessId() to get the current admin business id so that you know which business to add the employee to
-
 import React, { useEffect, useState } from "react";
 import "../../css/Register.css";
 import WorkerService from "../../services/WorkerService";
+import AuthenticationService from "../../services/AuthenticationService"
+import { useHistory } from "react-router-dom";
 
-
-function AddWorker(props){
+function AddWorker(){
 
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber]  = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
-    const [hasInit, setHasInit] = useState(false);
+    const [password, setPassword] = useState("");
+    const [business, setBusiness] = useState("");
+    // const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
-
-    useEffect(() =>{
-        if(!hasInit){
-            init();
-        }
-    },[name, address, phoneNumber, email, username, invalidData]);
-
-    function init(){
-        WorkerService.getWorkerById(props.workerId)
-        .then((response) =>{
-            setName(response.data.name);
-            setAddress(response.data.address);
-            setPhoneNumber(response.data.phoneNumber);
-            setEmail(response.data.email);
-            setUsername(response.data.username);
-        });
-        setHasInit(true);
-    }
+    let history = useHistory()
 
     function handleSubmit(event){
         event.preventDefault();
@@ -41,12 +24,16 @@ function AddWorker(props){
             address: address,
             phoneNumber: phoneNumber,
             email: email,
-            username: username
+            username: username,
+            password: password,
+            businessId: AuthenticationService.getBusinessId()
         }
-        WorkerService.addWorker(props.customerId, worker)
+        console.log("AAAAA", worker);
+        WorkerService.addWorker(worker)
         .then((response) =>{
             if(response.data != null){
-                alert("Details saved!");
+                alert("Worker Added!");
+                history.push("/workers");
             }
         }).catch(() => {
             setInvalidData(true);
@@ -56,7 +43,7 @@ function AddWorker(props){
     return (
         <div className="Register" method="POST">  
         <form onSubmit={handleSubmit}>
-            <header className="Register-header">Edit account details</header>
+            <header className="Register-header">Add New Employee</header>
 
             <div className="form">
             {invalidData && <div className="alert alert-danger"> Invalid Credentials </div>}
@@ -117,10 +104,22 @@ function AddWorker(props){
                     required
                 />
             </div>
+            <div className="form-input">
+                <label>Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="mission123"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    form="parentForm"
+                    required
+                />
+            </div>
             </div>
             <div className="footer">
             <button className="button buttonshadow" type="submit">
-                Save
+                Add
             </button>
             </div>
         </form>

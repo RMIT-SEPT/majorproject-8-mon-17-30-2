@@ -2,6 +2,8 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import com.rmit.sept.majorProject.dto.WorkerBlueprint;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -17,6 +19,8 @@ public class WorkerService implements PersonService<Worker>{
 	@Autowired
 	private WorkerRepository repository;
 	@Autowired
+	private BusinessService businessService;
+	@Autowired
 	private DuplicateCheckService duplicateCheck;
 
 	//---------WORKER-SPECIFIC FUNCTIONS-----------
@@ -31,6 +35,16 @@ public class WorkerService implements PersonService<Worker>{
             throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Worker newWorker = new Worker(worker);
+		return repository.save(newWorker);
+	}
+
+	public Worker registerNewWorkerByBlueprint(final WorkerBlueprint worker) throws DuplicateKeyException {
+		String username = worker.getUsername();
+		if(duplicateCheck.usernameExists(username)) {
+            throw new DuplicateKeyException("An account already exists with username: " + username);
+		}
+		Worker newWorker = new Worker(worker);
+		businessService.findById(worker.getBusinessId()).addWorker(newWorker);
 		return repository.save(newWorker);
 	}
 

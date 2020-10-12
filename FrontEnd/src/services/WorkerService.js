@@ -28,6 +28,10 @@ class WorkerService {
     updateWorker(workerId, worker){
         return axios.put(WORKER_API_BASE_URL + '/edit/' + workerId, worker);
     }
+
+    addWorker(worker){
+        return axios.post(WORKER_API_BASE_URL + '/register', worker);
+    }
 }
 
 export default new WorkerService()

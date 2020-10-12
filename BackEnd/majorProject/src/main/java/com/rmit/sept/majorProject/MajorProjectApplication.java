@@ -64,7 +64,7 @@ public class MajorProjectApplication {
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
 			Worker tom = new Worker("Tom", "tom", "blisters", "fish@restaurant.com", "46 restaurant ln", "647382");
 			Worker scott = new Worker("Scott", "scott", "thewoz", "scottthewoz@madden08.com", "34 room st", "81813108");
-			Worker seth = new Worker("Seth", "seth", "etsca", "professionalSmuggler@auspost.com.au", "In hiding", "97770007");
+			Worker seth = new Worker("Seth", "seth", "etsca", "professionalPostman@auspost.com.au", "3 mailbox st", "97770007");
 			Worker mbeke = new Worker("Mbeke", "Mmbeke", "snakes", "superstar@auspost.com.au", "64 village st", "52781853");
 			Worker jcd = new Worker("JC", "jcd", "bionicman", "whatashame@unacto.com", "11 Antarctica St", "820989868");
 			Worker paul = new Worker("Paul", "pdenton", "chameleon", "pauld@unacto.com", "14 Ton Hotel", "33344346");
@@ -75,30 +75,30 @@ public class MajorProjectApplication {
 			Admin caramel = new Admin("Admin", "caramel6", "password");			
 			Admin puzzleboy = new Admin("Puzzle Boy","puzzles", "are fun");
 			Admin mandy = new Admin("Mandy", "manG", "ahhhh");
-			Admin bob = new Admin("Bob", "Page", "UberAlles");
+			Admin bob = new Admin("Bob", "Page", "Alles");
 			Admin flynn= new Admin("Flynn", "flynn", "neutral");
 			
 			//create a business
-			Business barber = new Business("Barber");
+			Business barber = new Business("Caramel Barber");
 			barber.addWorker(john);
 			barber.setBusinessOwner(caramel);			
 			
-			Business restaurant = new Business("Restaurant");
+			Business restaurant = new Business("Puzzleboy Restaurant");
 			restaurant.addWorker(tom);
 			restaurant.addWorker(scott);
 			restaurant.setBusinessOwner(puzzleboy);
 			
-			Business delivery = new Business("Delivery Service");
+			Business delivery = new Business("Mandy's Delivery Service");
 			delivery.addWorker(seth);
 			delivery.addWorker(mbeke);
 			delivery.setBusinessOwner(mandy);
 			
-			Business consultancy = new Business("Consultancy");
+			Business consultancy = new Business("Page Consultancy");
 			consultancy.addWorker(jcd);
 			consultancy.addWorker(paul);
 			consultancy.setBusinessOwner(bob);
 			
-			Business exterminator = new Business("Exterminator Service");
+			Business exterminator = new Business("Flynn's Exterminator Service");
 			exterminator.addWorker(walter);
 			exterminator.addWorker(isabeau);
 			exterminator.setBusinessOwner(flynn);
@@ -121,19 +121,19 @@ public class MajorProjectApplication {
 			
 			Service reserveTable = new Service("Reserve Table", "Book a table and attend to them", 1);
 			Service birthday = new Service("Birthday Service", "Book a room for a birthday celebration and attend to them", 2);
-			Service foodShow = new Service("Cooking food show", "Cook your food in front of you and put on a show", 1);
+			Service foodShow = new Service("Cooking presentation", "Cook your food in front of you and put on a presentation", 1);
 			restaurant.addService(reserveTable);
 			restaurant.addService(birthday);
 			restaurant.addService(foodShow);
 			
-			Service movingService = new Service("Moving", "Come to you and get your stuff somewhere else", 2);
+			Service movingService = new Service("Moving", "Come to you and move your stuff somewhere else", 2);
 			Service smuggling = new Service("Smuggle", "We can smuggle anything out of the country", 1);
 			delivery.addService(movingService);
 			delivery.addService(smuggling);
 			
-			Service strategy = new Service("Strategy Consultation", "We talk strategy",1);
-			Service organisation = new Service("Organisation Consultation", "We talk organisation",1);
-			Service training = new Service("Training Service", "Train people", 2);
+			Service strategy = new Service("Strategy Consultation", "Consult financial strategy",1);
+			Service organisation = new Service("Organisation Consultation", "Consult organisational strategy",1);
+			Service training = new Service("Training Service", "Train people for your company", 2);
 			consultancy.addService(strategy);
 			consultancy.addService(organisation);
 			consultancy.addService(training);

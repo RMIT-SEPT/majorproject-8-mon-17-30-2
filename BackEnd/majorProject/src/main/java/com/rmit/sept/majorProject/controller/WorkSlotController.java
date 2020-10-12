@@ -37,6 +37,9 @@ public class WorkSlotController {
 
 	@GetMapping("/api/work-slot/{workSlotId}")
 	public WorkSlotSummary getWorkSlotById(@PathVariable Long workSlotId){
+		if(workSlotId <= 0 || workSlotId == null) {
+			return null;
+		}
 		return new WorkSlotSummary(workSlotService.findById(workSlotId));
 	}
 	
@@ -52,20 +55,29 @@ public class WorkSlotController {
     
     @GetMapping("/api/worker/{workerId}/work-slots")
     public ResponseEntity<?> getWorkSlotsByWorkerId(@PathVariable Long workerId){
+		if(workerId == null || workerId <= 0){
+			return new ResponseEntity<String>("Invalid Worker ID", HttpStatus.BAD_REQUEST);
+		}
         Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByWorkerIdDTO(workerId);
 		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("/api/worker/{workerId}/work-slots/{date}")
-    public ResponseEntity<?> getWorkSlotsByWorkerIdAndDate(@PathVariable String workerId, @PathVariable String date){		
+    public ResponseEntity<?> getWorkSlotsByWorkerIdAndDate(@PathVariable String workerId, @PathVariable String date){
+		if(workerId == null || date == null){
+			return new ResponseEntity<String>("Invalid values passed", HttpStatus.BAD_REQUEST);
+		}
 		Iterable<WorkSlotSummary> matchingWorkSlots = workSlotService.findByWorkerIdAndDateDTO(Long.parseLong(workerId), date);
 		//if matching bookings are found return them and Status.OK, if none, return empty list and Status.NO_CONTENT
 		return new ResponseEntity<>(matchingWorkSlots, matchingWorkSlots.iterator().hasNext() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/api/work-slot/{workSlotId}")
-    public ResponseEntity<?> updateWorkSlot(@RequestBody WorkSlot newWorkSlot, @PathVariable Long workSlotId){
+    public ResponseEntity<?> updateWorkSlot(@Valid @RequestBody WorkSlot newWorkSlot, @PathVariable Long workSlotId){
+		if(workSlotId == null || workSlotId <= 0){
+			return new ResponseEntity<String>("Invalid work slot ID", HttpStatus.BAD_REQUEST);
+		}
 		WorkSlotSummary workslot;
     	try {
     		workslot = workSlotService.editWorkSlot(workSlotId, newWorkSlot);
@@ -81,7 +93,9 @@ public class WorkSlotController {
 
 	@DeleteMapping(value = "/api/work-slot/{workSlotId}")
 	public ResponseEntity<?> deleteWorkSlot(@PathVariable Long workSlotId) {
-
+		if(workSlotId == null || workSlotId <= 0){
+			return new ResponseEntity<String>("Invalid work slot ID", HttpStatus.BAD_REQUEST);
+		}
 		boolean isRemoved = workSlotService.deleteWorkSlot(workSlotId);
 
 		if (!isRemoved) {
@@ -90,8 +104,4 @@ public class WorkSlotController {
 
 		return new ResponseEntity<>(workSlotId, HttpStatus.OK);
 	}
-    
-    
-    
-
 }

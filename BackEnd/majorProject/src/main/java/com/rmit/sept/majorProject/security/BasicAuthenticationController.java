@@ -7,7 +7,6 @@ import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.repository.AdminRepository;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
-import com.rmit.sept.majorProject.security.AuthenticationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -44,24 +44,18 @@ function AboutUs() {
                         <div className="card">
                             <h3>Danny</h3>
                             <p>Development Team</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
                         </div>
                     </Col>
                     <Col>
                         <div className="card">
                             <h3>Daniel</h3>
                             <p>Development Team</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
                         </div>
                     </Col>
                     <Col>
                         <div className="card">
                             <h3>Umer</h3>
                             <p>Development Team</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
                         </div>
                     </Col>
                 </Row>

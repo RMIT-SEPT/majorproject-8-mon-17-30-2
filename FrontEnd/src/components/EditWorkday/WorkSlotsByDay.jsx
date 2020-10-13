@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import EditableBookingSlot from "./EditableBookingSlot";
 import "../../css/WorkerSchedule.css";
 import { Card, Button } from 'react-bootstrap';
-import WorkerService from "../../services/WorkerService";
 
 //props: workerId, date, workSlots, {addBookingSlot}, {deleteWorkSlot}
 function WorkSlotsByDay(props){
-
-  const [workSlots, setWorkSlots] = useState([]);
-
-  useEffect(() => {
-
-  },[]);
 
   return (props.workSlots && props.workSlots.length > 0 ? (
   // if there are >0 slots:

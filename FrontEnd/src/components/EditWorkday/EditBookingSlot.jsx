@@ -2,15 +2,13 @@ import React, {useEffect, useState } from "react";
 import TimeRange from 'react-time-range';
 import moment from 'moment';
 import "../../css/AddSlots.css";
-import { Button, Form } from 'react-bootstrap';
-import Select from 'react-select'
+import { Button } from 'react-bootstrap';
 
 // props: bookingSlot, availableServices, {onSubmit} 
 function EditBookingSlot(props){
 
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
-    const [availableServices, setAvailableServices] = useState([]);
     const [chosenServices, setChosenServices] = useState([]);
     const [options, setOptions] = useState([]);  
 
@@ -22,7 +20,6 @@ function EditBookingSlot(props){
             setStartTime(moment('2000-01-01 ' + props.bookingSlot.startTime, moment.ISO_8601).toString());
             setEndTime(moment('2000-01-01 ' + props.bookingSlot.endTime, moment.ISO_8601).toString());
         }
-        setAvailableServices(props.availableServices);
         setChosenServices(props.bookingSlot.availableServices);
         setOptions(props.availableServices.map((d) => {
             return{

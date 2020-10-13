@@ -15,6 +15,7 @@ function Profile(props){
         // GetRequestService.getRequestUsername(props.apiUrl, authenticatedUser)
         GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)
         .then((response) => {        
+            console.log(response);
             setUserDetails(response.data);
             setServices(response.data.services);   
             if(response.data.businessId){

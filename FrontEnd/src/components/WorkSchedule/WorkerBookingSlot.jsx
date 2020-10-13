@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, ToastBody } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import "../../css/WorkerSchedule.css";
 
 //this component is going to be a single grey bubble displaying the data of a single booking

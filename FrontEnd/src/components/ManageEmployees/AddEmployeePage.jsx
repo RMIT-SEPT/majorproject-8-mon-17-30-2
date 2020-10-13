@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../css/Register.css";
 import WorkerService from "../../services/WorkerService";
 import AuthenticationService from "../../services/AuthenticationService"
@@ -12,7 +12,6 @@ function AddWorker(){
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [business, setBusiness] = useState("");
     // const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
     let history = useHistory()

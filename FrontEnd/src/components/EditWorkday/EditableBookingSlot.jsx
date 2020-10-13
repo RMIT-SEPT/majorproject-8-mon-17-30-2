@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Modal } from 'react-bootstrap';
-import AddBookingSlot from "./AddBookingSlot"
+import { Card, Button} from 'react-bootstrap';
 import "../../css/WorkerSchedule.css";
 
 //props: bookingSlot (services, startTime, endTime)
 function EditableBookingSlot(props) {
 
     const [services, setServices] = useState([]); 
-    const [workslot, setWorkslot] = useState();
-    const [availableServices, setAvailableServices] = useState([]);
 
     useEffect(() =>{
         setServices(props.bookingSlot.availableServices);

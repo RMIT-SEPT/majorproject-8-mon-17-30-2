@@ -11,7 +11,7 @@ function WorkerBookingSlot(props) {
     useEffect(() =>{
         setBookings(props.bookingSlot.bookings);
         setServices(props.bookingSlot.availableServices);
-    },[]);
+    },[props.bookingSlot.bookings, props.bookingSlot.availableServices]);
     
     
     return (

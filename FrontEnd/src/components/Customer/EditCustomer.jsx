@@ -17,7 +17,7 @@ function EditCustomer(props){
         if(!hasInit){
             init();
         }
-    },[name, address, phoneNumber, email, username, invalidData]);
+    },[name, address, phoneNumber, email, username, invalidData, hasInit]);
 
     function init(){
         CustomerService.getCustomerById(props.customerId)

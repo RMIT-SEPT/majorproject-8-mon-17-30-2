@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import View from "react";
 import "../../css/Register.css";
-import CustomerService from "../../services/CustomerService";
-import {Button} from "react-bootstrap";
 import BusinessService from "../../services/BusinessService";
 import { __RouterContext } from "react-router";
 

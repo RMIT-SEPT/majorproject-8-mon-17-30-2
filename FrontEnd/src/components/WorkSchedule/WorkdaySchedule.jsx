@@ -16,7 +16,7 @@ function WorkdaySchedule(props){
     WorkerService.getWorkSlotsByDateAndWorkerId(props.workerId, props.date).then((response) =>{
       setSlots(response.data.length ? response.data : []);
     });
-  },[]);
+  },[props.workerId, props.date]);
 
   return (
 

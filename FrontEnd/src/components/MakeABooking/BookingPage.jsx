@@ -55,7 +55,7 @@ function BookingPage(props) {
       setServices(response.data.services);
       setWorkers(response.data.workers);
     });
-  }, [] )
+  }, [props.match.params.businessId] )
 
   // these "force" functions are jank to force sync when updating usestate, changing context seems to make them take effect immediately
   function forceSetServiceId(id){

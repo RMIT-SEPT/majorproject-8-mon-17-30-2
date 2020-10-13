@@ -48,7 +48,7 @@ function EditBookingSlot(props){
         const startString = moment(startTime).format('HH:mm');
         const endString = moment(endTime).format('HH:mm');
         var chosenServices = options.filter(function(o){
-            return o.select == true;
+            return o.select === true;
         })
         var chosenServiceIds = []
         for(var i = 0; i < chosenServices.length; i++) {
@@ -73,7 +73,7 @@ function EditBookingSlot(props){
                         let checked=thing.target.checked;
                         setOptions(
                             options.map((data)=>{
-                                if(d.id == data.id){
+                                if(d.id === data.id){
                                     data.select = checked;
                                 }
                                 return data;

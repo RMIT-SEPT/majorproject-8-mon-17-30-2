@@ -16,7 +16,7 @@ function EditWorker(props){
         if(!hasInit){
             init();
         }
-    },[name, address, phoneNumber, email, username, invalidData]);
+    },[name, address, phoneNumber, email, username, invalidData, hasInit]);
 
     function init(){
         WorkerService.getWorkerById(props.match.params.workerId)

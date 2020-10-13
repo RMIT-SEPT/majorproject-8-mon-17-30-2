@@ -1,137 +1,240 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AuthenticationService from "../../services/AuthenticationService";
 import PostRequestService from "../../services/PostRequestService";
 import moment from "moment";
 import CustomerService from "../../services/CustomerService";
-import WorkerService from "../../services/WorkerService";
+import BusinessService from "../../services/BusinessService";
+import BookingService from "../../services/BookingService";
+import BookingSlotBubble from "../Bubbles/BookingSlotBubble";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
-class BookingPage extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      service: "",
-      worker: "",
-      date: "",
-      time: "",
-    };
+function BookingPage(props) {
 
-    this.handleService = this.handleService.bind(this);
-    this.handleWorker = this.handleWorker.bind(this);
-    this.handleDate = this.handleDate.bind(this);
-    this.handleTime = this.handleTime.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  // business variables
+  const [business, setBusiness] = useState({
+    id: "",
+    name: "",
+    services: [],
+    workers: []
+  });
+  const [businessId, setBusinessId] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+  const [service, setService] = useState(null);
+  const [serviceId, setServiceId] = useState(null);
+  const [services, setServices] = useState([]);
+  const [worker, setWorker] = useState(null);
+  const [workerId, setWorkerId] = useState(null);
+  const [workers, setWorkers] = useState([]);
+  const [bookingSlotId, setBookingSlotId] = useState(null);
+  const [date, setDate] = useState(null);
+  const [dateString, setDateString] = useState("");
+  const [bookingSlots, setBookingSlots] = useState([]);
 
-  handleService(event) {
-    this.setState({ service: event.target.value });
-  }
-  handleWorker(event) {
-    this.setState({ worker: event.target.value });
-  }
-  handleDate(event) {
-    this.setState({ date: event.target.value });
-  }
-  handleTime(event) {
-    this.setState({ time: event.target.value });
-  }
-  handleChange = (date) => {
-    this.setState({
-      date: date,
+  var bookingSlotVar = null;
+  var bookingSlotIdVar = null;
+  var serviceIdVar = null;
+
+  // modal logic
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+    
+  // initialise (classless equivalent of componentDidMount())
+  useEffect(() => {
+    CustomerService.getCustomerById(AuthenticationService.getLoggedInId())
+    .then((response) =>{
+      setCustomerId(response.data.id)
     });
-  };
+    BusinessService.getBusinessById(props.match.params.businessId)
+    .then((response) =>{
+      setBusiness(response.data);
+      setBusinessId(response.data.id)
+      setServices(response.data.services);
+      setWorkers(response.data.workers);
+    });
+  }, [] )
 
-  handleSubmit(event) {
+  // these "force" functions are jank to force sync when updating usestate, changing context seems to make them take effect immediately
+  function forceSetServiceId(id){
+    setServiceId(id);
+  }
+  function forceSetWorkerId(id){
+    setWorkerId(id);
+  }
+  function forceSetBookingSlotId(id){
+    setBookingSlotId(id);
+  }
+  function forceSetBookingSlots(data){
+    setBookingSlots(data);
+  }
 
-    event.preventDefault();
-    let convertedDate = moment(this.date).format("YYYY-MM-DD");
+  function handleChange(event) {
+    const {name, value} = event.target;
+    if(name === "service"){
+      forceSetServiceId(value);
+    }
+    if(name === "worker"){
+      forceSetWorkerId(value);
+    }
+  }  
 
-    const newBooking = {
-      customer: CustomerService.getCustomerById(AuthenticationService.getLoggedInId()),
-      worker: WorkerService.getWorkerById(this.state.worker),
-      service: {
-        title: this.state.service,
-      },
-      business: {
-        businessName: "",
-      },
-      bookingSlot: {
-        date: convertedDate,
-        startTime: "14:30:00",
-        endTime: "15:00:00",
-      },
-    };
+  function handleDate(chosenDate) {   
+    if(chosenDate === null){
+      setDate("");
+      setDateString("");
+    }
+    else{
+      var convertedDate = moment(chosenDate).format("YYYY-MM-DD");
+      setDate(chosenDate);
+      setDateString(convertedDate);
+    }
+  }
 
-    PostRequestService.postRequest("/api/booking", newBooking)
+  // clicking "BOOK" on a result card inside the moda
+  function handleChosenSlot(bookingSlot_id, service_id){
+    bookingSlotVar = bookingSlot_id;
+    serviceIdVar = service_id;
+    forceSetBookingSlotId(bookingSlot_id);
+    forceSetServiceId(service_id);    
+    prepareBooking();
+  }
+  
+  // clicking "BOOK" on a result card inside the modal
+  function prepareBooking() {    
+    BookingService.getBookingSlotById(bookingSlotVar)
+      .then((response) => {
+        const newBooking = {
+          customerId: customerId,
+          workerId: response.data.workerId,
+          businessId: response.data.businessId,
+          bookingSlotId: response.data.id,
+          serviceId: serviceIdVar
+        }
+        submitBooking(newBooking);
+    });    
+  }
+
+  // confirming creation of booking with all chosen attributes
+  function submitBooking(booking){
+    PostRequestService.postRequest("/api/booking", booking)
       .then((response) => {
         if (response.data != null) {
           alert("Booking Created");
         } else {
-          alert("Error");
+          alert("error");
         }
       })
-      .catch((error => {
-        console.error(error.message);
-      }));
+      .catch(() => {  
+        alert("Booking already exists!")      
+    });
+    handleClose();
+  }
+ 
+  function handleModal(event){
+    event.preventDefault();
+    const searchRequest = {
+      businessId: businessId,
+      serviceId: serviceId,
+      workerId: workerId,
+      dateString: dateString,
+      fullyBooked: false
+    }
+    BookingService.getMatchingBookingSlots(searchRequest)
+      .then((response) => {
+        if(Array.isArray(response.data)){
+          forceSetBookingSlots(response.data);
+        }
+        else{
+          forceSetBookingSlots([]);
+        }
+    });
+    setShow(true);  
   }
 
-  render() {
-    return (
-      <div className="form">
-        <form onSubmit={this.handleSubmit}>
-          <h4>Service</h4>
-          <select required="true"
-            name="1"
-            value={this.state.service}
-            onChange={this.handleService}
-          >
-            <option value="" disabled selected hidden>
-              Select an option
-            </option>
-            <option value="Haircut">Haircut</option>
-            <option value="BeardTrim">BeardTrim</option>
-          </select>
+  var serviceList = <option value="" disabled hidden></option>;
+  serviceList = services.map((service) => {
+    return <option key={service.id} value={service.id}>{service.title}</option>
+  });
 
-          <h4>Worker</h4>
-          <select
-            name="2"
-            value={this.state.worker}
-            onChange={this.handleWorker}
-          >
-            <option value="" disabled selected hidden>
-              Select an option
-            </option>
-            <option value="1">John</option>
-          </select>
+  var workerList = <option value="" disabled hidden></option>;
+  workerList = workers.map((worker) => {
+    return <option key={worker.id} value={worker.id}>{worker.name}</option>
+  });
+ 
+  return (   
+     
+  <>     
+    <div className="form">
+      <h1>Create a booking at {business.name}:</h1>
+      <br/>
+      <form onSubmit={handleModal}>
 
-          <h4>Date</h4>
+        <h4>Service</h4>
+        <select
+          style={{width: 150}}
+          name="service"
+          value={service}
+          onChange={handleChange}>
+          <option key="0" value="0">-Any-</option>
+          {serviceList}
+        </select>
+        <br/><br/>
 
-          <DatePicker
-            selected={this.state.date}
-            onChange={this.handleChange}
-            isClearable
-            dateFormat="yyyy/MM/dd"
-            placeholderText="No Date Specified"
-          />
+        <h4>Worker</h4>
+        <select
+          style={{width: 150}}
+          name="worker"
+          value={worker}
+          onChange={handleChange}>
+          <option key="0" value="0">-Any-</option>
+          {workerList}
+        </select>
+        <br/><br/>
+        
+        <h4>Date</h4>
+        <DatePicker
+          name="date"
+          selected={date}
+          onChange={handleDate}
+          isClearable
+          dateFormat="yyyy/MM/dd"
+          placeholderText="No Date Specified"
+        />
+        <br/><br/>
 
-          <h4>Time</h4>
-          <select value={this.state.time} onChange={this.handleTime}>
-            <option value="" disabled selected hidden>
-              Select an option
-            </option>
-            <option value="1330">1330-1430</option>
-          </select>
+        <div>
+          <input type="button" onClick={handleModal} value="Search for Bookings" />
+        </div>
+      </form>
+    </div>
 
-          <div>
-            <input type="submit" value="Submit" />
-          </div>
-        </form>
-      </div>
-    );
-  }
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Choose a Booking</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+          { bookingSlots.length > 0 ? 
+               bookingSlots.map((bookingSlot) => (
+                <BookingSlotBubble 
+                  bookingSlot={bookingSlot} 
+                  handleChosenSlot={(bookingSlot_id, service_id) => handleChosenSlot(bookingSlot_id, service_id)}
+                />))
+            : "No Matching Bookings Found."}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+
+  </>
+
+  );
+  
 }
 
 export default BookingPage;
-

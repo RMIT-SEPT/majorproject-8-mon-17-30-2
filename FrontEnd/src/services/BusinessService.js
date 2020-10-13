@@ -1,7 +1,6 @@
 import axios from 'axios';
-import API_HOST from '../Utils/utils';
+import API_HOST, {BUSINESS_API_BASE_URL} from '../Utils/utils';
 
-const BUSINESS_API_BASE_URL = API_HOST + '/api/business'
 
 // service for all REST api calls stemming from the url 'api/customer'
 class BusinessService {

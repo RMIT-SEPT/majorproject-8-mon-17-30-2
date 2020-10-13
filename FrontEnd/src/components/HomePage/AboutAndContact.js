@@ -43,7 +43,7 @@ function AboutUs() {
                     <Col>
                         <div className="card">
                             <h3>Danny</h3>
-                            <p>Insert Title</p>
+                            <p>Development Team</p>
                             <p>Some text that describes me lorem ipsum ipsum lorem.</p>
                             <p>email@example.com</p>
                         </div>
@@ -51,7 +51,7 @@ function AboutUs() {
                     <Col>
                         <div className="card">
                             <h3>Daniel</h3>
-                            <p>Insert Title</p>
+                            <p>Development Team</p>
                             <p>Some text that describes me lorem ipsum ipsum lorem.</p>
                             <p>email@example.com</p>
                         </div>
@@ -59,7 +59,7 @@ function AboutUs() {
                     <Col>
                         <div className="card">
                             <h3>Umer</h3>
-                            <p>Insert Title</p>
+                            <p>Development Team</p>
                             <p>Some text that describes me lorem ipsum ipsum lorem.</p>
                             <p>email@example.com</p>
                         </div>

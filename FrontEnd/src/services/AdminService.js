@@ -1,7 +1,6 @@
 import axios from 'axios';
-import API_HOST from '../Utils/utils'
+import {ADMIN_API_BASE_URL} from '../Utils/utils'
 
-const ADMIN_API_BASE_URL = API_HOST + '/api/admin'
 
 // service for all REST api calls stemming from the url 'api/customer'
 class AdminService {

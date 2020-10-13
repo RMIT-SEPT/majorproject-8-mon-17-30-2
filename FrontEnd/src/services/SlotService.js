@@ -1,8 +1,6 @@
 import axios from 'axios';
-import API_HOST from '../Utils/utils';
+import {WORKSLOT_API_BASE_URL, BOOKINGSLOT_API_BASE_URL} from '../Utils/utils';
 
-const WORKSLOT_API_BASE_URL = API_HOST + '/api/work-slot'
-const BOOKINGSLOT_API_BASE_URL = API_HOST + '/api/booking-slot'
 
 class SlotService {
 

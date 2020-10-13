@@ -31,7 +31,7 @@ function EditBookingSlot(props){
                 title: d.title
             };
         }));
-    },[props.workSlot, props.bookingSlot, chosenServices]);
+    },[props.workSlot, props.bookingSlot, chosenServices, props.availableServices]);
 
     // boolean check to see if a service is already available in the bookingslot, to pre-tick the box when editing
     function serviceIsChosen(serviceId){

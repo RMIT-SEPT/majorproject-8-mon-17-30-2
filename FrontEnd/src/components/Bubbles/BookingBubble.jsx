@@ -5,7 +5,7 @@ import "../../css/BookingHistory.css";
 //this component is going to be a single grey bubble displaying the data of a single booking
 function BookingBubble(props) {
 
-  const type = props.booking.status=="COMPLETED" ? "success" : "danger"
+  const type = props.booking.status==="COMPLETED" ? "success" : "danger"
   
   return (
       <div>

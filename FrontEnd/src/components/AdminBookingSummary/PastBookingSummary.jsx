@@ -4,7 +4,9 @@ import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-
+/*
+    Page to display past bookings for a businesss utilises table view
+*/
 function PastBookingSummary(props){
 
     const [bookings, setBookings] = useState([]);
@@ -45,7 +47,7 @@ function PastBookingSummary(props){
         maxWidth: "50%",
         margin: "auto"
     }
-
+    //load past bookings via businessid
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             let businessId = response.data.businessId;

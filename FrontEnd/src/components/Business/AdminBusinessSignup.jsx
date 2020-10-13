@@ -4,9 +4,12 @@ import "../../css/Register.css";
 import BusinessService from "../../services/BusinessService";
 import { __RouterContext } from "react-router";
 
-
+/*
+    Registration page for admin
+*/
 function AdminBusinessSignup(props){
 
+    // Initialise state
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber]  = useState("");
@@ -22,7 +25,7 @@ function AdminBusinessSignup(props){
     const [invalidData, setInvalidData] = useState(false);
 
     let history = useHistory()
-
+    // Handle state change
     function handleNewService(event){
         event.preventDefault();
         const service = {
@@ -39,7 +42,7 @@ function AdminBusinessSignup(props){
     function finalise(){
         history.push("/");
     }
-    
+    // sends created admin to backend 
     function handleSubmit(event){
         event.preventDefault();
         const admin = {

@@ -9,7 +9,7 @@ function WorkSlotsByDay(props){
   return (props.workSlots && props.workSlots.length > 0 ? (
   // if there are >0 slots:
     <>
-    <h1 class="blockquote text-center">{props.date}</h1>
+    <h1 className="blockquote text-center">{props.date}</h1>
     {props.workSlots.map((workSlot) => 
       <>
       <Card className='workday'
@@ -19,13 +19,13 @@ function WorkSlotsByDay(props){
           <Card.Body>
             <Card.Header className="bold">Shift: {workSlot.startTime} - {workSlot.endTime}</Card.Header>
             <Card.Title className="cardtitle"></Card.Title>
-            <Card.Text className="cardtext">
+            <div className="cardtext">
             {workSlot.bookingSlots && workSlot.bookingSlots.length > 0 ? 
                 workSlot.bookingSlots.map((bookingSlot) => 
                 <EditableBookingSlot key={bookingSlot.id} availableServices={props.availableServices} bookingSlot={bookingSlot} 
                 handleEditBookingSlot={props.handleEditBookingSlot} deleteBookingSlot={props.deleteBookingSlot}/>)
             : "No Booking Slots"}
-            </Card.Text>
+            </div>
             <Button variant="secondary" className="new-booking-slot" onClick={() => props.addBookingSlot(workSlot.id)}>+</Button>
             <br/>
           </Card.Body>
@@ -44,7 +44,7 @@ function WorkSlotsByDay(props){
     </>
   ) :
   // if there are 0 slots:
-  <><h1 class="blockquote text-center">No Assigned Working Hours<br/>({props.date})</h1></>)
+  <><h1 className="blockquote text-center">No Assigned Working Hours<br/>({props.date})</h1></>)
 
 }
 

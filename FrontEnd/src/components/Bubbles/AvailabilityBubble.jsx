@@ -2,11 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import "../../css/BookingHistory.css";
 
-//this component is going to be a single grey bubble displaying the data of a single booking
+//this component is going to be a single grey bubble displaying the data of a single available shift
 function AvailabilityBubble(props) {
-
-  const type = props.booking.workerName
-  console.log(type)
 
   return (
       <div>

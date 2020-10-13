@@ -11,7 +11,6 @@ import BookingSlotBubble from "../Bubbles/BookingSlotBubble";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-
 function BookingPage(props) {
 
   // business variables

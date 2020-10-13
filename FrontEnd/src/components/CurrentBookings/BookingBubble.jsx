@@ -5,7 +5,9 @@ import Button from 'react-bootstrap/Button';
 import BookingService from "../../services/BookingService"
 
 //this component is going to be a single grey bubble displaying the data of a single booking
+// shows ongoing boookings that the customer can cancel 
 function BookingBubble(props) {
+
 
   function deleteBooking(){
     BookingService.deleteCustomerBooking(props.booking.id)

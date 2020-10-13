@@ -5,17 +5,16 @@ import AuthenticationService from "../../services/AuthenticationService"
 import { useHistory } from "react-router-dom";
 
 function AddWorker(){
-
+    //init state
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber]  = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
     let history = useHistory()
-
+    //send worker to backend
     function handleSubmit(event){
         event.preventDefault();
         const worker = {
@@ -27,7 +26,7 @@ function AddWorker(){
             password: password,
             businessId: AuthenticationService.getBusinessId()
         }
-        console.log("AAAAA", worker);
+        // console.log("AAAAA", worker);
         WorkerService.addWorker(worker)
         .then((response) =>{
             if(response.data != null){

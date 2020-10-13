@@ -18,19 +18,19 @@ function EditableBookingSlot(props) {
             key={props.bookingSlot.id}>
             <Card.Body>
               <Card.Header>Booking Slot: {props.bookingSlot.startTime} - {props.bookingSlot.endTime}</Card.Header>
-              <Card.Title className="cardtitle"></Card.Title>
-              <Card.Text className="cardtext">
-              <table className="table worker-table table-bordered ">              
-                <thead className="thead-light">  
-                  <tr>
-                      <td>Available Services:</td>
-                      <td>
-                          {services.map((service) => <>{service.title}<br/></>)}
-                      </td>
-                  </tr>
-                </thead>
-              </table>
-              </Card.Text>
+               <Card.Title className="cardtitle"></Card.Title>
+              <div className="cardtext">
+                <table className="table worker-table table-bordered ">              
+                  <thead className="thead-light">  
+                    <tr>
+                        <td>Available Services:</td>
+                        <td>
+                            {services.map((service) => <>{service.title}<br/></>)}
+                        </td>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </Card.Body>
             <Card.Footer className="text-right text-muted">
                 <Button size="sm" onClick={() => props.handleEditBookingSlot(props.bookingSlot)}>✏️</Button><> </>

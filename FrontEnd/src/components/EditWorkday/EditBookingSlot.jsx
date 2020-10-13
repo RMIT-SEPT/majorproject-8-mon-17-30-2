@@ -11,9 +11,6 @@ function EditBookingSlot(props){
     const [endTime, setEndTime] = useState();
     const [chosenServices, setChosenServices] = useState([]);
     const [options, setOptions] = useState([]);  
-
-    // const [startTime, setStartTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());
-    // const [endTime, setEndTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());   
     
     useEffect(() =>{
         if(props.bookingSlot){
@@ -65,7 +62,8 @@ function EditBookingSlot(props){
 
     let serviceOptions = (
         options.map((d, i) =>
-        <tr>
+        <thead>
+            <tr>
             <td>
                 <input 
                     className="checkbox"
@@ -85,8 +83,9 @@ function EditBookingSlot(props){
             </td>
             <td>
                 {d.title}
-            </td>                
-        </tr>
+            </td>      
+            </tr>          
+        </thead>
         )
     )
 

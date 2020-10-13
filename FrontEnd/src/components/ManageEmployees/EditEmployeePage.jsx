@@ -29,7 +29,7 @@ function EditWorker(props){
         });
         setHasInit(true);
     }
-
+    //send new deatils to backend to update worker
     function handleSubmit(event){
         event.preventDefault();
         const worker = {

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../../css/Register.css";
 import CustomerService from "../../services/CustomerService";
 
-
+/*
+    Page that prefills the current logged in customers' details and allows them to edit
+*/
 function EditCustomer(props){
 
+    //initalise state
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber]  = useState("");
@@ -30,7 +33,7 @@ function EditCustomer(props){
         });
         setHasInit(true);
     }
-
+    //send new data to backend to edit customer
     function handleSubmit(event){
         event.preventDefault();
         const customer = {

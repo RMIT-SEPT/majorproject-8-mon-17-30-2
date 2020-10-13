@@ -6,7 +6,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 import {WORKER} from "../../Utils/utils";
 import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
 import moment from 'moment';
-
+// Displays users dashboard depending on their role
 function Dashboard(props) {
 
   const today = moment().format("yyyy-MM-DD").toString()
@@ -21,7 +21,7 @@ function Dashboard(props) {
         
           <Profile apiUrl={props.apiUrl}/>
           {AuthenticationService.getRole() !== WORKER ?              
-          // if not a worker display buttons
+          // if user role type is not a worker then  display buttons
           <div className="card-deck dashboard-card-deck" >
             {props.details.map(details => <DashboardCard key= {details.key} title={details.title} desc={details.desc} link={details.link} />)}
           </div>

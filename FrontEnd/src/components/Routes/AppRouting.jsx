@@ -30,7 +30,6 @@ import {GET_CUSTOMER_URL, GET_ADMIN_URL, CUSTOMER_BUTTON_DETAILS, ADMIN_BUTTON_D
 import EditEmployeeWorkday from "../EditWorkday/EditEmployeeWorkday";
 
 // Routes the application
-// Google React-Router-Dom to learn more about routing
 function AppRouting() {
     const [isLoggedIn, setIsLoggedIn] = useState(AuthenticationService.isUserLoggedIn());
   return (
@@ -73,7 +72,7 @@ function AppRouting() {
 
         <WorkerAuthenticatedRoute path="/worker" exact render={(props) => <Dashboard {...props} title={`Worker Dashboard`} apiUrl={GET_WORKER_URL} />} />
         <WorkerAuthenticatedRoute path="/worker/:workerId/work-slots/week" exact render={(props) => <WeekSchedule {...props} apiUrl={GET_WORKER_URL} />} />
-        
+
       </Switch>
       <Route path="/" render={(props) => <Footer />}/>
     

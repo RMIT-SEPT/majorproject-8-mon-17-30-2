@@ -4,11 +4,13 @@ import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
 import AvailabilityBubble from "../Bubbles/AvailabilityBubble";
 
-
+/*
+    Displays all available slots for a business using the availablityBubbles
+*/
 function ViewAvailabilty() {
 
     const [availSlots, setAvailSlots] = useState([]);
-
+    //initalise workslots
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             getAvailiableWorkSlots();

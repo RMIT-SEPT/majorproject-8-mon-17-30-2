@@ -4,13 +4,17 @@ import {Link} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService"
 import GetRequestService from "../../services/GetRequestService";
 import {CUSTOMER, WORKER, ADMIN, BUSINESS_ID_SESSION_ATTRIBUTE} from "../../Utils/utils";
-
+/*
+    Used in the dashboard to retrieve and display users information
+*/
 function Profile(props){
     const authenticatedUser = AuthenticationService.getLoggedInUserName();
     const authenticatedUserId = AuthenticationService.getLoggedInId();
-   
+   //init state
     const[userDetails, setUserDetails] = useState({});
     const [services, setServices] = useState([]); 
+
+    //set state to user details
     useEffect(() => {
         // GetRequestService.getRequestUsername(props.apiUrl, authenticatedUser)
         GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)

@@ -6,7 +6,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 import {ADMIN} from "../../Utils/utils";
 import {Link} from "react-router-dom";
 import moment from 'moment';
-
+// Shows worker profile, used for admin to be able to edit their roster and edit their details
 function WorkerProfile(props){
       // TO access business ID use props.match.params.workerId
   

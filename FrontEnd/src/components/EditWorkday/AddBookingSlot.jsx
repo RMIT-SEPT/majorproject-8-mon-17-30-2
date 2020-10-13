@@ -9,13 +9,8 @@ function AddBookingSlot(props){
 
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
-    // const [availableServices, setAvailableServices] = useState([]);
-
     const [options, setOptions] = useState([]); 
     const [workSlotId, setWorkSlotId] = useState([]);   
-
-    // const [startTime, setStartTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());
-    // const [endTime, setEndTime] = useState(moment('2000-01-01 ', moment.ISO_8601).toString());   
     
     useEffect(() =>{
         if(props.workSlot){
@@ -23,7 +18,6 @@ function AddBookingSlot(props){
             setEndTime(moment('2000-01-01 ' + props.workSlot.endTime, moment.ISO_8601).toString());
             setWorkSlotId(props.workSlot.id);
         }
-        // setAvailableServices(props.availableServices);
         setOptions(props.availableServices.map((d) => {
             return{
                 select: false, 
@@ -46,7 +40,7 @@ function AddBookingSlot(props){
         const startString = moment(startTime).format('HH:mm');
         const endString = moment(endTime).format('HH:mm');
         var chosenServices = options.filter(function(o){
-            return o.select == true;
+            return o.select === true;
         })
         var chosenServiceIds = []
         for(var i = 0; i < chosenServices.length; i++) {
@@ -57,7 +51,8 @@ function AddBookingSlot(props){
 
     let serviceOptions = (
         options.map((d, i) =>
-        <tr>
+        <thead>
+            <tr>
             <td>
                 <input 
                     className="checkbox"
@@ -65,7 +60,7 @@ function AddBookingSlot(props){
                         let checked=thing.target.checked;
                         setOptions(
                             options.map((data)=>{
-                                if(d.id == data.id){
+                                if(d.id === data.id){
                                     data.select = checked;
                                 }
                                 return data;
@@ -77,8 +72,9 @@ function AddBookingSlot(props){
             </td>
             <td>
                 {d.title}
-            </td>                
-        </tr>
+            </td>    
+            </tr>            
+        </thead>
         )
     )
 

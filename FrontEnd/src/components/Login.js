@@ -33,6 +33,8 @@ class Login extends Component {
     this._isMounted = false;
   }
 
+  // Sets user session and stores user role
+  // Redirects logged in user to correct dashboard
   handleSubmit(event) {
     event.preventDefault();
     AuthenticationService

@@ -5,14 +5,11 @@ import AuthenticationService from "../../services/AuthenticationService";
 
 //basic navbar with bootstrap
 function Navbar(props){
-    
 
    function handleClick(){
-      
         AuthenticationService.logout();
         props.setIsLoggedIn(false);
     }
-
 
     return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-dark">

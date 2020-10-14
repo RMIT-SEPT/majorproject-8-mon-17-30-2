@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.dto;
 
+// Used to receive front-end data in a clean package when creating a WorkSlot object
 public class WorkSlotBlueprint {
 
     private Long workerId;
@@ -8,11 +9,10 @@ public class WorkSlotBlueprint {
     private String startTime;
     private String endTime;
 
-    public WorkSlotBlueprint(){        
+    public WorkSlotBlueprint() {
     }
 
-    public WorkSlotBlueprint(Long workerId, Long businessId,
-              String date, String startTime, String endTime) {
+    public WorkSlotBlueprint(Long workerId, Long businessId, String date, String startTime, String endTime) {
         this.workerId = workerId;
         this.businessId = businessId;
         this.date = date;
@@ -36,8 +36,8 @@ public class WorkSlotBlueprint {
         return endTime;
     }
 
-	public String getDate() {
-		return date;
-	}
-    
+    public String getDate() {
+        return date;
+    }
+
 }

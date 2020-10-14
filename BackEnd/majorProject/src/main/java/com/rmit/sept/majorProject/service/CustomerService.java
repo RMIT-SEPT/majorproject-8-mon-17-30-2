@@ -5,70 +5,71 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
 import com.rmit.sept.majorProject.dto.CustomerSummary;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.CustomerRepository;
 
 @Service
-public class CustomerService implements PersonService<Customer>{
+public class CustomerService implements PersonService<Customer> {
 
 	@Autowired
 	private CustomerRepository repository;
 	@Autowired
 	private DuplicateCheckService duplicateCheck;
 
-	//--------CUSTOMER-SPECIFIC FUNCTIONS----------
+	// --------CUSTOMER-SPECIFIC FUNCTIONS----------
 
 	public Customer registerNewCustomer(final Customer customer) throws DuplicateKeyException {
 		String email = customer.getEmail();
 		String username = customer.getUsername();
-        if(duplicateCheck.emailExists(email)) {
-            throw new DuplicateKeyException("An account already exists with email address: " + email);
+		if (duplicateCheck.emailExists(email)) {
+			throw new DuplicateKeyException("An account already exists with email address: " + email);
 		}
-		if(duplicateCheck.usernameExists(username)) {
-            throw new DuplicateKeyException("An account already exists with username: " + username);
+		if (duplicateCheck.usernameExists(username)) {
+			throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
-        Customer newCustomer = new Customer(customer);
-        return repository.save(newCustomer);
+		Customer newCustomer = new Customer(customer);
+		return repository.save(newCustomer);
 	}
 
-	//---------------DTO FUNCTIONS--------------	
+	// ---------------DTO FUNCTIONS--------------
 
-	public Iterable<CustomerSummary> findAllDTO(){
+	public Iterable<CustomerSummary> findAllDTO() {
 		ArrayList<CustomerSummary> customerDtos = new ArrayList<CustomerSummary>();
 		Iterable<Customer> customers = repository.findAll();
-		for(Customer customer : customers){
+		for (Customer customer : customers) {
 			customerDtos.add(new CustomerSummary(customer));
 		}
 		return customerDtos;
 	}
 
-	public CustomerSummary findByIdDTO(Long id){
+	public CustomerSummary findByIdDTO(Long id) {
 		CustomerSummary summary = null;
 		Optional<Customer> customerOptional = repository.findById(id);
 		Customer customerFound = customerOptional.get();
-		if (customerFound != null){
+		if (customerFound != null) {
 			summary = new CustomerSummary(customerFound);
 		}
 		return summary;
 	}
 
-	public CustomerSummary findByUsernameDTO(String username){
+	public CustomerSummary findByUsernameDTO(String username) {
 		CustomerSummary summary = null;
 		Customer customerFound = repository.findByUsername(username);
-		if (customerFound != null){
+		if (customerFound != null) {
 			summary = new CustomerSummary(customerFound);
 		}
 		return summary;
 	}
-	
-	public CustomerSummary editCustomer(Long customerId, Customer newCustomer){
+
+	public CustomerSummary editCustomer(Long customerId, Customer newCustomer) {
 		// Search repository for existing target worker using Source ID (workerID)
 		Optional<Customer> customerOptional = repository.findById(customerId);
 		// Assign the found worker, can assign null due to OPTIONAL
 		Customer customerFound = customerOptional.get();
-		if (customerFound != null){
+		if (customerFound != null) {
 			// If worker exist, updates the values of that worker if there are changes.
 			if (newCustomer.getName() != null) {
 				customerFound.setName(newCustomer.getName());
@@ -95,7 +96,7 @@ public class CustomerService implements PersonService<Customer>{
 		return new CustomerSummary(customerFound);
 	}
 
-	//---------GENERIC PERSON FUNCTIONS------------	
+	// ---------GENERIC PERSON FUNCTIONS------------
 
 	@Override
 	public long count() {
@@ -166,6 +167,5 @@ public class CustomerService implements PersonService<Customer>{
 	public Iterable<Customer> findByRole(Role role) {
 		return repository.findByRole(role);
 	}
-
 
 }

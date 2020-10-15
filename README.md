@@ -1,19 +1,17 @@
 # RMIT SEPT 2020 Major Project
 
-[# AGME Booking System](http://bit.ly/AGMEMonday2)
+[AGME BOOKING SYSTEM]()
 
-# Release 2.0.0
+# Release 3.0.0
 ## Changelog
-+ Customer: Dynamic Booking search by Business
-+ Customer: Dynamic Booking creation by Business
-+ Customer: Delete Booking
-+ Customer: View current Bookings
-+ Worker: Se day schedule
-+ Admin: View Employees
-+ Admin: Summary of business' past bookings
-+ About us + Contact Us
-+ Deployed on AWS
-+ CircleCI configured
++ Business and Admin Signup
++ Add Worker's Shifts and Booking Slots
++ Edit Worker's Shifts and Booking Slots
++ Admin view Worker availability for 7 days
++ Admin view Summary of New and Past bookings
++ Sortable table for viewing a business' bookings
++ Admin can add a new Worker
++ Admin can edit Worker's details
 
 # Group 02 (Mon-1730-2)
 ## Members
@@ -29,6 +27,30 @@
 * Notion Workspace : https://www.notion.so/sept02
 * Documentation (RMIT Account needed) : https://rmiteduau-my.sharepoint.com/:f:/g/personal/s3779726_student_rmit_edu_au/Ejp0c_QDU_JPvc4YA5frr5IBQSjz7-jIUQtK3ioIwtKK8Q?e=szocnE
 
-## Code documentation
+## HOW TO RUN LOCALLY
+### Backend Server
 
-[Quick Start](/docs/README.md) in `docs` folder
+Initialise Maven environment: 
+```unix
+> cd BackEnd/majorProject/
+> mvn clean
+> mvn install
+> cd target
+```
+Start Server:
+```
+> java -jar majorProject-3.0.0.RELEASE.jar
+```
+
+### Frontend Server
+(Separate Terminal)
+
+Initialise NPM environment:
+```
+> cd FrontEnd
+> npm install
+```
+Start Server:
+```
+> npm start
+```

@@ -6,10 +6,10 @@ public class ServiceBlueprint {
     private String description;
     private int capacity;
 
-    public ServiceBlueprint(){
+    public ServiceBlueprint() {
     }
-    
-    public ServiceBlueprint(String title, String description, int capacity){
+
+    public ServiceBlueprint(String title, String description, int capacity) {
         this.title = title;
         this.description = description;
         this.capacity = capacity;

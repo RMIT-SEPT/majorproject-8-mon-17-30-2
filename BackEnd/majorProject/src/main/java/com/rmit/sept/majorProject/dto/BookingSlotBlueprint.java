@@ -8,10 +8,10 @@ public class BookingSlotBlueprint {
     private String endTime;
     private Long workSlotId;
 
-    public BookingSlotBlueprint(){        
+    public BookingSlotBlueprint() {
     }
 
-    public BookingSlotBlueprint(Long workSlotId, String date, String startTime,
+    public BookingSlotBlueprint(Long workSlotId, String date, String startTime, 
                                 String endTime, Iterable<Long> serviceIds) {
         this.serviceIds = serviceIds;
         this.date = date;
@@ -36,13 +36,13 @@ public class BookingSlotBlueprint {
         this.endTime = endTime;
     }
 
-	public String getDate() {
-		return date;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public Iterable<Long> getServiceIds() {
         return serviceIds;
@@ -59,16 +59,16 @@ public class BookingSlotBlueprint {
     public void setWorkSlotId(Long workSlotId) {
         this.workSlotId = workSlotId;
     }
-    
+
     @Override
     public boolean equals(Object o) {
-    	if(((BookingSlotBlueprint)o).getDate().equals(date)
-    			&& ((BookingSlotBlueprint)o).getStartTime().equals(startTime)
-    			&& ((BookingSlotBlueprint)o).getEndTime().equals(endTime)
-    			&& ((BookingSlotBlueprint)o).getWorkSlotId() == workSlotId) {
-    		return true;
-    	}
-    	return false;
+        if (((BookingSlotBlueprint) o).getDate().equals(date)
+                && ((BookingSlotBlueprint) o).getStartTime().equals(startTime)
+                && ((BookingSlotBlueprint) o).getEndTime().equals(endTime)
+                && ((BookingSlotBlueprint) o).getWorkSlotId() == workSlotId) {
+            return true;
+        }
+        return false;
     }
-    
+
 }

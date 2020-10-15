@@ -20,18 +20,17 @@ public class Customer extends Person {
     @NotEmpty
     private String address;
 
-    @Size(min=5, max=10)
+    @Size(min = 5, max = 10)
     private String phoneNumber;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
-    public Customer(){
+    public Customer() {
         this.role = Role.CUSTOMER;
     }
 
-    public Customer(String name, String username, String password, 
-                    String address, String email, String phoneNumber){
+    public Customer(String name, String username, String password, String address, String email, String phoneNumber) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -41,8 +40,8 @@ public class Customer extends Person {
         this.role = Role.CUSTOMER;
     }
 
-    //copy constructor
-    public Customer(Customer other){
+    // copy constructor
+    public Customer(Customer other) {
         this.name = other.getName();
         this.username = other.getUsername();
         this.password = other.getPassword();
@@ -54,59 +53,56 @@ public class Customer extends Person {
 
     // --------------GETTERS AND SETTERS---------------
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String newEmail){
+    public void setEmail(String newEmail) {
         this.email = newEmail;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return this.address;
     }
 
-    public void setAddress(String newAddress){
+    public void setAddress(String newAddress) {
         this.address = newAddress;
     }
 
-    public String getPhoneNumber(){
+    public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
-    public void setPhoneNumber(String newPhoneNumber){
+    public void setPhoneNumber(String newPhoneNumber) {
         this.phoneNumber = newPhoneNumber;
     }
 
-    public Iterable<Booking> getBookings(){
+    public Iterable<Booking> getBookings() {
         return this.bookings;
     }
 
     public boolean equals(Customer customer) {
-    	if(customer == null){
-    		return false;
-    	}
-    	if(customer.getName() == this.name
-    			&& customer.getEmail() == this.email
-    			&& customer.getUsername() == this.username
-    			&& customer.getPassword() == this.password
-    			&& customer.getAddress() == this.address
-    			&& customer.getPhoneNumber() == this.phoneNumber) {
-    		return true;
-    	}
-    	return false;
+        if (customer == null) {
+            return false;
+        }
+        if (customer.getName() == this.name && 
+            customer.getEmail() == this.email &&
+            customer.getUsername() == this.username &&
+            customer.getPassword() == this.password &&
+            customer.getAddress() == this.address &&
+            customer.getPhoneNumber() == this.phoneNumber) {
+                return true;
+        }
+        return false;
     }
 
     @Override
-    public boolean equals(Object object){
-    	return equals((Customer) object);
+    public boolean equals(Object object) {
+        return equals((Customer) object);
     }
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                '}';
+        return "Customer{" + "id=" + id + ", username='" + username + '\'' + '}';
     }
 }

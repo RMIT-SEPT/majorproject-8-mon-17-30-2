@@ -6,7 +6,7 @@ import com.rmit.sept.majorProject.model.Person.Role;
 
 public interface PersonService<T extends Person> {
 
-	public long count(); 
+	public long count();
 
 	public void delete(T person);
 

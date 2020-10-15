@@ -3,10 +3,12 @@ package com.rmit.sept.majorProject.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.rmit.sept.majorProject.model.Person;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.rmit.sept.majorProject.model.Person;
+
 /*
     UserDetailsImpl uses the user repositories to store user details
     assign properties to them so that spring security can use them
@@ -19,13 +21,13 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private SimpleGrantedAuthority role;
 
-    public UserDetailsImpl(Person user){
+    public UserDetailsImpl(Person user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.role = new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole().toString()));
     }
-    
-    public UserDetailsImpl(){
+
+    public UserDetailsImpl() {
     }
 
     @Override
@@ -45,7 +47,7 @@ public class UserDetailsImpl implements UserDetails {
         return username;
     }
 
-    //Hard coded values for now
+    // Hard coded values for now
     @Override
     public boolean isAccountNonExpired() {
         return true;

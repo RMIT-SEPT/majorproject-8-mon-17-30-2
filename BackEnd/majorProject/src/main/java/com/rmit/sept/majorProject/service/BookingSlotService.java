@@ -18,7 +18,7 @@ import com.rmit.sept.majorProject.repository.WorkSlotRepository;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
 
 @org.springframework.stereotype.Service
-public class BookingSlotService{
+public class BookingSlotService {
 
 	@Autowired
 	private BookingSlotRepository repository;
@@ -31,77 +31,84 @@ public class BookingSlotService{
 	@Autowired
 	private BusinessRepository businessRepository;
 
-    // return a list of all booking slot objects, whether or not they contain a booking
-    public Iterable<BookingSlot> getAllBookingSlots(){
+	// return a list of all booking slot objects, whether or not they contain a
+	// booking
+	public Iterable<BookingSlot> getAllBookingSlots() {
 		return repository.findAll();
 	}
+
 	// Find BookingSlots by BookingSlotID
-	public BookingSlot findById(Long bookingSlotId){
+	public BookingSlot findById(Long bookingSlotId) {
 		return repository.findById(bookingSlotId).get();
 	}
 
-    public Iterable<BookingSlotSummary> getAllBookingSlotsDTO(){
-        ArrayList<BookingSlotSummary> bookingSlotDtos = new ArrayList<>();
+	public Iterable<BookingSlotSummary> getAllBookingSlotsDTO() {
+		ArrayList<BookingSlotSummary> bookingSlotDtos = new ArrayList<>();
 		Iterable<BookingSlot> bookingSlots = getAllBookingSlots();
-		for(BookingSlot bookingSlot : bookingSlots){
+		for (BookingSlot bookingSlot : bookingSlots) {
 			bookingSlotDtos.add(new BookingSlotSummary(bookingSlot));
-        }
-        return bookingSlotDtos;
-	}
-	
-    //return list of all bookingslots that either:
-    // 1: are unset (no booking has been created, and thus no service has been "set")
-    // 2: have vacancy (booking(s) have been created, service has been set, but the capacity hasn't been reached)
-    public Iterable<BookingSlot> getAvailableBookingSlots(){
-        ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
-        for(BookingSlot slot : repository.findAll()){
-            if(!slot.isSet() || slot.getBookings().size() < slot.getBookedService().getCapacity()){
-                availableSlots.add(slot);
-            }
-        }        
-        return availableSlots;
+		}
+		return bookingSlotDtos;
 	}
 
-	public Iterable<BookingSlotSummary> getAvailableBookingSlotsDTO(){
-        ArrayList<BookingSlotSummary> availableSlotDtos = new ArrayList<BookingSlotSummary>();
-        for(BookingSlot slot : getAvailableBookingSlots()){
-            availableSlotDtos.add(new BookingSlotSummary(slot));
-        }
-        return availableSlotDtos;
+	// return list of all bookingslots that either:
+	// 1: are unset (no booking has been created, and thus no service has been
+	// "set")
+	// 2: have vacancy (booking(s) have been created, service has been set, but the
+	// capacity hasn't been reached)
+	public Iterable<BookingSlot> getAvailableBookingSlots() {
+		ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
+		for (BookingSlot slot : repository.findAll()) {
+			if (!slot.isSet() || slot.getBookings().size() < slot.getBookedService().getCapacity()) {
+				availableSlots.add(slot);
+			}
+		}
+		return availableSlots;
 	}
 
-	public Iterable<BookingSlot> getAvailableBookingSlotsByBusiness(Long businessId){
-        ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
-        for(BookingSlot slot : repository.findAll()){
-            if(slot.getWorkSlot().getWorker().getBusiness().getId() == businessId && (!slot.isSet() || slot.getBookings().size() < slot.getBookedService().getCapacity())){
-                availableSlots.add(slot);
-            }
-        }        
-        return availableSlots;
-    }
-	
-	public Iterable<BookingSlotSummary> getAvailableBookingSlotsByBusinessDTO(Long businessId){
-        ArrayList<BookingSlotSummary> availableSlotDtos = new ArrayList<BookingSlotSummary>();
-        for(BookingSlot slot : getAvailableBookingSlotsByBusiness(businessId)){
-            availableSlotDtos.add(new BookingSlotSummary(slot));
-        }
-        return availableSlotDtos;
+	public Iterable<BookingSlotSummary> getAvailableBookingSlotsDTO() {
+		ArrayList<BookingSlotSummary> availableSlotDtos = new ArrayList<BookingSlotSummary>();
+		for (BookingSlot slot : getAvailableBookingSlots()) {
+			availableSlotDtos.add(new BookingSlotSummary(slot));
+		}
+		return availableSlotDtos;
 	}
-	
-	// Business Availability, Returns list of BookingSlots by BusinessId for next 7 days
-	public Iterable<BookingSlotSummary> getBusinessAvailabilityDTO(Long businessId) { 
+
+	public Iterable<BookingSlot> getAvailableBookingSlotsByBusiness(Long businessId) {
+		ArrayList<BookingSlot> availableSlots = new ArrayList<BookingSlot>();
+		for (BookingSlot slot : repository.findAll()) {
+			if (slot.getWorkSlot().getWorker().getBusiness().getId() == businessId
+					&& (!slot.isSet() || slot.getBookings().size() < slot.getBookedService().getCapacity())) {
+				availableSlots.add(slot);
+			}
+		}
+		return availableSlots;
+	}
+
+	public Iterable<BookingSlotSummary> getAvailableBookingSlotsByBusinessDTO(Long businessId) {
+		ArrayList<BookingSlotSummary> availableSlotDtos = new ArrayList<BookingSlotSummary>();
+		for (BookingSlot slot : getAvailableBookingSlotsByBusiness(businessId)) {
+			availableSlotDtos.add(new BookingSlotSummary(slot));
+		}
+		return availableSlotDtos;
+	}
+
+	// Business Availability, Returns list of BookingSlots by BusinessId for next 7
+	// days
+	public Iterable<BookingSlotSummary> getBusinessAvailabilityDTO(Long businessId) {
 		ArrayList<BookingSlotSummary> availableDTO = new ArrayList<BookingSlotSummary>();
 		LocalDate today = LocalDate.now();
 		LocalDate nextWeek = LocalDate.now().plusDays(7);
-        for(BookingSlot slot : getAvailableBookingSlotsByBusiness(businessId)){
+		for (BookingSlot slot : getAvailableBookingSlotsByBusiness(businessId)) {
 			if (slot.getDate().compareTo(today) >= 0 && slot.getDate().compareTo(nextWeek) <= 0) {
 				availableDTO.add(new BookingSlotSummary(slot));
 			}
-        }
-        return availableDTO;
+		}
+		return availableDTO;
 	}
 
-	public Iterable<BookingSlotSummary> searchAvailableBookingSlots(Long businessId, Long serviceId, Long workerId, LocalDate date) {
+	public Iterable<BookingSlotSummary> searchAvailableBookingSlots(Long businessId, Long serviceId, Long workerId,
+			LocalDate date) {
 
 		Iterable<BookingSlotSummary> availableSlots = getAvailableBookingSlotsDTO();
 		ArrayList<BookingSlotSummary> matchingSlots = new ArrayList<BookingSlotSummary>();
@@ -109,73 +116,73 @@ public class BookingSlotService{
 		Business business = businessId != null ? businessRepository.findById(businessId).get() : null;
 		Service service = (serviceId == null || serviceId == 0) ? null : serviceRepository.findById(serviceId).get();
 		Worker worker = (workerId == null || workerId == 0) ? null : workerRepository.findById(workerId).get();
-		
-		//If everything is null, return every available bookingSlot for the business
-		if(business == null && service == null && worker == null && date == null){
+
+		// If everything is null, return every available bookingSlot for the business
+		if (business == null && service == null && worker == null && date == null) {
 			return getAvailableBookingSlotsByBusinessDTO(businessId);
 		}
 
 		// otherwise, add every bookingSlot that matches any of the non-null attributes
-		for(BookingSlotSummary slot : availableSlots){
-			
-			// if service is specified and current slot in loop isn't "set", 
+		for (BookingSlotSummary slot : availableSlots) {
+
+			// if service is specified and current slot in loop isn't "set",
 			// see if specified service is included in slot's list of available services
 			ArrayList<Long> serviceIds = new ArrayList<Long>();
-			if(serviceId != null){
-				if(!slot.isSet()){				
-					for(Service availableService : slot.getAvailableServices()){
+			if (serviceId != null) {
+				if (!slot.isSet()) {
+					for (Service availableService : slot.getAvailableServices()) {
 						serviceIds.add(availableService.getId());
 					}
 				}
-			}	
-
-			// if any of the specified search parameters don't match, break the loop to ignore the current slot in loop
-			if((businessId != null && businessId != slot.getBusinessId()) ||
-				(service != null && slot.isSet() && serviceId != slot.getBookedService().getId()) ||
-				(service != null && !slot.isSet() && !serviceIds.contains(serviceId)) ||
-				(worker != null && workerId != slot.getWorkerId()) ||
-				(date != null && date.compareTo(slot.getDate()) != 0)){
-				continue;
 			}
 
+			// if any of the specified search parameters don't match, break the loop to
+			// ignore the current slot in loop
+			if ((businessId != null && businessId != slot.getBusinessId())
+					|| (service != null && slot.isSet() && serviceId != slot.getBookedService().getId())
+					|| (service != null && !slot.isSet() && !serviceIds.contains(serviceId))
+					|| (worker != null && workerId != slot.getWorkerId())
+					|| (date != null && date.compareTo(slot.getDate()) != 0)) {
+				continue;
+			}
 			matchingSlots.add(slot);
 
 		}
-		
+
 		return matchingSlots;
 
 	}
 
-	public BookingSlot getNewest(){
+	public BookingSlot getNewest() {
 		return repository.getNewest();
 	}
-		
-	public Iterable<BookingSlotSummary> findByWorkSlotId(Long workSlotId){
+
+	public Iterable<BookingSlotSummary> findByWorkSlotId(Long workSlotId) {
 		ArrayList<BookingSlotSummary> matchingSlots = new ArrayList<BookingSlotSummary>();
-		for(BookingSlot slot : workSlotRepository.findById(workSlotId).get().getBookingSlots()){
+		for (BookingSlot slot : workSlotRepository.findById(workSlotId).get().getBookingSlots()) {
 			matchingSlots.add(new BookingSlotSummary(slot));
 		}
 		return matchingSlots;
 	}
 
-	public BookingSlotSummary createNewBookingSlot(BookingSlotBlueprint blueprint){
+	public BookingSlotSummary createNewBookingSlot(BookingSlotBlueprint blueprint) {
 
-        LocalDate date = LocalDate.parse(blueprint.getDate());
-        LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
+		LocalDate date = LocalDate.parse(blueprint.getDate());
+		LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
 		ArrayList<Service> services = new ArrayList<Service>();
 		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
-		if(startTime.isAfter(endTime))
+		if (startTime.isAfter(endTime))
 			throw new DataIntegrityViolationException("Start time is after end time");
-		for(Long serviceId : blueprint.getServiceIds()){
+		for (Long serviceId : blueprint.getServiceIds()) {
 			services.add(serviceRepository.findById(serviceId).get());
 		}
 
 		BookingSlot bookingSlot = new BookingSlot(date, startTime, endTime, services);
 
-		if(bookingSlotOverlap(bookingSlot, null, blueprint.getWorkSlotId())){
-            throw new DuplicateKeyException("BookingSlot overlap on " + blueprint.getDate() + 
-            " between " + blueprint.getStartTime() + " and " + blueprint.getEndTime());
+		if (bookingSlotOverlap(bookingSlot, null, blueprint.getWorkSlotId())) {
+			throw new DuplicateKeyException("BookingSlot overlap on " + blueprint.getDate() + " between "
+					+ blueprint.getStartTime() + " and " + blueprint.getEndTime());
 		}
 
 		workSlot.addBookingSlot(bookingSlot);
@@ -186,57 +193,57 @@ public class BookingSlotService{
 		BookingSlot bookingSlot = repository.findById(bookingSlotId).get();
 		WorkSlot workSlot = workSlotRepository.findById(blueprint.getWorkSlotId()).get();
 
-        LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
+		LocalTime startTime = LocalTime.parse(blueprint.getStartTime());
 		LocalTime endTime = LocalTime.parse(blueprint.getEndTime());
-		if(startTime.isAfter(endTime))
-		{
+		if (startTime.isAfter(endTime)) {
 			throw new DataIntegrityViolationException("Start time is after end time");
 		}
 		ArrayList<Service> services = new ArrayList<Service>();
-		for(Long serviceId : blueprint.getServiceIds()){
+		for (Long serviceId : blueprint.getServiceIds()) {
 			services.add(serviceRepository.findById(serviceId).get());
 		}
 		BookingSlot newBookingSlot = new BookingSlot(bookingSlot.getDate(), startTime, endTime, services);
 
-        // If found, update details
-        if (bookingSlot != null) {
-            if(bookingSlotOverlap(newBookingSlot, bookingSlotId, bookingSlot.getWorkSlot().getId())){
-                throw new DuplicateKeyException("BookingSlot overlap on " + bookingSlot.getDate() + 
-                " between " + newBookingSlot.getStartTime() + " and " + newBookingSlot.getEndTime());
-            }              
-            if (newBookingSlot.getStartTime() != null) {
-                bookingSlot.setStartTime(newBookingSlot.getStartTime());
-            }
-            if (newBookingSlot.getEndTime() != null) {
-                bookingSlot.setEndTime(newBookingSlot.getEndTime());
-			}  
-			if (newBookingSlot.getAvailableServices() != null){
+		// If found, update details
+		if (bookingSlot != null) {
+			if (bookingSlotOverlap(newBookingSlot, bookingSlotId, bookingSlot.getWorkSlot().getId())) {
+				throw new DuplicateKeyException("BookingSlot overlap on " + bookingSlot.getDate() + " between "
+						+ newBookingSlot.getStartTime() + " and " + newBookingSlot.getEndTime());
+			}
+			if (newBookingSlot.getStartTime() != null) {
+				bookingSlot.setStartTime(newBookingSlot.getStartTime());
+			}
+			if (newBookingSlot.getEndTime() != null) {
+				bookingSlot.setEndTime(newBookingSlot.getEndTime());
+			}
+			if (newBookingSlot.getAvailableServices() != null) {
 				bookingSlot.setAvailableServices(services);
-			}   
-			workSlot.addBookingSlot(bookingSlot);            
-        }
+			}
+			workSlot.addBookingSlot(bookingSlot);
+		}
 
-        return new BookingSlotSummary(this.repository.save(bookingSlot));
-    }
-    
-	// checks if a bookingslot will overlap with other bookingslots inside the parent workslot
-	public boolean bookingSlotOverlap(BookingSlot newSlot, Long newSlotId, Long workSlotId){
+		return new BookingSlotSummary(this.repository.save(bookingSlot));
+	}
+
+	// checks if a bookingslot will overlap with other bookingslots inside the
+	// parent workslot
+	public boolean bookingSlotOverlap(BookingSlot newSlot, Long newSlotId, Long workSlotId) {
 		WorkSlot workSlot = workSlotRepository.findById(workSlotId).get();
-		try{			
-			for(BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)){
-				if((existingSlot.getStartTime().isBefore(newSlot.getEndTime())  &&
-					newSlot.getStartTime().isBefore(existingSlot.getEndTime()))){
-						if((newSlotId == null) ||
-						(newSlotId != null && newSlotId != existingSlot.getId())){
-							return true;
-						}
+		try {
+			for (BookingSlotSummary existingSlot : findByWorkSlotId(workSlotId)) {
+				if ((existingSlot.getStartTime().isBefore(newSlot.getEndTime())
+						&& newSlot.getStartTime().isBefore(existingSlot.getEndTime()))) {
+					if ((newSlotId == null) || (newSlotId != null && newSlotId != existingSlot.getId())) {
+						return true;
+					}
 				}
 			}
-			if(newSlot.getStartTime().isBefore(workSlot.getStartTime()) || newSlot.getEndTime().isAfter(workSlot.getEndTime())){
+			if (newSlot.getStartTime().isBefore(workSlot.getStartTime())
+					|| newSlot.getEndTime().isAfter(workSlot.getEndTime())) {
 				return true;
 			}
+		} catch (NullPointerException e) {
 		}
-		catch(NullPointerException e) {}			
 
 		return false;
 	}
@@ -244,7 +251,7 @@ public class BookingSlotService{
 	public boolean deleteBookingSlot(Long bookingSlotId) {
 		boolean toRet = false;
 		BookingSlot bookingSlot = findById(bookingSlotId);
-		if(bookingSlot != null){
+		if (bookingSlot != null) {
 			repository.delete(bookingSlot);
 			toRet = true;
 		}

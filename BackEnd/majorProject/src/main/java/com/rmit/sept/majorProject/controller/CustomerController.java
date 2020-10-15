@@ -1,5 +1,7 @@
 package com.rmit.sept.majorProject.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,6 @@ public class CustomerController {
 
     @Autowired
 	private CustomerService customerService;
-    
-	public Iterable<Customer> getAllCustomers() {
-		return customerService.findAll();
-	}
 
 	@GetMapping("/api/customer")
 	public Iterable<CustomerSummary> getAllCustomerDtos() {
@@ -33,12 +31,18 @@ public class CustomerController {
 
 	@GetMapping("/api/customer/{customerId}")
 	public ResponseEntity<?> getCustomer(@PathVariable Long customerId){
+		if(customerId == null || customerId <= 0){
+			return new ResponseEntity<String>("Invalid customer ID", HttpStatus.BAD_REQUEST);
+		}
 		CustomerSummary summary = customerService.findByIdDTO(customerId);
 		return new ResponseEntity<>(summary, summary != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/api/customer/{id}")
-    public ResponseEntity<?> updateCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
+    public ResponseEntity<?> updateCustomer(@Valid @RequestBody Customer newCustomer, @PathVariable Long id){
+		if(id == null || id <= 0){
+			return new ResponseEntity<String>("Invalid customer ID", HttpStatus.BAD_REQUEST);
+		}
 		CustomerSummary exist = customerService.editCustomer(id, newCustomer);
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }

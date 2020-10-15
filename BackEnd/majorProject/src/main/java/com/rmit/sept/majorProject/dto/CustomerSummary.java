@@ -15,10 +15,10 @@ public class CustomerSummary {
     private String phoneNumber;
     private List<Long> bookings = new ArrayList<Long>();
 
-    public CustomerSummary(Customer customer){
+    public CustomerSummary(Customer customer) {
         this.id = customer.getId();
         this.name = customer.getName();
-        for(Booking booking : customer.getBookings()){
+        for (Booking booking : customer.getBookings()) {
             this.bookings.add(booking.getBookingId());
         }
         this.email = customer.getEmail();
@@ -36,7 +36,7 @@ public class CustomerSummary {
     }
 
     public Iterable<Long> getBookings() {
-        return this.bookings;        
+        return this.bookings;
     }
 
     public String getEmail() {

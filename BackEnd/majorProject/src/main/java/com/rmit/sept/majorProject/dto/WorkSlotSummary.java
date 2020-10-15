@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.rmit.sept.majorProject.model.WorkSlot;
 import com.rmit.sept.majorProject.model.BookingSlot;
 
-public class WorkSlotSummary implements DateTime{
+public class WorkSlotSummary implements DateTime {
 
     private Long id;
     private Long workerId;
@@ -16,14 +16,14 @@ public class WorkSlotSummary implements DateTime{
     private LocalTime endTime;
     private ArrayList<BookingSlotSummary> bookingSlots = new ArrayList<BookingSlotSummary>();
 
-    public WorkSlotSummary(WorkSlot workSlot){
+    public WorkSlotSummary(WorkSlot workSlot) {
         this.id = workSlot.getId();
         this.workerId = workSlot.getWorker().getId();
         this.workerName = workSlot.getWorker().getName();
         this.date = workSlot.getDate();
         this.startTime = workSlot.getStartTime();
         this.endTime = workSlot.getEndTime();
-        for(BookingSlot bookingSlot : workSlot.getBookingSlots()){
+        for (BookingSlot bookingSlot : workSlot.getBookingSlots()) {
             this.bookingSlots.add(new BookingSlotSummary(bookingSlot));
         }
     }
@@ -54,17 +54,17 @@ public class WorkSlotSummary implements DateTime{
 
     public ArrayList<BookingSlotSummary> getBookingSlots() {
         return bookingSlots;
-    }   
+    }
 
     @Override
     public boolean equals(Object o) {
-    	if(((WorkSlotSummary) o).getDate().isEqual(date)
-    			&& ((WorkSlotSummary) o).getStartTime().compareTo(startTime) == 0
-    			&& ((WorkSlotSummary) o).getEndTime().compareTo(endTime) == 0
-    			&& ((WorkSlotSummary) o).getWorkerId() == workerId) {
-    		return true;
-    	}
-    	return false;
+        if (((WorkSlotSummary) o).getDate().isEqual(date)
+                && ((WorkSlotSummary) o).getStartTime().compareTo(startTime) == 0
+                && ((WorkSlotSummary) o).getEndTime().compareTo(endTime) == 0
+                && ((WorkSlotSummary) o).getWorkerId() == workerId) {
+            return true;
+        }
+        return false;
     }
-    
+
 }

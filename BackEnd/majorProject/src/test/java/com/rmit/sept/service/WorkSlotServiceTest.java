@@ -41,15 +41,15 @@ import com.rmit.sept.majorProject.service.WorkerService;
 
 @ExtendWith(SpringExtension.class)
 public class WorkSlotServiceTest {
-	
+
 	@TestConfiguration
-	static class WorkSlotServiceTestContextConfiguration{
+	static class WorkSlotServiceTestContextConfiguration {
 		@Bean
 		public WorkSlotService workSlotService() {
 			return new WorkSlotService();
 		}
 	}
-	
+
 	@Autowired
 	private WorkSlotService workSlotService;
 	@MockBean
@@ -59,10 +59,10 @@ public class WorkSlotServiceTest {
 	@MockBean
 	private ServiceService serviceService;
 	@MockBean
-    private WorkSlotRepository workSlotRepository;
+	private WorkSlotRepository workSlotRepository;
 	@MockBean
-    private BookingSlotRepository bookingSlotRepository;
-	
+	private BookingSlotRepository bookingSlotRepository;
+
 	WorkSlotBlueprint workSlotBPTest;
 	WorkSlot workSlotTest;
 	WorkSlot newWorkSlotTest;
@@ -71,26 +71,29 @@ public class WorkSlotServiceTest {
 	BookingSlot bookingSlotTest0;
 	BookingSlot bookingSlotTest1;
 	Iterable<BookingSlot> bookingSlotList = new ArrayList<BookingSlot>();
-	
-	
+
 	@BeforeEach
 	public void init() {
 		workSlotBPTest = new WorkSlotBlueprint(1L, 3L, "2021-12-03", "12:30", "14:30");
-		workerTest = new Worker("worker","workerUser","workerPass","worker@email.com","0 Worker Street", "123456789");
+		workerTest = new Worker("worker", "workerUser", "workerPass", "worker@email.com", "0 Worker Street",
+				"123456789");
 		workerTest.setId(1L);
 		businessTest = new Business("Busi Business");
 		businessTest.setId(3L);
 		workerTest.setBusiness(businessTest);
-		workSlotTest = new WorkSlot(LocalDate.parse("2021-12-03"),LocalTime.parse("12:30"), LocalTime.parse("14:30"),workerTest);
+		workSlotTest = new WorkSlot(LocalDate.parse("2021-12-03"), LocalTime.parse("12:30"), LocalTime.parse("14:30"),
+				workerTest);
 		workSlotTest.setId(1L);
-		bookingSlotTest0 = new BookingSlot(LocalDate.parse("2021-12-03"),LocalTime.parse("12:30"), LocalTime.parse("14:30"), null);
-		bookingSlotTest1 = new BookingSlot(LocalDate.parse("2021-12-05"),LocalTime.parse("12:30"), LocalTime.parse("14:30"), null);
+		bookingSlotTest0 = new BookingSlot(LocalDate.parse("2021-12-03"), LocalTime.parse("12:30"),
+				LocalTime.parse("14:30"), null);
+		bookingSlotTest1 = new BookingSlot(LocalDate.parse("2021-12-05"), LocalTime.parse("12:30"),
+				LocalTime.parse("14:30"), null);
 		((ArrayList<BookingSlot>) bookingSlotList).add(bookingSlotTest0);
 		((ArrayList<BookingSlot>) bookingSlotList).add(bookingSlotTest1);
-		
+
 	}
-	
-	//Add work slot with valid details
+
+	// Add work slot with valid details
 	@Test
 	public void testAddWorkSlot_ValidDetails() {
 		when(workerService.findById(workerTest.getId())).thenReturn(Optional.of(workerTest));
@@ -98,8 +101,8 @@ public class WorkSlotServiceTest {
 		when(workSlotRepository.save(workSlotTest)).thenReturn(workSlotTest);
 		assertEquals(new WorkSlotSummary(workSlotTest), workSlotService.createNewWorkSlot(workSlotBPTest));
 	}
-	
-	//Add work slot with invalid worker
+
+	// Add work slot with invalid worker
 	@Test
 	public void testAddWorkSlot_InvalidWorker() {
 		when(workerService.findById(workerTest.getId())).thenReturn(Optional.empty());
@@ -107,10 +110,10 @@ public class WorkSlotServiceTest {
 		when(workSlotRepository.save(workSlotTest)).thenReturn(workSlotTest);
 		Assertions.assertThrows(NoSuchElementException.class, () -> {
 			workSlotService.createNewWorkSlot(workSlotBPTest);
-		  });
+		});
 	}
-	
-	//Add work slot with invalid business
+
+	// Add work slot with invalid business
 	@Test
 	public void testAddWorkSlot_InvalidBusiness() {
 		when(workerService.findById(workerTest.getId())).thenReturn(Optional.of(workerTest));
@@ -118,10 +121,11 @@ public class WorkSlotServiceTest {
 		when(workSlotRepository.save(workSlotTest)).thenReturn(workSlotTest);
 		Assertions.assertThrows(DataRetrievalFailureException.class, () -> {
 			workSlotService.createNewWorkSlot(workSlotBPTest);
-		  });
+		});
 	}
-	
-	//Add work slot with an existing work slot that it is in conflict in terms of time
+
+	// Add work slot with an existing work slot that it is in conflict in terms of
+	// time
 	@Test
 	public void testAddWorkSlot_Overlap() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
@@ -131,10 +135,10 @@ public class WorkSlotServiceTest {
 		doReturn(true).when(workSlotSpy).workSlotOverlap(workSlotTest, null, workerTest.getId());
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
 			workSlotSpy.createNewWorkSlot(workSlotBPTest);
-		  });	
+		});
 	}
-	
-	//Delete an existing workslot in the database
+
+	// Delete an existing workslot in the database
 	@Test
 	public void testDeleteWorkSlot_ExistingWorkSlot() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
@@ -142,8 +146,8 @@ public class WorkSlotServiceTest {
 		when(bookingSlotRepository.findAllByWorkSlotId(workerTest.getId())).thenReturn(bookingSlotList);
 		assertTrue(workSlotSpy.deleteWorkSlot(workSlotTest.getId()));
 	}
-	
-	//Delete a non-existing workslot in the database
+
+	// Delete a non-existing workslot in the database
 	@Test
 	public void testDeleteWorkSlot_NonExistingWorkSlot() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
@@ -151,8 +155,8 @@ public class WorkSlotServiceTest {
 		when(bookingSlotRepository.findAllByWorkSlotId(workerTest.getId())).thenReturn(bookingSlotList);
 		assertFalse(workSlotSpy.deleteWorkSlot(workSlotTest.getId()));
 	}
-	
-	//Delete an existing workslot in the database with no booking slot 
+
+	// Delete an existing workslot in the database with no booking slot
 	@Test
 	public void testDeleteWorkSlot_NoBookingSlot() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
@@ -160,20 +164,22 @@ public class WorkSlotServiceTest {
 		when(bookingSlotRepository.findAllByWorkSlotId(workerTest.getId())).thenReturn(null);
 		assertTrue(workSlotSpy.deleteWorkSlot(workSlotTest.getId()));
 	}
-	
-	//Edit a work slot with valid details
+
+	// Edit a work slot with valid details
 	@Test
 	public void testEditWorkSlot_ValidDetails() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
-		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("10:30"), LocalTime.parse("15:30"),workerTest);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"), LocalTime.parse("10:30"),
+				LocalTime.parse("15:30"), workerTest);
 		newWorkSlotTest.setId(1L);
 		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
 		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
 		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
-		assertEquals(new WorkSlotSummary(newWorkSlotTest), workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest));		
+		assertEquals(new WorkSlotSummary(newWorkSlotTest),
+				workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest));
 	}
-	
-	//Edit a work slot with no details changed
+
+	// Edit a work slot with no details changed
 	@Test
 	public void testEditWorkSlot_NoChangedDetails() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
@@ -181,48 +187,52 @@ public class WorkSlotServiceTest {
 		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
 		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
 		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
-		assertEquals(new WorkSlotSummary(workSlotTest), workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest));		
+		assertEquals(new WorkSlotSummary(workSlotTest),
+				workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest));
 	}
-	
-	//Edit a work slot with work slot overlap
+
+	// Edit a work slot with work slot overlap
 	@Test
 	public void testEditWorkSlot_OverlapWorkSlot() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
-		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("10:30"), LocalTime.parse("15:30"),workerTest);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"), LocalTime.parse("10:30"),
+				LocalTime.parse("15:30"), workerTest);
 		newWorkSlotTest.setId(1L);
 		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
 		doReturn(true).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
 		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
 			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
-		  });
+		});
 	}
-	
-	//Edit a work slot with booking slot overlap
+
+	// Edit a work slot with booking slot overlap
 	@Test
 	public void testEditWorkSlot_OverlapBookingSlot() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
-		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("10:30"), LocalTime.parse("15:30"),workerTest);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"), LocalTime.parse("10:30"),
+				LocalTime.parse("15:30"), workerTest);
 		newWorkSlotTest.setId(1L);
 		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
 		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
 		doReturn(true).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
 		Assertions.assertThrows(DuplicateKeyException.class, () -> {
 			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
-		  });
+		});
 	}
-	
-	//Edit work slot with work slot time invalid
+
+	// Edit work slot with work slot time invalid
 	@Test
 	public void testEditWorkSlot_InvalidStartEndTime() {
 		WorkSlotService workSlotSpy = spy(workSlotService);
-		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"),LocalTime.parse("15:30"), LocalTime.parse("10:30"),workerTest);
+		newWorkSlotTest = new WorkSlot(LocalDate.parse("2022-12-03"), LocalTime.parse("15:30"),
+				LocalTime.parse("10:30"), workerTest);
 		newWorkSlotTest.setId(1L);
 		when(workSlotRepository.findById(workSlotTest.getId())).thenReturn(Optional.of(workSlotTest));
 		doReturn(false).when(workSlotSpy).workSlotOverlap(newWorkSlotTest, workSlotTest.getId(), workerTest.getId());
 		doReturn(false).when(workSlotSpy).bookingSlotOverlap(newWorkSlotTest, workSlotTest);
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
 			workSlotSpy.editWorkSlot(workSlotTest.getId(), newWorkSlotTest);
-		  });
+		});
 	}
 }

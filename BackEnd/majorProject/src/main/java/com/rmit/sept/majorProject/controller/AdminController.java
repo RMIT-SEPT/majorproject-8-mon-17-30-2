@@ -20,34 +20,40 @@ import com.rmit.sept.majorProject.utility.Util;
 @CrossOrigin(origins = Util.API_HOST)
 @RestController
 public class AdminController {
-	
+
 	@Autowired
 	private AdminService adminService;
 
 	@PostMapping("/api/admin")
-	public ResponseEntity<?> newAdmin(@RequestBody AdminBlueprint admin){
+	public ResponseEntity<?> newAdmin(@Valid @RequestBody AdminBlueprint admin) {
+		if (admin.getName() == null || admin.getPhoneNumber() == null || admin.getEmail() == null
+				|| admin.getUsername() == null || admin.getPassword() == null) {
+			return new ResponseEntity<String>("Insufficient data given", HttpStatus.BAD_REQUEST);
+		}
 		Admin newAdmin = adminService.registerNewAdminByBlueprint(admin);
 		return new ResponseEntity<>(newAdmin, newAdmin != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
-	
-    @GetMapping("/api/admin")
-	public Iterable<Admin> getAllAdmins(){
+
+	@GetMapping("/api/admin")
+	public Iterable<Admin> getAllAdmins() {
 		return adminService.findAll();
 	}
 
 	@GetMapping("/api/admin/{adminId}")
-	public ResponseEntity<?> getAdminById(@PathVariable Long adminId){
+	public ResponseEntity<?> getAdminById(@PathVariable Long adminId) {
+		if (adminId <= 0 || adminId == null) {
+			return new ResponseEntity<String>("Invalid admind ID passed", HttpStatus.BAD_REQUEST);
+		}
 		AdminSummary admin = adminService.findByIdDTO(adminId);
 		return new ResponseEntity<>(admin, admin != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 
 	@DeleteMapping("/api/admin/{adminId}")
-	public ResponseEntity<?> deleteAdmin(@Valid @PathVariable Long adminId){
-		if(adminId == null || adminId == 0)
-		{
+	public ResponseEntity<?> deleteAdmin(@PathVariable Long adminId) {
+		if (adminId == null || adminId <= 0) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
-	
+
 }

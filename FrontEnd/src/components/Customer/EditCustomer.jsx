@@ -13,6 +13,7 @@ function EditCustomer(props){
     const [phoneNumber, setPhoneNumber]  = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
 
@@ -20,7 +21,7 @@ function EditCustomer(props){
         if(!hasInit){
             init();
         }
-    },[name, address, phoneNumber, email, username, invalidData, hasInit]);
+    },[name, address, phoneNumber, email, username, password, invalidData, hasInit]);
 
     function init(){
         CustomerService.getCustomerById(props.customerId)
@@ -30,6 +31,7 @@ function EditCustomer(props){
             setPhoneNumber(response.data.phoneNumber);
             setEmail(response.data.email);
             setUsername(response.data.username);
+            setPassword(response.data.password);
         });
         setHasInit(true);
     }
@@ -41,7 +43,8 @@ function EditCustomer(props){
             address: address,
             phoneNumber: phoneNumber,
             email: email,
-            username: username
+            username: username,
+            password: password
         }
         CustomerService.updateCustomer(props.customerId, customer)
         .then((response) =>{
@@ -114,6 +117,17 @@ function EditCustomer(props){
                     placeholder="username"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
+                    required
+                />
+            </div>
+            <div className="form-input">
+                <label>Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                 />
             </div>

@@ -87,10 +87,13 @@ public class BookingSlotController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/api/booking-slot/{bookingSlotId}")
 	public ResponseEntity<?> updateBookingSlot(@Valid @RequestBody BookingSlotBlueprint newBookingSlot,
 			@PathVariable Long bookingSlotId) {
-		if (bookingSlotId <= 0 || newBookingSlot.getWorkSlotId() <= 0 || newBookingSlot.getWorkSlotId() == null
-				|| newBookingSlot.getDate() == null || newBookingSlot.getStartTime() == null
-				|| newBookingSlot.getEndTime() == null || newBookingSlot.getServiceIds() == null) {
-			return new ResponseEntity<String>("Invalid value(s) passed", HttpStatus.BAD_REQUEST);
+		if (bookingSlotId <= 0 || 
+			newBookingSlot.getWorkSlotId() <= 0 || 
+			newBookingSlot.getWorkSlotId() == null ||
+			newBookingSlot.getStartTime() == null || 
+			newBookingSlot.getEndTime() == null || 
+			newBookingSlot.getServiceIds() == null) {
+				return new ResponseEntity<String>("Invalid value(s) passed", HttpStatus.BAD_REQUEST);
 		}
 		BookingSlotSummary bookingSlot;
 		try {

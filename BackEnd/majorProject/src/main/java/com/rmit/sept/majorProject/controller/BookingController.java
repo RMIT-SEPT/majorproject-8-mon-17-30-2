@@ -46,11 +46,11 @@ public class BookingController {
 	}
 
 	@DeleteMapping("/api/booking/{bookingId}")
-	public ResponseEntity<?> cancelBooking(@PathVariable Long id) {
-		if (id == null || id <= 0) {
+	public ResponseEntity<?> cancelBooking(@PathVariable Long bookingId) {
+		if (bookingId == null || bookingId <= 0) {
 			return new ResponseEntity<String>("Invalid ID passed", HttpStatus.BAD_REQUEST);
 		}
-		Boolean result = this.bookingService.cancelBooking(id);
+		Boolean result = this.bookingService.cancelBooking(bookingId);
 		return new ResponseEntity<>(result ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 

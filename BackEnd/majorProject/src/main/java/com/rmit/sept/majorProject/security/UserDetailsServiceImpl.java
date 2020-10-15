@@ -30,9 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private WorkerRepository workerRepository;
 
     /*
-        search the database to see if the user exists,
-        if the user exists we create UserDetails for spring to authorise them
-        otherwise we can throw an exception
+     * search the database to see if the user exists, if the user exists we create
+     * UserDetails for spring to authorise them otherwise we can throw an exception
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,13 +40,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Worker worker = workerRepository.findByUsername(username);
         Admin admin = adminRepository.findByUsername(username);
 
-        if(customer != null){
+        if (customer != null) {
             person = customer;
-        } else if(worker != null) {
+        } else if (worker != null) {
             person = worker;
-        } else if(admin != null) {
+        } else if (admin != null) {
             person = admin;
-        } else{
+        } else {
             throw new UsernameNotFoundException("Username does not exist in the database");
         }
 

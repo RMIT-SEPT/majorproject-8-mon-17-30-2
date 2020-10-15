@@ -1,11 +1,12 @@
 package com.rmit.sept.majorProject.dto;
 
+// Used to receive front-end data in a clean package when creating a Business object
 public class BusinessBlueprint {
 
     private String name;
     private Iterable<ServiceBlueprint> services;
 
-    public BusinessBlueprint(){        
+    public BusinessBlueprint() {
     }
 
     public BusinessBlueprint(String name, Iterable<ServiceBlueprint> services) {
@@ -28,5 +29,5 @@ public class BusinessBlueprint {
     public void setServices(Iterable<ServiceBlueprint> services) {
         this.services = services;
     }
-    
+
 }

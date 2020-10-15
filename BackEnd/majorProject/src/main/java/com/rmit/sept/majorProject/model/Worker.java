@@ -19,7 +19,7 @@ import javax.validation.constraints.Email;
 
 @Entity
 public class Worker extends Person {
-    
+
     @Email
     private String email;
 
@@ -27,17 +27,16 @@ public class Worker extends Person {
     @NotEmpty
     private String address;
 
-    @Size(min=5, max=10)
+    @Size(min = 5, max = 10)
     private String phoneNumber;
 
     @ManyToOne
     private Business business;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "worker_services",
-        joinColumns = @JoinColumn(name = "worker_id"),
-        inverseJoinColumns = @JoinColumn(name = "service_id"))
-    private List<Service>  services = new ArrayList<Service>();
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "worker_services", joinColumns = @JoinColumn(name = "worker_id"), 
+               inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private List<Service> services = new ArrayList<Service>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
     private List<WorkSlot> workSlots = new ArrayList<WorkSlot>();
@@ -45,13 +44,13 @@ public class Worker extends Person {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<Booking>();
 
-    public Worker(){
+    public Worker() {
         this.role = Role.WORKER;
     }
 
-    //manual constructor for testing
-    public Worker(String name, String username, String password,
-                  String email, String address, String phoneNumber){
+    // manual constructor for testing
+    public Worker(String name, String username, String password, 
+                  String email, String address, String phoneNumber) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -61,8 +60,8 @@ public class Worker extends Person {
         this.role = Role.WORKER;
     }
 
-    //copy constructor
-    public Worker(Worker other){
+    // copy constructor
+    public Worker(Worker other) {
         this.name = other.getName();
         this.username = other.getUsername();
         this.password = other.getPassword();
@@ -73,8 +72,8 @@ public class Worker extends Person {
         this.role = Role.WORKER;
     }
 
-    //blueprint constructor
-    public Worker(WorkerBlueprint other){
+    // blueprint constructor
+    public Worker(WorkerBlueprint other) {
         this.name = other.getName();
         this.address = other.getAddress();
         this.phoneNumber = other.getPhoneNumber();
@@ -86,60 +85,65 @@ public class Worker extends Person {
 
     // --------------PERSONAL---------------
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
-    public void setEmail(String newEmail){
+
+    public void setEmail(String newEmail) {
         this.email = newEmail;
-    }    
-    public String getAddress(){
+    }
+
+    public String getAddress() {
         return this.address;
     }
-    public void setAddress(String newAddress){
+
+    public void setAddress(String newAddress) {
         this.address = newAddress;
     }
-    public String getPhoneNumber(){
+
+    public String getPhoneNumber() {
         return this.phoneNumber;
     }
-    public void setPhoneNumber(String newPhoneNumber){
+
+    public void setPhoneNumber(String newPhoneNumber) {
         this.phoneNumber = newPhoneNumber;
     }
 
-    //---------------SERVICES--------------
+    // ---------------SERVICES--------------
 
-    //add service
-    public void addService(Service service){
+    // add service
+    public void addService(Service service) {
         this.services.add(service);
         // service.addWorker(this);
     }
 
-    public void removeService(Service service){
-        if(!services.contains(service)){
+    public void removeService(Service service) {
+        if (!services.contains(service)) {
             return;
         }
         services.remove(service);
         // service.removeWorker(this);
     }
 
-    public void removeServices(){
-        for(Service serviceout : this.services){
+    public void removeServices() {
+        for (Service serviceout : this.services) {
             this.removeService(serviceout);
-        }            
+        }
     }
 
-    public void setServices(Iterable<Service> services){
+    public void setServices(Iterable<Service> services) {
         removeServices();
-        for(Service servicein : services){
+        for (Service servicein : services) {
             addService(servicein);
         }
     }
 
-    public Iterable<Service> getServices(){
+    public Iterable<Service> getServices() {
         return this.services;
-    } 
-    
-    //---------------WORKSLOTS---------------
-    
+    }
+
+    // ---------------WORKSLOTS---------------
+
     public void addWorkSlot(WorkSlot workSlot) {
         if (workSlots.contains(workSlot))
             return;
@@ -148,18 +152,18 @@ public class Worker extends Person {
     }
 
     public void removeWorkSlot(WorkSlot workSlot) {
-        if(!workSlots.contains(workSlot)){
+        if (!workSlots.contains(workSlot)) {
             return;
         }
         workSlots.remove(workSlot);
         workSlot.setWorker(null);
     }
 
-    public List<WorkSlot> getWorkSlots(){
+    public List<WorkSlot> getWorkSlots() {
         return this.workSlots;
     }
 
-    //----------------BOOKINGS---------------
+    // ----------------BOOKINGS---------------
 
     public void addBooking(Booking booking) {
         if (bookings.contains(booking))
@@ -169,53 +173,49 @@ public class Worker extends Person {
     }
 
     public void removeBooking(Booking booking) {
-        if(!bookings.contains(booking)){
+        if (!bookings.contains(booking)) {
             return;
         }
         bookings.remove(booking);
         booking.setWorker(null);
     }
 
-    public List<Booking> getBookings(){
+    public List<Booking> getBookings() {
         return this.bookings;
     }
 
-    //----------------BUSINESS----------------
+    // ----------------BUSINESS----------------
 
-    public Business getBusiness(){
+    public Business getBusiness() {
         return this.business;
     }
-    
+
     public void setBusiness(Business newBusiness) {
-        //prevent endless loop
-        if(sameAsFormer(newBusiness)){
+        // prevent endless loop
+        if (sameAsFormer(newBusiness)) {
             return;
         }
-        //set new owner
+        // set new owner
         Business oldBusiness = this.business;
         this.business = newBusiness;
-        //remove from the old business
-        if(oldBusiness!=null){
+        // remove from the old business
+        if (oldBusiness != null) {
             oldBusiness.removeWorker(this);
         }
-        //set myself into new owner
-        if(newBusiness!=null){
+        // set myself into new owner
+        if (newBusiness != null) {
             newBusiness.addWorker(this);
         }
     }
 
-    //-----------------UTIL--------------------
+    // -----------------UTIL--------------------
 
     private boolean sameAsFormer(Business newBusiness) {
-        return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
+        return this.business == null ? newBusiness == null : this.business.equals(newBusiness);
     }
-
 
     @Override
     public String toString() {
-        return "Worker{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Worker{" + "id=" + id + ", name='" + name + '\'' + '}';
     }
 }

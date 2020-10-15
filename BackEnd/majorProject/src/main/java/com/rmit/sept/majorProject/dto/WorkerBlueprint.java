@@ -1,7 +1,7 @@
 package com.rmit.sept.majorProject.dto;
 
 public class WorkerBlueprint {
-    
+
     private String name;
     private String address;
     private String phoneNumber;
@@ -10,11 +10,11 @@ public class WorkerBlueprint {
     private String password;
     private Long businessId;
 
-    public WorkerBlueprint(){        
+    public WorkerBlueprint() {
     }
 
-    public WorkerBlueprint(String name, String address, String phoneNumber, 
-                          String email, String username, String password, Long businessId) {
+    public WorkerBlueprint(String name, String address, String phoneNumber, String email, 
+                           String username, String password, Long businessId) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;

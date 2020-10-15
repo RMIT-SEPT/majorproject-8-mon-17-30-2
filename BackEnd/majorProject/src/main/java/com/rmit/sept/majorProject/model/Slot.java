@@ -11,44 +11,52 @@ public abstract class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     protected LocalDate date;
     protected LocalTime startTime;
     protected LocalTime endTime;
 
     // --------------GETTERS AND SETTERS---------------
-    
-    public Long getId(){
+
+    public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public LocalDate getDate(){
+
+    public LocalDate getDate() {
         return this.date;
     }
-    public boolean setDate(LocalDate newDate){
+
+    public boolean setDate(LocalDate newDate) {
         LocalDate current = this.date;
         this.date = newDate;
         return (current != newDate);
     }
-    public LocalTime getStartTime(){
+
+    public LocalTime getStartTime() {
         return this.startTime;
     }
-    public boolean setStartTime(LocalTime newStart){
+
+    public boolean setStartTime(LocalTime newStart) {
         LocalTime current = this.startTime;
         this.startTime = newStart;
         return (current != newStart);
     }
-    public LocalTime getEndTime(){
+
+    public LocalTime getEndTime() {
         return this.endTime;
     }
-    public boolean setEndTime(LocalTime newEnd){
+
+    public boolean setEndTime(LocalTime newEnd) {
         LocalTime current = this.endTime;
         this.endTime = newEnd;
         return (current != newEnd);
     }
-    public Long getDuration(){
+
+    public Long getDuration() {
         return ChronoUnit.MINUTES.between(this.startTime, this.endTime);
     }
 

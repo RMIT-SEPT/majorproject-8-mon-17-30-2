@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.dto;
 
+// Used to receive front-end data in a clean package when creating an Admin object
 public class AdminBlueprint {
     
     private String name;

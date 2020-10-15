@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.Booking.Status;
 
-public class BookingSummary implements DateTime{
+public class BookingSummary implements DateTime {
 
     private Long id;
     private Long customerId;
@@ -21,9 +21,8 @@ public class BookingSummary implements DateTime{
     private Long serviceId;
     private String serviceTitle;
     private Status status;
-    
 
-    public BookingSummary(Booking booking){
+    public BookingSummary(Booking booking) {
         this.id = booking.getBookingId();
         this.customerId = booking.getCustomer().getId();
         this.customerName = booking.getCustomer().getName();
@@ -84,35 +83,30 @@ public class BookingSummary implements DateTime{
         return date;
     }
 
-    public Long getBusinessId(){
+    public Long getBusinessId() {
         return this.businessId;
     }
 
     public String getBusinessName() {
         return businessName;
     }
-    
+
     public Status getStatus() {
-    	return this.status;
+        return this.status;
     }
-    
-    public boolean equals(BookingSummary summary)
-    {
-    	if(this.getCustomerId() == summary.getCustomerId()
-    			&& this.getWorkerId() == summary.getWorkerId()
-    			&& this.getBookingSlotId() == summary.getBookingSlotId()
-    			&& this.getServiceId() == summary.getServiceId()
-    			&& this.getBusinessId() == summary.getBusinessId())
-    	{
-    		return true;
-    	}
-    	return false;
+
+    public boolean equals(BookingSummary summary) {
+        if (this.getCustomerId() == summary.getCustomerId() && this.getWorkerId() == summary.getWorkerId()
+                && this.getBookingSlotId() == summary.getBookingSlotId()
+                && this.getServiceId() == summary.getServiceId() && this.getBusinessId() == summary.getBusinessId()) {
+            return true;
+        }
+        return false;
     }
-    
+
     @Override
-    public boolean equals(Object o)
-    {
-    	return equals((BookingSummary) o);
+    public boolean equals(Object o) {
+        return equals((BookingSummary) o);
     }
 
 }

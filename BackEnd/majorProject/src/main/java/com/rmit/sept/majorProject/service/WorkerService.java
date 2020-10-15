@@ -2,19 +2,19 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
-import com.rmit.sept.majorProject.dto.WorkerBlueprint;
-import com.rmit.sept.majorProject.dto.WorkerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.WorkerRepository;
+import com.rmit.sept.majorProject.dto.WorkerBlueprint;
+import com.rmit.sept.majorProject.dto.WorkerSummary;
 
 @Service
-public class WorkerService implements PersonService<Worker>{
+public class WorkerService implements PersonService<Worker> {
 
 	@Autowired
 	private WorkerRepository repository;
@@ -23,16 +23,16 @@ public class WorkerService implements PersonService<Worker>{
 	@Autowired
 	private DuplicateCheckService duplicateCheck;
 
-	//---------WORKER-SPECIFIC FUNCTIONS-----------
+	// ---------WORKER-SPECIFIC FUNCTIONS-----------
 
 	public Worker registerNewWorker(final Worker worker) throws DuplicateKeyException {
 		String email = worker.getEmail();
 		String username = worker.getUsername();
-        if(duplicateCheck.emailExists(email)) {
-            throw new DuplicateKeyException("An account already exists with email address: " + email);
+		if (duplicateCheck.emailExists(email)) {
+			throw new DuplicateKeyException("An account already exists with email address: " + email);
 		}
-		if(duplicateCheck.usernameExists(username)) {
-            throw new DuplicateKeyException("An account already exists with username: " + username);
+		if (duplicateCheck.usernameExists(username)) {
+			throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Worker newWorker = new Worker(worker);
 		return repository.save(newWorker);
@@ -40,28 +40,29 @@ public class WorkerService implements PersonService<Worker>{
 
 	public Worker registerNewWorkerByBlueprint(final WorkerBlueprint worker) throws DuplicateKeyException {
 		String username = worker.getUsername();
-		if(duplicateCheck.usernameExists(username)) {
-            throw new DuplicateKeyException("An account already exists with username: " + username);
+		if (duplicateCheck.usernameExists(username)) {
+			throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Worker newWorker = new Worker(worker);
 		businessService.findById(worker.getBusinessId()).addWorker(newWorker);
 		return repository.save(newWorker);
 	}
 
-	//---------------DTO FUNCTIONS--------------
+	// ---------------DTO FUNCTIONS--------------
 
-	public Iterable<WorkerSummary> getAllWorkersDTO(){
+	public Iterable<WorkerSummary> getAllWorkersDTO() {
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		Iterable<Worker> workers = repository.findAll();
-		for(Worker worker : workers){
+		for (Worker worker : workers) {
 			workerDtos.add(new WorkerSummary(worker));
 		}
 		return workerDtos;
 	}
-	public ArrayList<WorkerSummary> getAllWorkerDtosFromBusiness(long businessId){
+
+	public ArrayList<WorkerSummary> getAllWorkerDtosFromBusiness(long businessId) {
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		Iterable<Worker> workers = repository.findWorkersByBusinessId(businessId);
-		for(Worker worker : workers){
+		for (Worker worker : workers) {
 
 			workerDtos.add(new WorkerSummary(worker));
 		}
@@ -71,7 +72,7 @@ public class WorkerService implements PersonService<Worker>{
 	public WorkerSummary findByUsernameDTO(String username) {
 		Worker worker = repository.findByUsername(username);
 		WorkerSummary summary = null;
-		if(worker == null){
+		if (worker == null) {
 			throw new UsernameNotFoundException("Worker not found in the database");
 		} else {
 			summary = new WorkerSummary(worker);
@@ -79,22 +80,22 @@ public class WorkerService implements PersonService<Worker>{
 		return summary;
 	}
 
-	public WorkerSummary findByIdDTO(Long id){
+	public WorkerSummary findByIdDTO(Long id) {
 		WorkerSummary summary = null;
 		Optional<Worker> workerOptional = repository.findById(id);
 		Worker workerFound = workerOptional.get();
-		if (workerFound != null){
+		if (workerFound != null) {
 			summary = new WorkerSummary(workerFound);
 		}
 		return summary;
 	}
 
-	public WorkerSummary editWorker(Long workerId, Worker newWorker){
+	public WorkerSummary editWorker(Long workerId, Worker newWorker) {
 		// Search repository for existing target worker using Source ID (workerID)
 		Optional<Worker> workerOptional = repository.findById(workerId);
 		// Assign the found worker, can assign null due to OPTIONAL
 		Worker workerFound = workerOptional.get();
-		if (workerFound != null){
+		if (workerFound != null) {
 			// If worker exist, updates the values of that worker if there are changes.
 			if (newWorker.getName() != null) {
 				workerFound.setName(newWorker.getName());
@@ -125,9 +126,9 @@ public class WorkerService implements PersonService<Worker>{
 		repository.save(workerFound);
 		return new WorkerSummary(workerFound);
 	}
-	
-	//---------GENERIC PERSON FUNCTIONS------------
-	
+
+	// ---------GENERIC PERSON FUNCTIONS------------
+
 	@Override
 	public long count() {
 		return repository.count();
@@ -189,7 +190,7 @@ public class WorkerService implements PersonService<Worker>{
 	}
 
 	@Override
-	public Worker findByUsername(String username){
+	public Worker findByUsername(String username) {
 		return repository.findByUsername(username);
 	}
 

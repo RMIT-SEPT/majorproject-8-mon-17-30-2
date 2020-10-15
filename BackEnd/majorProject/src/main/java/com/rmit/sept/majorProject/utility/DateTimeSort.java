@@ -3,7 +3,7 @@ package com.rmit.sept.majorProject.utility;
 import java.util.Comparator;
 import com.rmit.sept.majorProject.dto.DateTime;
 
-public class DateTimeSort implements Comparator<DateTime>{
+public class DateTimeSort implements Comparator<DateTime> {
 
     @Override
     public int compare(DateTime o1, DateTime o2) {

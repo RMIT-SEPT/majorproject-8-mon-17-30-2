@@ -138,10 +138,14 @@ public class WorkSlotService {
         if (startTime.isAfter(endTime)) {
             throw new DataIntegrityViolationException("Start time is after the end time");
         }
-        if (date.isBefore(LocalDate.now())      ||
-            startTime.isBefore(LocalTime.now()) ||
-            endTime.isBefore(LocalTime.now())){
-                throw new DataIntegrityViolationException("Can't create slot in the past");
+        if (date.isBefore(LocalDate.now())) {
+            throw new DataIntegrityViolationException("Can't create slot in the past");
+        }
+        else if(date.isEqual(LocalDate.now())) {
+            if(startTime.isBefore(LocalTime.now()) ||
+               endTime.isBefore(LocalTime.now())){
+                    throw new DataIntegrityViolationException("Can't create slot in the past");
+               }
         }
 
         WorkSlot workslot = new WorkSlot(date, startTime, endTime, worker);

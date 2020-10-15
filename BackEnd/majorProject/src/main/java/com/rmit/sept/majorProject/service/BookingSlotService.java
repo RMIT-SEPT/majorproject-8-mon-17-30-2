@@ -185,6 +185,12 @@ public class BookingSlotService {
 					+ blueprint.getStartTime() + " and " + blueprint.getEndTime());
 		}
 
+		if (date.isBefore(LocalDate.now())      ||
+		startTime.isBefore(LocalTime.now()) ||
+		endTime.isBefore(LocalTime.now())){
+			throw new DataIntegrityViolationException("Can't create slot in the past");
+		}
+
 		workSlot.addBookingSlot(bookingSlot);
 		return new BookingSlotSummary(this.repository.save(bookingSlot));
 	}

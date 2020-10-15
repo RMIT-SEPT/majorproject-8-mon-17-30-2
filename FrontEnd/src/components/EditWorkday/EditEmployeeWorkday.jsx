@@ -117,7 +117,7 @@ function EditEmployeeWorkday(props) {
             handleClose();
             alert("Workslot Created!");
         }).catch(() => {
-            alert("Error: Workslot Overlap.\n" + workerName + " can't be in two places at once!\nTry a different time range.");
+            alert("Error: Workslot must not overlap and must be in future.");
         });  
         WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
         .then((response) =>{
@@ -138,7 +138,7 @@ function EditEmployeeWorkday(props) {
             handleClose();
             alert("BookingSlot Created!");
         }).catch((error) => {
-            alert(error.message + "Error: BookingSlot Overlap.\n" + workerName + " can't be in two places at once!\nTry a different time range.");
+            alert(error.message + "Error: BookingSlot must not overlap and must be in future.");
         });  
         WorkerService.getWorkSlotsByDateAndWorkerId(workerId, dateString)
         .then((response) =>{

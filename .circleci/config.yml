@@ -8,11 +8,11 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk-stretch
         environment:
-          ECR_REPOSITORY_NAME: majorproject
-          FULL_IMAGE_NAME: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject
-          IMAGE_TAGGED: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject:backend-latest
-          LOGIN_URI: 350650532482.dkr.ecr.us-east-1.amazonaws.com
-          CLUSTER_NAME: M1-8-Mon-17-30-2-cluster
+          ECR_REPOSITORY_NAME: agme
+          FULL_IMAGE_NAME: 388154285748.dkr.ecr.us-east-1.amazonaws.com/agme
+          IMAGE_TAGGED: 388154285748.dkr.ecr.us-east-1.amazonaws.com/agme:backend-latest
+          LOGIN_URI: 388154285748.dkr.ecr.us-east-1.amazonaws.com
+          CLUSTER_NAME: Agme-Cluster
           SERVICE_NAME: Backend
     steps:
       - checkout:
@@ -31,7 +31,7 @@ jobs:
       - store_test_results:
           path: target/surefire-reports
       - store_artifacts:
-          path: target/majorProject-2.0.0.RELEASE.jar
+          path: target/majorProject-3.0.0.RELEASE.jar
 
       - run:
           name: Install dependencies for AWS
@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Tag image
           command: |
-            docker tag majorproject:latest $IMAGE_TAGGED
+            docker tag agme:latest $IMAGE_TAGGED
       - run:
           name: Push image
           command: |
@@ -69,11 +69,11 @@ jobs:
     docker:
       - image: circleci/node:12.18.3
         environment:
-          ECR_REPOSITORY_NAME: majorproject
-          FULL_IMAGE_NAME: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject
-          IMAGE_TAGGED: 350650532482.dkr.ecr.us-east-1.amazonaws.com/majorproject:frontend-latest
-          LOGIN_URI: 350650532482.dkr.ecr.us-east-1.amazonaws.com
-          CLUSTER_NAME: M1-8-Mon-17-30-2-cluster
+          ECR_REPOSITORY_NAME: agme
+          FULL_IMAGE_NAME: 388154285748.dkr.ecr.us-east-1.amazonaws.com/agme
+          IMAGE_TAGGED: 388154285748.dkr.ecr.us-east-1.amazonaws.com/agme:frontend-latest
+          LOGIN_URI: 388154285748.dkr.ecr.us-east-1.amazonaws.com
+          CLUSTER_NAME: Agme-Cluster
           SERVICE_NAME: Frontend
     steps:
       - checkout:
@@ -112,7 +112,7 @@ jobs:
       - run:
           name: Tag image
           command: |
-            docker tag majorproject:latest $IMAGE_TAGGED
+            docker tag agme:latest $IMAGE_TAGGED
       - run:
           name: Push image
           command: |

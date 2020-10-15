@@ -1,6 +1,4 @@
-const API_HOST = 'http://localhost:8080'
-// const API_HOST = 'http://m1-8-mon-17-30-2-lb-backend-341176039.us-east-1.elb.amazonaws.com:8080'
-// const API_HOST = 'http://milestone2application-env.eba-zp9wdxdp.us-east-1.elasticbeanstalk.com'
+const API_HOST = 'http://agme-backend-1478947806.us-east-1.elb.amazonaws.com'
 const GET_CUSTOMER_URL = '/api/customer/';
 const POST_CUSTOMER_URL= "/api/customer/register/";
 

@@ -9,6 +9,7 @@ function EditWorker(props){
     const [phoneNumber, setPhoneNumber]  = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [hasInit, setHasInit] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
 
@@ -16,7 +17,7 @@ function EditWorker(props){
         if(!hasInit){
             init();
         }
-    },[name, address, phoneNumber, email, username, invalidData, hasInit]);
+    },[name, address, phoneNumber, email, username, password, invalidData, hasInit]);
 
     function init(){
         WorkerService.getWorkerById(props.match.params.workerId)
@@ -37,7 +38,8 @@ function EditWorker(props){
             address: address,
             phoneNumber: phoneNumber,
             email: email,
-            username: username
+            username: username,
+            password: password
         }
         WorkerService.updateWorker(props.match.params.workerId, worker)
         .then((response) =>{
@@ -110,6 +112,17 @@ function EditWorker(props){
                     placeholder="username"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
+                    required
+                />
+            </div>
+            <div className="form-input">
+                <label>Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter a new password if desired"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                 />
             </div>

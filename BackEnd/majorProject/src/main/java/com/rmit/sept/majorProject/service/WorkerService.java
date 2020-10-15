@@ -118,6 +118,9 @@ public class WorkerService implements PersonService<Worker> {
 			if (newWorker.getUsername() != null) {
 				workerFound.setUsername(newWorker.getUsername());
 			}
+			if (newWorker.getPassword() != null) {
+				workerFound.setPassword(newWorker.getPassword());
+			}
 			if (newWorker.getPhoneNumber() != null) {
 				workerFound.setPhoneNumber((newWorker.getPhoneNumber()));
 			}

@@ -31,7 +31,6 @@ function EditCustomer(props){
             setPhoneNumber(response.data.phoneNumber);
             setEmail(response.data.email);
             setUsername(response.data.username);
-            setPassword(response.data.password);
         });
         setHasInit(true);
     }
@@ -125,7 +124,7 @@ function EditCustomer(props){
                 <input
                     type="password"
                     name="password"
-                    placeholder="password"
+                    placeholder="Enter a new password, if desired"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required

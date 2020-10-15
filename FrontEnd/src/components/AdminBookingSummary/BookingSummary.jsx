@@ -1,8 +1,11 @@
 import React from "react";
 import DashboardCard from "../Dashboard/DashboardCard";
 import "../../css/BookingSummary.css"
-function BookingSummary(){
 
+/*
+    Page to bridge between viewing past bookings or incoming bookings for a business
+*/
+function BookingSummary(){
 
     return(
         <div className="booking-summary-heading">

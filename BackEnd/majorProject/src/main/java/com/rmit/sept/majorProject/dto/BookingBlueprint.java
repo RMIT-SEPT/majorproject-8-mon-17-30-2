@@ -1,5 +1,6 @@
 package com.rmit.sept.majorProject.dto;
 
+// Used to receive front-end data in a clean package when creating a Booking object
 public class BookingBlueprint {
 
     private Long customerId;
@@ -8,10 +9,10 @@ public class BookingBlueprint {
     private Long bookingSlotId;
     private Long serviceId;
 
-    public BookingBlueprint(){        
+    public BookingBlueprint() {
     }
 
-    public BookingBlueprint(Long customerId, Long workerId, Long businessId,
+    public BookingBlueprint(Long customerId, Long workerId, Long businessId, 
                             Long bookingSlotId, Long serviceId) {
         this.customerId = customerId;
         this.workerId = workerId;

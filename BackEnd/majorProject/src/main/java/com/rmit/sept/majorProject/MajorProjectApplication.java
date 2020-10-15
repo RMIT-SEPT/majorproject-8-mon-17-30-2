@@ -64,7 +64,7 @@ public class MajorProjectApplication {
 			Worker john = new Worker("John", "john", "pword", "worker@bookworm.com", "address", "12345");
 			Worker tom = new Worker("Tom", "tom", "blisters", "fish@restaurant.com", "46 restaurant ln", "647382");
 			Worker scott = new Worker("Scott", "scott", "thewoz", "scottthewoz@madden08.com", "34 room st", "81813108");
-			Worker seth = new Worker("Seth", "seth", "etsca", "professionalSmuggler@auspost.com.au", "In hiding", "97770007");
+			Worker seth = new Worker("Seth", "seth", "etsca", "professionalPostman@auspost.com.au", "3 mailbox st", "97770007");
 			Worker mbeke = new Worker("Mbeke", "Mmbeke", "snakes", "superstar@auspost.com.au", "64 village st", "52781853");
 			Worker jcd = new Worker("JC", "jcd", "bionicman", "whatashame@unacto.com", "11 Antarctica St", "820989868");
 			Worker paul = new Worker("Paul", "pdenton", "chameleon", "pauld@unacto.com", "14 Ton Hotel", "33344346");
@@ -75,30 +75,30 @@ public class MajorProjectApplication {
 			Admin caramel = new Admin("Admin", "caramel6", "password");			
 			Admin puzzleboy = new Admin("Puzzle Boy","puzzles", "are fun");
 			Admin mandy = new Admin("Mandy", "manG", "ahhhh");
-			Admin bob = new Admin("Bob", "Page", "UberAlles");
+			Admin bob = new Admin("Bob", "Page", "Alles");
 			Admin flynn= new Admin("Flynn", "flynn", "neutral");
 			
 			//create a business
-			Business barber = new Business("Barber");
+			Business barber = new Business("Caramel Barber");
 			barber.addWorker(john);
 			barber.setBusinessOwner(caramel);			
 			
-			Business restaurant = new Business("Restaurant");
+			Business restaurant = new Business("Puzzleboy Restaurant");
 			restaurant.addWorker(tom);
 			restaurant.addWorker(scott);
 			restaurant.setBusinessOwner(puzzleboy);
 			
-			Business delivery = new Business("Delivery Service");
+			Business delivery = new Business("Mandy's Delivery Service");
 			delivery.addWorker(seth);
 			delivery.addWorker(mbeke);
 			delivery.setBusinessOwner(mandy);
 			
-			Business consultancy = new Business("Consultancy");
+			Business consultancy = new Business("Page Consultancy");
 			consultancy.addWorker(jcd);
 			consultancy.addWorker(paul);
 			consultancy.setBusinessOwner(bob);
 			
-			Business exterminator = new Business("Exterminator Service");
+			Business exterminator = new Business("Flynn's Exterminator Service");
 			exterminator.addWorker(walter);
 			exterminator.addWorker(isabeau);
 			exterminator.setBusinessOwner(flynn);
@@ -106,6 +106,8 @@ public class MajorProjectApplication {
 			//create date/times
 			LocalDate day              = LocalDate.of(2021, 12, 31);
 			LocalDate oldDay           = LocalDate.of(2007, 9, 25);
+			LocalDate oldDay2          = LocalDate.of(2009, 10, 30);
+			LocalDate oldDay3          = LocalDate.of(2010, 1, 30);
 			LocalTime shiftStartTime   = LocalTime.of(10, 00);
 			LocalTime shiftEndTime     = LocalTime.of(17, 00);
 			LocalTime bookingStartTime = LocalTime.of(14, 30);
@@ -113,21 +115,33 @@ public class MajorProjectApplication {
 
 			//services
 			Service haircut = new Service("Haircut", "Cut off absolutely all of your hair", 1);
-			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);		
+			Service beardtrim = new Service("Beard Trim", "Get your beard trimmed or shaved", 1);
+			barber.addService(haircut);
+			barber.addService(beardtrim);		
 			
 			Service reserveTable = new Service("Reserve Table", "Book a table and attend to them", 1);
 			Service birthday = new Service("Birthday Service", "Book a room for a birthday celebration and attend to them", 2);
-			Service foodShow = new Service("Cooking food show", "Cook your food in front of you and put on a show", 1);
+			Service foodShow = new Service("Cooking presentation", "Cook your food in front of you and put on a presentation", 1);
+			restaurant.addService(reserveTable);
+			restaurant.addService(birthday);
+			restaurant.addService(foodShow);
 			
-			Service movingService = new Service("Moving", "Come to you and get your stuff somewhere else", 2);
+			Service movingService = new Service("Moving", "Come to you and move your stuff somewhere else", 2);
 			Service smuggling = new Service("Smuggle", "We can smuggle anything out of the country", 1);
+			delivery.addService(movingService);
+			delivery.addService(smuggling);
 			
-			Service strategy = new Service("Strategy Consultation", "We talk strategy",1);
-			Service organisation = new Service("Organisation Consultation", "We talk organisation",1);
-			Service training = new Service("Training Service", "Train people", 2);
+			Service strategy = new Service("Strategy Consultation", "Consult financial strategy",1);
+			Service organisation = new Service("Organisation Consultation", "Consult organisational strategy",1);
+			Service training = new Service("Training Service", "Train people for your company", 2);
+			consultancy.addService(strategy);
+			consultancy.addService(organisation);
+			consultancy.addService(training);
 			
 			Service pestExt = new Service("Pest Extermination", "We kill those pests", 1);
 			Service animal = new Service("Relocate Animals", "Relocate animals that wandered into neighbourhoods", 1);
+			exterminator.addService(pestExt);
+			exterminator.addService(animal);
 					
 			//john offers haircuts or beard trims during his working slots
 			List<Service> johnServices = new ArrayList<Service>();
@@ -218,10 +232,20 @@ public class MajorProjectApplication {
 			BookingSlot isabeauSlot0 = new BookingSlot(LocalDate.of(2021, 11, 7), LocalTime.of(12, 00), LocalTime.of(17, 00), isabeauServices);
 			isabeauShift0.addBookingSlot(isabeauSlot0);
 			
+			WorkSlot isabeauShift1 = new WorkSlot(LocalDate.of(2020, 9, 26), LocalTime.of(12, 00), LocalTime.of(14, 00), isabeau);
+			BookingSlot isabeauSlot1 = new BookingSlot(LocalDate.of(2020, 9, 26), LocalTime.of(12, 00), LocalTime.of(14, 00), isabeauServices);
+			isabeauShift1.addBookingSlot(isabeauSlot1);
+			
 			// // //old shift and bookingslot for past booking/booking history testing
 			WorkSlot oldShift = new WorkSlot(oldDay, shiftStartTime, shiftEndTime, john);
+			WorkSlot oldShift2 = new WorkSlot(oldDay2, shiftStartTime, bookingStartTime, john);
+			WorkSlot oldShift3 = new WorkSlot(oldDay3, bookingStartTime, shiftEndTime, john);
 			BookingSlot oldSlot = new BookingSlot(oldDay, bookingStartTime, bookingEndTime, johnServices);
+			BookingSlot oldSlot2 = new BookingSlot(oldDay2, shiftStartTime, bookingStartTime, johnServices);
+			BookingSlot oldSlot3 = new BookingSlot(oldDay3, bookingStartTime, shiftEndTime, johnServices);
 			oldShift.addBookingSlot(oldSlot);
+			oldShift2.addBookingSlot(oldSlot2);
+			oldShift3.addBookingSlot(oldSlot3);
 	
 			// vacant upcoming bookingSlots
 			LocalDate newDay1 = day.plusDays(1);
@@ -242,11 +266,17 @@ public class MajorProjectApplication {
 			
 			Booking hershelBooking0 = new Booking(hershel, tom, restaurant, reserveTable, tomSlot0);
 			hershelBooking0.getBookingSlot().setBookedService(reserveTable);
+			
+			Booking hershelBooking1 = new Booking(hershel, isabeau, exterminator, animal, isabeauSlot1);
+			hershelBooking1.getBookingSlot().setBookedService(animal);
 
 			// //old bookings
 			Booking oldBooking = new Booking(austin, john, barber, beardtrim, oldSlot);
-			Booking oldBooking1 = new Booking(austin, john, barber, beardtrim, oldSlot);
-			Booking oldBooking2 = new Booking(austin, john, barber, beardtrim, oldSlot);
+			Booking oldBooking2 = new Booking(austin, john, barber, haircut, oldSlot2);
+			Booking oldBooking3 = new Booking(austin, john, barber, beardtrim, oldSlot3);
+			oldBooking.setStatusCompleted();
+			oldBooking2.setStatusCompleted();
+			oldBooking3.setStatusCompleted();
 
 			//save everything to repos (do this at the end to avoid detach errors)
 			businessRepository.save(barber);
@@ -293,6 +323,8 @@ public class MajorProjectApplication {
 			
 			workSlotRepository.save(johnShift);
 			workSlotRepository.save(oldShift);
+			workSlotRepository.save(oldShift2);
+			workSlotRepository.save(oldShift3);
 			workSlotRepository.save(newShift1);
 			workSlotRepository.save(newShift2);
 			bookingSlotRepository.save(johnSlot);
@@ -308,9 +340,12 @@ public class MajorProjectApplication {
 			workSlotRepository.save(paulShift0);
 			workSlotRepository.save(walterShift0);
 			workSlotRepository.save(isabeauShift0);
+			workSlotRepository.save(isabeauShift1);
 			
 			bookingSlotRepository.save(johnSlot);
-			bookingSlotRepository.save(oldSlot);	
+			bookingSlotRepository.save(oldSlot);
+			bookingSlotRepository.save(oldSlot2);
+			bookingSlotRepository.save(oldSlot3);	
 			bookingSlotRepository.save(tomSlot0);
 			bookingSlotRepository.save(tomSlot1);
 			bookingSlotRepository.save(scottSlot0);
@@ -320,13 +355,15 @@ public class MajorProjectApplication {
 			bookingSlotRepository.save(paulSlot0);
 			bookingSlotRepository.save(walterSlot0);
 			bookingSlotRepository.save(isabeauSlot0);
-			
+			bookingSlotRepository.save(isabeauSlot1);
+
+			bookingRepository.save(oldBooking);
+			bookingRepository.save(oldBooking2);
+			bookingRepository.save(oldBooking3);
 			bookingRepository.save(austinBooking);
 			bookingRepository.save(lukeBooking0);
 			bookingRepository.save(hershelBooking0);
-			bookingRepository.save(oldBooking);
-			bookingRepository.save(oldBooking1);
-			bookingRepository.save(oldBooking2);
+			bookingRepository.save(hershelBooking1);
 			
 		};
 	}

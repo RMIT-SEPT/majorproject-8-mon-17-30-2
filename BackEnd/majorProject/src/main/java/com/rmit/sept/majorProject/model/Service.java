@@ -10,86 +10,94 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Service {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long   id;  
+    private Long id;
 
     private String title;
     private String description;
     private int    capacity;
-    
+
     @ManyToOne
     private Business business;
 
     @ManyToMany(mappedBy = "services")
     private List<Worker> workers;
 
-    public Service(String title, String description, int capacity){
+    public Service(String title, String description, int capacity) {
         this.title = title;
         this.description = description;
         this.capacity = capacity;
     }
 
-    public Service(){}
+    public Service() {
+    }
 
     // --------------GETTERS AND SETTERS---------------
 
-
-    public Long getId(){
+    public Long getId() {
         return this.id;
     }
+
     public void setId(long id) {
-    	this.id = id;
+        this.id = id;
     }
-    public String getTitle(){
+
+    public String getTitle() {
         return this.title;
     }
-    public boolean setTitle(String newTitle){
+
+    public boolean setTitle(String newTitle) {
         String current = this.title;
         this.title = newTitle;
         return (current != newTitle);
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return this.description;
     }
-    public boolean setDescription(String newDescription){
+
+    public boolean setDescription(String newDescription) {
         String current = this.description;
         this.description = newDescription;
         return (current != newDescription);
     }
-    public int getCapacity(){
+
+    public int getCapacity() {
         return this.capacity;
     }
-    public boolean setCapacity(int newCapacity){
+
+    public boolean setCapacity(int newCapacity) {
         int current = this.capacity;
         this.capacity = newCapacity;
         return (current != newCapacity);
     }
 
+    // public Business getBusiness() {
+    // return this.business;
+    // }
+
     public void setBusiness(Business newBusiness) {
-        if(sameAsFormer(newBusiness)){
+        if (sameAsFormer(newBusiness)) {
             return;
         }
         Business oldBusiness = this.business;
         this.business = newBusiness;
-        if (oldBusiness!=null){
+        if (oldBusiness != null) {
             oldBusiness.removeService(this);
         }
-        if(newBusiness!=null){
+        if (newBusiness != null) {
             newBusiness.addService(this);
         }
     }
 
     private boolean sameAsFormer(Business newBusiness) {
-        return this.business==null ? newBusiness == null : this.business.equals(newBusiness);
+        return this.business == null ? newBusiness == null : this.business.equals(newBusiness);
     }
 
     @Override
     public String toString() {
-        return "Service{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
+        return "Service{" + "id=" + id + ", title='" + title + '\'' + '}';
     }
 }

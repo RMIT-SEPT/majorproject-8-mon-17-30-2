@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
+import {Link} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService"
 import GetRequestService from "../../services/GetRequestService";
 import {CUSTOMER, WORKER, ADMIN, BUSINESS_ID_SESSION_ATTRIBUTE} from "../../Utils/utils";
-
+/*
+    Used in the dashboard to retrieve and display users information
+*/
 function Profile(props){
     const authenticatedUser = AuthenticationService.getLoggedInUserName();
     const authenticatedUserId = AuthenticationService.getLoggedInId();
-   
+   //init state
     const[userDetails, setUserDetails] = useState({});
     const [services, setServices] = useState([]); 
+
+    //set state to user details
     useEffect(() => {
         // GetRequestService.getRequestUsername(props.apiUrl, authenticatedUser)
         GetRequestService.getRequestId(props.apiUrl, authenticatedUserId)
@@ -33,6 +38,8 @@ function Profile(props){
             <hr className="my-4"/>
             <ul className="list-group profile-list">
                 <li className="list-group-item">Username: {userDetails.username}</li>
+                {AuthenticationService.getRole() === CUSTOMER &&
+                <li className="list-group-item">Email: {userDetails.email}</li>}
                 <li className="list-group-item">Name: {userDetails.name}</li>
                 {(AuthenticationService.getRole() === CUSTOMER || AuthenticationService.getRole() === WORKER) &&    
                 <div>
@@ -51,9 +58,13 @@ function Profile(props){
                    </div>
                 }
             </ul>
-            {AuthenticationService.getRole() !== WORKER && 
+            {AuthenticationService.getRole() === ADMIN && 
                 <button className="btn btn-info profile-btn">Edit Details here</button>
-           }
+            }
+            {AuthenticationService.getRole() === CUSTOMER && 
+            <Link to={'/customer/edit'}>
+                <button className="btn btn-info profile-btn">Edit Details here</button>
+            </Link>}
             
 
         </div>

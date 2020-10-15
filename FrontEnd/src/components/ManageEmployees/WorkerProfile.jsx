@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from "react";
 import "../../css/Dashboard.css";
 import GetRequestService from "../../services/GetRequestService";
-import WorkerScheduleTable from "../Dashboard/WorkerScheduleTable";
+import WorkdaySchedule from "../WorkSchedule/WorkdaySchedule";
+import AuthenticationService from "../../services/AuthenticationService";
+import {ADMIN} from "../../Utils/utils";
 import {Link} from "react-router-dom";
-
+import moment from 'moment';
+// Shows worker profile, used for admin to be able to edit their roster and edit their details
 function WorkerProfile(props){
       // TO access business ID use props.match.params.workerId
   
@@ -15,7 +18,6 @@ function WorkerProfile(props){
         .then((response) => {        
             setUserDetails(response.data);
             setServices(response.data.services);    
-            console.log(response.data);
         })
         .catch(() => {
             console.log("ERROR USER CANNOT BE FOUND");
@@ -45,16 +47,22 @@ function WorkerProfile(props){
                         {services.map(service => <li className="list-group-item" key={service.id}> {service.title}</li>)}
                     </div>
                 
-                </ul>
-                
-                <Link to={`/workers/edit/${props.match.params.workerId}`}>
+                </ul>                
+                <Link to={`/worker/${props.match.params.workerId}/edit`}>
                     <button className="btn btn-info profile-btn">Edit Details here</button>
                 </Link>
-            
-                
+
+                <br/><br/>
+                <h1 className="display-4">Assigned Working Hours</h1>
+                <WorkdaySchedule workerId={props.match.params.workerId} date={moment().format("YYYY-MM-DD")}/>
+                {AuthenticationService.getRole() === ADMIN ?
+                // if logged in as admin, offer an "edit roster" button
+                <Link to={`/worker/${props.match.params.workerId}/work-slots/edit`}>
+                    <button className="btn btn-info profile-btn">Edit Roster</button>
+                </Link>:<></>}
             
             </div>
-        <WorkerScheduleTable/>
+
         </div>
        
 

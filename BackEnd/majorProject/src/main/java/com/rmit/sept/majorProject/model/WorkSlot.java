@@ -20,8 +20,8 @@ public class WorkSlot extends Slot {
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "workSlot", orphanRemoval = true)
     private List<BookingSlot> bookingSlots = new ArrayList<BookingSlot>();
-    
-    public WorkSlot(LocalDate date, LocalTime startTime, LocalTime endTime, Worker worker){
+
+    public WorkSlot(LocalDate date, LocalTime startTime, LocalTime endTime, Worker worker) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -29,48 +29,60 @@ public class WorkSlot extends Slot {
         this.business = worker.getBusiness();
     }
 
-    public WorkSlot(){
+    public WorkSlot() {
     }
-    
+
     // --------------GETTERS AND SETTERS---------------
 
     public void addBookingSlot(BookingSlot newSlot) {
-        //prevent endless loop
+        // prevent endless loop
         if (bookingSlots.contains(newSlot))
-            return ;
-        //add new booking slot
+            return;
+        // add new booking slot
         bookingSlots.add(newSlot);
-        //set this as bookingslot's parent
+        // set this as bookingslot's parent
         newSlot.setWorkSlot(this);
     }
 
     public void removeBookingSlot(BookingSlot slotToRemove) {
-        //prevent endless loop
+        // prevent endless loop
         if (!bookingSlots.contains(slotToRemove))
-            return ;
-        //remove the booking slot
+            return;
+        // remove the booking slot
         bookingSlots.remove(slotToRemove);
-        //remove this as bookingslot's parent
+        // remove this as bookingslot's parent
         slotToRemove.setWorkSlot(null);
     }
 
-    public LocalDate getDate(){
+    public LocalDate getDate() {
         return this.date;
     }
-    public boolean setDate(LocalDate newDate){
+
+    public boolean setDate(LocalDate newDate) {
         LocalDate current = this.date;
         this.date = newDate;
         return (current != newDate);
     }
-    public List<BookingSlot> getBookingSlots(){
+
+    public List<BookingSlot> getBookingSlots() {
         return this.bookingSlots;
     }
-    public void setWorker(Worker worker){
+
+    public void setWorker(Worker worker) {
         this.worker = worker;
     }
 
-    public Worker getWorker(){
+    public Worker getWorker() {
         return this.worker;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (((WorkSlot) o).getDate().isEqual(date) && ((WorkSlot) o).getStartTime().compareTo(startTime) == 0
+                && ((WorkSlot) o).getEndTime().compareTo(endTime) == 0 && ((WorkSlot) o).getWorker().equals(worker)) {
+            return true;
+        }
+        return false;
+    }
+
 }

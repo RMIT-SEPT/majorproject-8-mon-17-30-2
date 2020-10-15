@@ -2,14 +2,16 @@ package com.rmit.sept.majorProject.service;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import com.rmit.sept.majorProject.dto.AdminSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.model.Person.Role;
 import com.rmit.sept.majorProject.repository.AdminRepository;
+import com.rmit.sept.majorProject.dto.AdminSummary;
+import com.rmit.sept.majorProject.dto.AdminBlueprint;
 
 @Service
 public class AdminService implements PersonService<Admin> {
@@ -19,51 +21,59 @@ public class AdminService implements PersonService<Admin> {
 	@Autowired
 	private DuplicateCheckService duplicateCheck;
 
-	//--------ADMIN-SPECIFIC FUNCTIONS----------
+	// --------ADMIN-SPECIFIC FUNCTIONS----------
 
 	public Admin registerNewAdmin(final Admin admin) throws DuplicateKeyException {
 		String username = admin.getUsername();
-		if(duplicateCheck.usernameExists(username)) {
-            throw new DuplicateKeyException("An account already exists with username: " + username);
+		if (duplicateCheck.usernameExists(username)) {
+			throw new DuplicateKeyException("An account already exists with username: " + username);
 		}
 		Admin newAdmin = new Admin(admin);
 		return repository.save(newAdmin);
 	}
 
-	//---------------DTO FUNCTIONS--------------
+	public Admin registerNewAdminByBlueprint(final AdminBlueprint admin) throws DuplicateKeyException {
+		String username = admin.getUsername();
+		if (duplicateCheck.usernameExists(username)) {
+			throw new DuplicateKeyException("An account already exists with username: " + username);
+		}
+		Admin newAdmin = new Admin(admin);
+		return repository.save(newAdmin);
+	}
 
-	public Iterable<AdminSummary> findAllDTO(){
+	// ---------------DTO FUNCTIONS--------------
+
+	public Iterable<AdminSummary> findAllDTO() {
 		ArrayList<AdminSummary> adminDtos = new ArrayList<AdminSummary>();
 		Iterable<Admin> admins = repository.findAll();
-		for(Admin admin : admins){
+		for (Admin admin : admins) {
 			adminDtos.add(new AdminSummary(admin));
 		}
 		return adminDtos;
 	}
-	
-    public AdminSummary findByUsernameDTO(String adminUsername) {
+
+	public AdminSummary findByUsernameDTO(String adminUsername) {
 		Admin admin = repository.findByUsername(adminUsername);
 		AdminSummary summary = null;
-		if(admin == null){
+		if (admin == null) {
 			throw new UsernameNotFoundException("Admin not found in the database");
-		} 
-		else {
+		} else {
 			summary = new AdminSummary(admin);
 		}
 		return summary;
 	}
-	
-	public AdminSummary findByIdDTO(Long id){
+
+	public AdminSummary findByIdDTO(Long id) {
 		AdminSummary summary = null;
 		Optional<Admin> customerOptional = repository.findById(id);
 		Admin adminFound = customerOptional.get();
-		if (adminFound != null){
+		if (adminFound != null) {
 			summary = new AdminSummary(adminFound);
 		}
 		return summary;
 	}
-	
-    //---------GENERIC PERSON FUNCTIONS---------
+
+	// ---------GENERIC PERSON FUNCTIONS---------
 
 	@Override
 	public long count() {
@@ -134,5 +144,5 @@ public class AdminService implements PersonService<Admin> {
 	public Iterable<Admin> findByRole(Role role) {
 		return repository.findByRole(role);
 	}
-	
+
 }

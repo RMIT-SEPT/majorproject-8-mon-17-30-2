@@ -1,4 +1,4 @@
-package com.rmit.sept.majorProject.query;
+package com.rmit.sept.majorProject.dto;
 
 import java.time.LocalDate;
 import com.rmit.sept.majorProject.model.Service;
@@ -8,27 +8,27 @@ import com.rmit.sept.majorProject.model.Service;
  * in order to compartmentalise the business, worker and date objects for request.
  */
 public class SearchRequest {
-	
+
 	private Long businessId;
 	private Long serviceId;
 	private Long workerId;
 	private String dateString;
 	private LocalDate date;
 	private Service service;
-	
-	public SearchRequest(){
+
+	public SearchRequest() {
 	}
-	
-	public SearchRequest(Long businessId, Long serviceId, Long workerId, String dateString){
+
+	public SearchRequest(Long businessId, Long serviceId, Long workerId, String dateString) {
 		this.businessId = businessId;
 		this.serviceId = serviceId;
 		this.workerId = workerId;
 		this.dateString = dateString;
-		if(dateString != ""){
+		if (dateString != "") {
 			this.date = LocalDate.parse(dateString);
-		}		
-	}	
-	
+		}
+	}
+
 	public Long getBusinessId() {
 		return this.businessId;
 	}
@@ -36,11 +36,11 @@ public class SearchRequest {
 	public Long getServiceId() {
 		return this.serviceId;
 	}
-	
+
 	public Long getWorkerId() {
 		return this.workerId;
 	}
-	
+
 	public LocalDate getDate() {
 		return this.date;
 	}
@@ -63,13 +63,13 @@ public class SearchRequest {
 
 	public void setDateString(String dateString) {
 		this.dateString = dateString;
-		if(dateString != ""){
-			this.date = LocalDate.parse(dateString);	
-		}		
+		if (dateString != "") {
+			this.date = LocalDate.parse(dateString);
+		}
 	}
-	
+
 	public Service getService() {
 		return this.service;
 	}
-	
+
 }

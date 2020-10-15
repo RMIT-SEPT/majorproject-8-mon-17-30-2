@@ -1,6 +1,11 @@
 package com.rmit.sept.majorProject.controller;
 
 import javax.validation.Valid;
+
+import com.rmit.sept.majorProject.dto.AdminSummary;
+import com.rmit.sept.majorProject.dto.CustomerSummary;
+import com.rmit.sept.majorProject.dto.WorkerBlueprint;
+import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Admin;
 import com.rmit.sept.majorProject.model.Customer;
 import com.rmit.sept.majorProject.model.Worker;
@@ -12,8 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins="http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+import com.rmit.sept.majorProject.utility.Util;
+
+@CrossOrigin(origins = Util.API_HOST)
 @RestController
 @RequestMapping("api/")
 public class RegistrationController {
@@ -34,29 +40,31 @@ public class RegistrationController {
 	    } catch (DuplicateKeyException dkEx) {
 	        return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);        
+        return new ResponseEntity<CustomerSummary>(new CustomerSummary(customer), HttpStatus.CREATED);        
     }
     
     // WORKER REGISTRATION API
     @PostMapping("worker/register")
-    public ResponseEntity<?> registerWorkerAccount(@Valid @RequestBody Worker worker){	    
+    public ResponseEntity<?> registerWorkerAccount(@Valid @RequestBody WorkerBlueprint worker){
+    	Worker savedWorker;
         try {
-            workerService.registerNewWorker(worker);
+        	savedWorker = workerService.registerNewWorkerByBlueprint(worker);
         } catch (DuplicateKeyException dkEx) {
             return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Worker>(worker, HttpStatus.CREATED);        
+        return new ResponseEntity<WorkerSummary>(new WorkerSummary(savedWorker), HttpStatus.CREATED);        
     }
 
     // ADMIN REGISTRATION API
     @PostMapping("admin/register")
     public ResponseEntity<?> registerAdminAccount(@Valid @RequestBody Admin admin){	    
+    	Admin savedAdmin;
         try {
-            adminService.registerNewAdmin(admin);
+            savedAdmin = adminService.registerNewAdmin(admin);
         } catch (DuplicateKeyException dkEx) {
             return new ResponseEntity<String>(dkEx.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Admin>(admin, HttpStatus.CREATED);        
+        return new ResponseEntity<AdminSummary>(new AdminSummary(savedAdmin), HttpStatus.CREATED);        
     }
     
 }

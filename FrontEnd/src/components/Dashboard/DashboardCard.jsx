@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import "../../css/BookingHistory.css";
+// The buttons at the bottom of the dashboard to redirect users
 function DashboardCard(props){
 
     return(
@@ -19,8 +20,6 @@ function DashboardCard(props){
       </Link>      
     
     )
-
-
 
 }
 

@@ -1,12 +1,12 @@
 import axios from "axios";
-import API_URL, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE, BUSINESS_ID_SESSION_ATTRIBUTE} from "../Utils/utils";
+import API_HOST, {USER_NAME_SESSION_ATTRIBUTE_NAME, ROLE_SESSION_ATTRIBUTE, ID_SESSION_ATTRIBUTE, BUSINESS_ID_SESSION_ATTRIBUTE} from "../Utils/utils";
 
 // Service class that stores the authenticated user variables
 class AuthenticationService {
 
     executeBasicAuthenticationService(username, password) {
         // Authenicates User and passes username and password to backend
-        return axios.get(`${API_URL}/auth/${username}/${password}`,
+        return axios.get(`${API_HOST}/auth/${username}/${password}`,
             { headers: { authorization: this.createBasicAuthToken(username, password) } }
             );
     }

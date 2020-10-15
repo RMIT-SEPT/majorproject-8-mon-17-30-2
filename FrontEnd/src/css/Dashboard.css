@@ -38,8 +38,8 @@
 .dashboard-link:hover{
    text-decoration: none;
 }
-.card-body-dashboard{
-    padding: 1.25rem;
+body .card-body-dashboard{
+    padding: 0.75rem;
 }
 .dashboard-card-deck{
     margin-left: 0;

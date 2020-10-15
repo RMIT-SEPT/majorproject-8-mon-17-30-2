@@ -12,57 +12,65 @@ public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long     id;
+    protected Long id;
 
     @NotNull
     @NotEmpty
-    protected String   name;
+    protected String name;
 
     @NotNull
     @NotEmpty
-    protected String   username;
+    protected String username;
 
     @NotNull
     @NotEmpty
-    protected String   password;
+    protected String password;
 
-    public enum Role{
-        ADMIN,
-        WORKER,
+    public enum Role {
+        ADMIN, 
+        WORKER, 
         CUSTOMER
     }
 
-    protected Role     role;
-    
+    protected Role role;
+
     // --------------GETTERS AND SETTERS---------------
-   
-    public Long getId(){
+
+    public Long getId() {
         return this.id;
     }
 
-    //Used to generate mock-id for testing purposes
+    // Used to generate mock-id for testing purposes
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
-    public String getUsername(){
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
         return this.username;
     }
-    public void setUsername(String newUsername){
+
+    public void setUsername(String newUsername) {
         this.username = newUsername;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return this.password;
     }
-    public void setPassword(String newPassword){
+
+    public void setPassword(String newPassword) {
         this.password = newPassword;
     }
-    public Role getRole(){
+
+    public Role getRole() {
         return this.role;
     }
 
 }
- 

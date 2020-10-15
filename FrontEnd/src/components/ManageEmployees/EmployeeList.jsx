@@ -3,7 +3,7 @@ import AddEmployeeButton from "./AddEmployeeButton";
 import WorkerService from "../../services/WorkerService";
 import AuthenticationService from "../../services/AuthenticationService";
 import EmployeeListItem from "./EmployeeListItem";
-
+// Gets all employees from a business
 function EmployeeList(){
 
     const [workers, setworkers] = useState([]);
@@ -13,7 +13,6 @@ function EmployeeList(){
         }).catch();
 
     },[]);
-
 
     return(
         <div className="card list list-width">

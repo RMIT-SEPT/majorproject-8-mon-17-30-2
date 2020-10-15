@@ -17,8 +17,9 @@ import javax.validation.Valid;
 import com.rmit.sept.majorProject.dto.WorkerSummary;
 import com.rmit.sept.majorProject.model.Worker;
 import com.rmit.sept.majorProject.service.WorkerService;
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://agmemonday2.com.s3-website-us-east-1.amazonaws.com")
+import com.rmit.sept.majorProject.utility.Util;
+
+@CrossOrigin(origins = Util.API_HOST)
 @RestController
 public class WorkerController{
 	
@@ -31,6 +32,9 @@ public class WorkerController{
 
 	@GetMapping("/api/worker/business/{businessId}")
 	public Iterable<WorkerSummary> getAllWorkerDtosFromBusiness(@PathVariable Long businessId) {
+		if(businessId <= 0 || businessId == null) {
+			return null;
+		}
 		ArrayList<WorkerSummary> workerDtos = new ArrayList<WorkerSummary>();
 		workerDtos = workerService.getAllWorkerDtosFromBusiness(businessId);
 
@@ -49,14 +53,21 @@ public class WorkerController{
 
 	@GetMapping("/api/worker/{workerId}")
 	public ResponseEntity<?> getCustomer(@PathVariable Long workerId){
+		if(workerId <= 0 || workerId == null) {
+			return new ResponseEntity<String>("Invalid worker ID", HttpStatus.BAD_REQUEST);
+		}
 		WorkerSummary worker = workerService.findByIdDTO(workerId);
 		return new ResponseEntity<>(worker, worker != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/api/worker/edit/{id}")
-    public ResponseEntity<?> updateWorker(@RequestBody Worker newWorker, @PathVariable Long id){
+	public ResponseEntity<?> updateWorker(@Valid @RequestBody Worker newWorker, @PathVariable Long id) {
+		if (id <= 0 || id == null) {
+			return new ResponseEntity<String>("Invalid worker ID", HttpStatus.BAD_REQUEST);
+		}
 		WorkerSummary exist = workerService.editWorker(id ,newWorker);
 		return new ResponseEntity<>(exist, exist != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
+	
 }

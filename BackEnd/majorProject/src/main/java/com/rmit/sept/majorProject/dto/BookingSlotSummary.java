@@ -8,7 +8,7 @@ import com.rmit.sept.majorProject.model.Booking;
 import com.rmit.sept.majorProject.model.BookingSlot;
 import com.rmit.sept.majorProject.model.Service;
 
-public class BookingSlotSummary{
+public class BookingSlotSummary implements DateTime {
 
     private Long id;
     private String businessName;
@@ -25,7 +25,7 @@ public class BookingSlotSummary{
     private boolean fullyBooked;
     private ArrayList<BookingSummary> bookings = new ArrayList<BookingSummary>();
 
-    public BookingSlotSummary(BookingSlot bookingSlot){
+    public BookingSlotSummary(BookingSlot bookingSlot) {
         this.id = bookingSlot.getId();
         this.businessName = bookingSlot.getWorkSlot().getWorker().getBusiness().getBusinessName();
         this.businessId = bookingSlot.getWorkSlot().getWorker().getBusiness().getId();
@@ -39,7 +39,7 @@ public class BookingSlotSummary{
         this.bookedService = bookingSlot.getBookedService();
         this.availableServices = bookingSlot.getAvailableServices();
         this.fullyBooked = bookingSlot.fullyBooked();
-        for(Booking booking : bookingSlot.getBookings()){
+        for (Booking booking : bookingSlot.getBookings()) {
             this.bookings.add(new BookingSummary(booking));
         }
     }
@@ -52,11 +52,11 @@ public class BookingSlotSummary{
         return workerId;
     }
 
-    public String getWorkerName(){
+    public String getWorkerName() {
         return this.workerName;
     }
 
-    public LocalDate getDate(){
+    public LocalDate getDate() {
         return this.date;
     }
 
@@ -83,8 +83,8 @@ public class BookingSlotSummary{
     public Iterable<Service> getAvailableServices() {
         return availableServices;
     }
-   
-    public boolean isFullyBooked(){
+
+    public boolean isFullyBooked() {
         return this.fullyBooked;
     }
 
@@ -92,13 +92,23 @@ public class BookingSlotSummary{
         return businessName;
     }
 
-
-    public Long getBusinessId(){
+    public Long getBusinessId() {
         return businessId;
     }
-    public Iterable<BookingSummary> getBookings() { 
+
+    public Iterable<BookingSummary> getBookings() {
         return this.bookings;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (((BookingSlotSummary) o).getId() == id && ((BookingSlotSummary) o).getBusinessId() == businessId
+                && ((BookingSlotSummary) o).getWorkSlotId() == workSlotId
+                && ((BookingSlotSummary) o).getWorkerId() == workerId) {
+            return true;
+        }
+        return false;
     }
 
 }

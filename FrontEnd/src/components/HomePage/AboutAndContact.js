@@ -52,12 +52,16 @@ function AboutUs() {
                         <div className="card">
                             <h3>Daniel</h3>
                             <p>Development Team</p>
+                            <p>Super Developer</p>
+                            <p>s3676400@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>
                         <div className="card">
                             <h3>Umer</h3>
                             <p>Development Team</p>
+                            <p>Developer and Business Advisor</p>
+                            <p>s3782874@student.rmit.edu.au</p>
                         </div>
                     </Col>
                 </Row>

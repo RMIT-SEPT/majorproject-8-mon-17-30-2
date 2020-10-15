@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import "../../css/BookingHistory.css";
 
-//this component is going to be a single grey bubble displaying the data of a single booking
+//this component is going to be a single grey bubble displaying the data of a single booking slot
 function BookingSlotBubble({bookingSlot, handleChosenSlot}) {
 
   const [serviceId, setServiceId] = useState(null);

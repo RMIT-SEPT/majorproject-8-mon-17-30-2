@@ -16,7 +16,7 @@ function EditWorker(props){
         if(!hasInit){
             init();
         }
-    },[name, address, phoneNumber, email, username, invalidData]);
+    },[name, address, phoneNumber, email, username, invalidData, hasInit]);
 
     function init(){
         WorkerService.getWorkerById(props.match.params.workerId)
@@ -29,7 +29,7 @@ function EditWorker(props){
         });
         setHasInit(true);
     }
-
+    //send new deatils to backend to update worker
     function handleSubmit(event){
         event.preventDefault();
         const worker = {

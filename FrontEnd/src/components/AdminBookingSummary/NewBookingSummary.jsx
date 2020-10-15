@@ -5,6 +5,9 @@ import AuthenticationService from "../../services/AuthenticationService";
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
+/*
+    Page to display ongoing bookings for a businesss utilises table view
+*/
 function NewBookingSummary(props) {
 
     const [bookings, setBookings] = useState([]);
@@ -46,6 +49,7 @@ function NewBookingSummary(props) {
         margin: "auto"
     }
 
+    // load bookings based on businessid
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             let businessId = response.data.businessId;

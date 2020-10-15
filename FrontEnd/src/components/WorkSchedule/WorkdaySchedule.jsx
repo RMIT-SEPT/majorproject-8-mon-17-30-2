@@ -8,7 +8,6 @@ import {Link} from "react-router-dom";
 //props: workerId, date (string in the format YYYY-MM-DD)
 function WorkdaySchedule(props){
 
-  // var date = "2007-09-25";
 
   const [slots, setSlots] = useState([]);  
 
@@ -16,12 +15,12 @@ function WorkdaySchedule(props){
     WorkerService.getWorkSlotsByDateAndWorkerId(props.workerId, props.date).then((response) =>{
       setSlots(response.data.length ? response.data : []);
     });
-  },[]);
+  },[props.workerId, props.date]);
 
   return (
 
-    <div class="text-center">
-        {!props.noHead ? <h1 class="text-center">{props.date}</h1> :<></>}   
+    <div className="text-center">
+        {!props.noHead ? <h1 className="text-center">{props.date}</h1> :<></>}   
         {slots.length ? (
         // if there are >0 slots:
         <>
@@ -33,10 +32,11 @@ function WorkdaySchedule(props){
               <Card.Body>
                 <Card.Header className="bold">Shift: {workSlot.startTime} - {workSlot.endTime}</Card.Header>
                 <Card.Title className="cardtitle"></Card.Title>
-                <Card.Text className="cardtext">
+                <div className="cardtext">
+                
                 {workSlot.bookingSlots.map((bookingSlot) => 
-                  <WorkerBookingSlot bookingSlot={bookingSlot}/>)}
-                </Card.Text>
+                  <WorkerBookingSlot key={bookingSlot.id} bookingSlot={bookingSlot}/>)}
+                </div>
               </Card.Body>
             </Card>
             <br/>

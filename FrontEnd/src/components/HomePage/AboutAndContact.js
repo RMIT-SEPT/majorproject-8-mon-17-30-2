@@ -43,25 +43,25 @@ function AboutUs() {
                     <Col>
                         <div className="card">
                             <h3>Danny</h3>
-                            <p>Insert Title</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
+                            <p>Development Team</p>
+                            <p>Some developer</p>
+                            <p>s3601030@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>
                         <div className="card">
                             <h3>Daniel</h3>
-                            <p>Insert Title</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
+                            <p>Development Team</p>
+                            <p>Super Developer</p>
+                            <p>s3676400@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>
                         <div className="card">
                             <h3>Umer</h3>
-                            <p>Insert Title</p>
-                            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                            <p>email@example.com</p>
+                            <p>Development Team</p>
+                            <p>Developer and Business Advisor</p>
+                            <p>s3782874@student.rmit.edu.au</p>
                         </div>
                     </Col>
                 </Row>

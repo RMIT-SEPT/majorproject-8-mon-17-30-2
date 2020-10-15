@@ -5,7 +5,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 
 //for debug printing using util2.inspect(object, false, null, true)
 // const util2 = require('util');
-
+// This component uses BookingBubble to display ongoing bookings and allow customers to manage their current bookings
 class CurrentBookings extends Component {
 
   // Change options to get from backend

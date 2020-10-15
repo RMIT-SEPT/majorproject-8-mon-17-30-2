@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import BusinessService from "../../services/BusinessService";
 import AdminService from "../../services/AdminService";
 import AuthenticationService from "../../services/AuthenticationService";
-import BookingBubble from "../Bubbles/BookingBubble";
 import AvailabilityBubble from "../Bubbles/AvailabilityBubble";
-import Card from "react-bootstrap/esm/Card";
 
-function ViewAvailabilty(props) {
+/*
+    Displays all available slots for a business using the availablityBubbles
+*/
+function ViewAvailabilty() {
 
     const [availSlots, setAvailSlots] = useState([]);
-
+    //initalise workslots
     useEffect(() => {
         AdminService.getAdminById(AuthenticationService.getLoggedInId()).then(response => {
             getAvailiableWorkSlots();

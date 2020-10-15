@@ -3,6 +3,7 @@ import WorkdaySchedule from "./WorkdaySchedule";
 import moment from 'moment';
 import "../../css/WeekSchedule.css"
 
+// Allows admins to view entire week schedule for a worker
 function WeekSchedule(props){
 
     const day0 = moment().format("yyyy-MM-DD").toString();
@@ -18,7 +19,7 @@ function WeekSchedule(props){
         <h1 className="display-4 text-center"><br/>7-day schedule from {day0}</h1><br/><br/>
         <div className="week">            
             <table style={{border: "none"}}>
-                <tr>
+                <thead>
                     <th><h4>{moment().format("dddd Do MMM")}</h4></th>
                     <th><h4>{moment().add(1, 'd').format("dddd Do MMM")}</h4></th>
                     <th><h4>{moment().add(2, 'd').format("dddd Do MMM")}</h4></th>
@@ -26,7 +27,7 @@ function WeekSchedule(props){
                     <th><h4>{moment().add(4, 'd').format("dddd Do MMM")}</h4></th>
                     <th><h4>{moment().add(5, 'd').format("dddd Do MMM")}</h4></th>
                     <th><h4>{moment().add(6, 'd').format("dddd Do MMM")}</h4></th>
-                </tr>
+                </thead>
                 <tr>
                     <td className="day">
                         <div className="day">

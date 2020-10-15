@@ -5,14 +5,11 @@ import AuthenticationService from "../../services/AuthenticationService";
 
 //basic navbar with bootstrap
 function Navbar(props){
-    
 
    function handleClick(){
-      
         AuthenticationService.logout();
         props.setIsLoggedIn(false);
     }
-
 
     return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-dark">
@@ -29,10 +26,6 @@ function Navbar(props){
                 <Link to = "/about" className = "nav-link">
                     <li className = "nav-item">About & Contact</li>
                 </Link>
-
-                {/* <Link to = "/contact" className = "nav-link">
-                    <li className = "nav-item">Contact</li>
-                </Link> */}
             </ul>
           
            

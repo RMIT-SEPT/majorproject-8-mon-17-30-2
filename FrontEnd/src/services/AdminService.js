@@ -1,17 +1,13 @@
 import axios from 'axios';
-import API_HOST from '../Utils/utils'
+import {ADMIN_API_BASE_URL} from '../Utils/utils'
 
-const ADMIN_API_BASE_URL = API_HOST + '/api/admin'
 
-// service for all REST api calls stemming from the url 'api/customer'
+// service for all REST api calls stemming from the url 'api/admin'
 class AdminService {
-
-    // need to setup security such that only the owner of this id (or an admin) can access
+    // @GetMapping("/api/admin/{adminId}")
     getAdminById(adminId){
         return axios.get(ADMIN_API_BASE_URL + '/' + adminId);
     }
-
-
 
 }
 

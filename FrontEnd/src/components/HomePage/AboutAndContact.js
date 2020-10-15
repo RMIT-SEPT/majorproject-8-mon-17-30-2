@@ -44,6 +44,8 @@ function AboutUs() {
                         <div className="card">
                             <h3>Danny</h3>
                             <p>Development Team</p>
+                            <p>Some developer</p>
+                            <p>s3601030@student.rmit.edu.au</p>
                         </div>
                     </Col>
                     <Col>
